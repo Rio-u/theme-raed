@@ -155,7 +155,7 @@ html.lx-promo-open body { overflow: hidden; }
 }
 
 /* ============ Login / register modal (form itself is Salla's iframe) ============ */
-body.theme-raed salla-login-modal {
+body.theme-raed .s-login-modal {
   .s-modal-body {
     width: min(100vw - 1.5rem, 460px);
     padding: var(--lx-space-4) var(--lx-space-3) var(--lx-space-3);
@@ -237,3 +237,17 @@ body.theme-raed .s-product-card-sale-price span { font-size: var(--lx-fs-sm); }
   justify-content: center;
   gap: 0.75rem;
 }
+
+body.theme-raed .s-login-modal .s-modal-close,
+body.theme-raed .s-modal-close {
+  color: var(--lx-black) !important;
+  background: transparent !important;
+  &:hover { background: var(--lx-sand) !important; }
+}
+
+/* Salla's login iframe paints white: match it so the frame reads as one surface */
+body.theme-raed .s-login-modal .s-modal-body { background: #FFFFFF; }
+html.lx-dark body.theme-raed .s-login-modal .s-modal-body { background: #FFFFFF; }
+html.lx-dark body.theme-raed .s-login-modal .s-modal-body::before { color: #111111; }
+body.theme-raed .s-modal-close svg,
+body.theme-raed .s-modal-close i { fill: currentColor; color: inherit; }

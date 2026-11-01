@@ -166,7 +166,7 @@
             "format": "text",
             "id": "lx_promo_title",
             "label": "العنوان",
-            "value": "خصم ترحيبي على طلبك الأول",
+            "value": "عروض الموسم وصلت",
             "icon": "sicon-format-text-alt",
             "required": false,
             "multilanguage": false
