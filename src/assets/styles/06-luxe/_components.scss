@@ -131,18 +131,20 @@ body.theme-raed {
 }
 
 .lx-voices__mark {
-  position: absolute;
-  inset-block-start: -0.35em;
-  inset-inline: 0;
+  display: block;
+  height: 0.55em;
+  margin-block-end: var(--lx-space-2);
   font-family: var(--lx-font-display);
-  font-size: clamp(7rem, 5rem + 8vw, 12rem);
+  font-size: 6rem;
   line-height: 1;
-  color: var(--lx-sand);
-  z-index: -1;
-  pointer-events: none;
+  color: var(--lx-taupe);
+  order: -1;
 }
 
-.lx-voices .lx-voices__head { isolation: isolate; }
+.lx-voices__head { display: flex; flex-direction: column; align-items: center; }
+
+/* Real reviews only: if the store has none yet, the section stays out of the way */
+.lx-voices:has(salla-reviews):not(:has(.s-reviews-testimonial)) { display: none; }
 
 .lx-voices__grid {
   display: grid;

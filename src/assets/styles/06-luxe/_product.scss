@@ -201,3 +201,14 @@ body.product-single .s-products-slider-wrapper .s-slider-block__title h2 {
   background: var(--lx-white) !important;
   box-shadow: none;
 }
+
+/* Product options arrive in their own white card from Twilight: flatten to a hairline row */
+body.product-single .s-product-options-wrapper,
+body.product-single salla-product-options > div,
+body.product-single .s-product-options-option-container {
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding-inline: 0 !important;
+}
+body.product-single .s-product-options-option-container { border-block-end: 1px solid var(--lx-line); }
