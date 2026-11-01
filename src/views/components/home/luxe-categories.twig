@@ -10,7 +10,7 @@
          class="s-block lx-section lx-cats {{ component.as_index ? 'lx-cats--index' : '' }}" {{ component.as_index ? 'data-lx-index' : '' }}>
   <div class="lx-wrap">
     {% if component.title or component.eyebrow %}
-      <header class="lx-section-head" data-lx-reveal>
+      <header class="lx-section-head {{ component.as_index ? '' : 'lx-section-head--center' }}" data-lx-reveal>
         <div>
           {% if component.eyebrow %}<span class="lx-eyebrow">{{ component.eyebrow }}</span>{% endif %}
           {% if component.title %}<h2 class="lx-section-head__title">{{ component.title }}</h2>{% endif %}
@@ -36,17 +36,18 @@
       </ol>
       <figure class="lx-index__float" aria-hidden="true"><img alt=""></figure>
     {% else %}
-      <div class="lx-cats__grid lx-cats__grid--{{ component.items|length }}" data-lx-stagger="120">
+      {# Arched cards: swipe row on phones/tablets, a staggered row of four on desktop #}
+      <div class="lx-arches" data-count="{{ component.items|length }}">
         {% for item in component.items %}
           {% set tag = item.url and item.url != '#' ? 'a' : 'div' %}
-          <{{ tag }} {% if tag == 'a' %}href="{{ item.url }}"{% endif %} class="lx-cat" data-lx-reveal>
-            <figure class="lx-cat__img">
+          <{{ tag }} {% if tag == 'a' %}href="{{ item.url }}"{% endif %} class="lx-arch" data-lx-reveal style="--lx-delay: {{ loop.index0 * 110 }}ms">
+            <figure class="lx-arch__img">
               <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy">
             </figure>
-            <div class="lx-cat__body">
-              <span class="lx-cat__index" aria-hidden="true">{{ '%02d'|format(loop.index) }}</span>
-              <h3 class="lx-cat__title">{{ item.title }}</h3>
-              {% if tag == 'a' %}<span class="lx-cat__more">{{ trans('blocks.luxe.shop') }} <i class="sicon-arrow-left" aria-hidden="true"></i></span>{% endif %}
+            <div class="lx-arch__meta">
+              <span class="lx-arch__num">{{ '%02d'|format(loop.index) }}</span>
+              <h3 class="lx-arch__title">{{ item.title }}</h3>
+              {% if tag == 'a' %}<span class="lx-arch__more">{{ trans('blocks.luxe.shop') }}</span>{% endif %}
             </div>
           </{{ tag }}>
         {% endfor %}
