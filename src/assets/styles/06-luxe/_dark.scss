@@ -147,3 +147,11 @@ html.lx-theme-anim body * {
 
 /* The announcement band stays the darkest surface in both themes */
 html.lx-dark .lx-announce { background: #0A0908; color: var(--lx-taupe); }
+
+/* Cart summary card paints its rows white */
+html.lx-dark body.theme-raed {
+  .s-cart-summary-card [class*="s-cart-summary-card"],
+  salla-cart-summary-card div:not([class*="button"]),
+  .product-form salla-product-options > div,
+  .product-form .s-product-options-option-container { background-color: transparent !important; color: inherit; }
+}
