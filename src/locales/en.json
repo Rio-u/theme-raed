@@ -5,6 +5,25 @@
     },
     "appBanner": {
       "download_now": "download now"
+    },
+    "luxe": {
+      "search": "Search",
+      "wishlist": "Wishlist",
+      "announcement": "Announcement",
+      "menu": "Menu",
+      "view_all": "View all",
+      "explore": "Explore the collection",
+      "newsletter_title": "Join our world",
+      "newsletter_text": "Be the first to discover new collections and exclusive releases.",
+      "email": "Email address",
+      "subscribe": "Subscribe",
+      "newsletter_pending": "Newsletter is not connected yet — add a subscribe URL in the section settings.",
+      "shop": "Shop",
+      "customer_care": "Customer care",
+      "follow": "Follow us",
+      "new_arrivals": "New arrivals",
+      "best_sellers": "Best sellers",
+      "products_count": "products"
     }
   },
   "pages": {

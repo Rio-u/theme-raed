@@ -5,6 +5,25 @@
     },
     "appBanner": {
       "download_now": "حمله الان"
+    },
+    "luxe": {
+      "search": "بحث",
+      "wishlist": "المفضلة",
+      "announcement": "إعلان",
+      "menu": "القائمة",
+      "view_all": "عرض الكل",
+      "explore": "اكتشفي المجموعة",
+      "newsletter_title": "انضمي إلى عالمنا",
+      "newsletter_text": "كوني أول من يكتشف المجموعات الجديدة والإصدارات الحصرية.",
+      "email": "البريد الإلكتروني",
+      "subscribe": "اشتراك",
+      "newsletter_pending": "ربط النشرة البريدية غير مفعّل بعد — أضيفي رابط الاشتراك من إعدادات القسم.",
+      "shop": "تسوّق",
+      "customer_care": "خدمة العملاء",
+      "follow": "تابعينا",
+      "new_arrivals": "وصل حديثاً",
+      "best_sellers": "الأكثر مبيعاً",
+      "products_count": "منتج"
     }
   },
   "pages": {

@@ -1,0 +1,73 @@
+/**
+ * LUXE — design tokens
+ * Every luxe partial reads from these variables; change the brand here.
+ */
+:root {
+  /* Palette */
+  --lx-ivory: #F8F6F2;
+  --lx-white: #FFFFFF;
+  --lx-charcoal: #202020;
+  --lx-black: #111111;
+  --lx-gray: #77736E;
+  --lx-taupe: #B4A596;
+  --lx-sand: #E8E0D7;
+  --lx-line: #E8E5E0;
+  --lx-sale: #8C3B2E;              /* muted brick, used only for sale prices */
+
+  --lx-bg: var(--lx-ivory);
+  --lx-surface: var(--lx-white);
+  --lx-text: var(--lx-charcoal);
+  --lx-text-muted: var(--lx-gray);
+
+  /* Typography */
+  --lx-font-sans: "IBM Plex Sans Arabic", "Helvetica Neue", Arial, sans-serif;
+  --lx-font-display: "Cormorant Garamond", "IBM Plex Sans Arabic", Georgia, serif;
+  --lx-fs-xs: 0.6875rem;   /* 11 — eyebrows, labels */
+  --lx-fs-sm: 0.8125rem;   /* 13 — meta, nav */
+  --lx-fs-base: 0.9375rem; /* 15 — body */
+  --lx-fs-md: 1.125rem;    /* 18 */
+  --lx-fs-lg: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+  --lx-fs-xl: clamp(2rem, 1.4rem + 2.6vw, 3.75rem);
+  --lx-fs-hero: clamp(2.5rem, 1.5rem + 4.6vw, 6rem);
+  --lx-tracking-wide: 0.22em;
+  --lx-tracking: 0.08em;
+
+  /* Spacing (8pt) */
+  --lx-space-1: 0.5rem;
+  --lx-space-2: 1rem;
+  --lx-space-3: 1.5rem;
+  --lx-space-4: 2rem;
+  --lx-space-5: 3rem;
+  --lx-space-6: 4.5rem;
+  --lx-space-7: 7rem;
+  --lx-section: clamp(4rem, 2.5rem + 6vw, 8.5rem);
+
+  /* Layout */
+  --lx-container: 1440px;
+  --lx-gutter: clamp(1rem, 0.5rem + 2.5vw, 3rem);
+  --lx-header-h: 64px;
+  --lx-announce-h: 36px;
+  --lx-ratio-product: 3 / 4;
+  --lx-ratio-portrait: 4 / 5;
+  --lx-ratio-landscape: 16 / 9;
+
+  /* Motion */
+  --lx-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --lx-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --lx-dur-fast: 200ms;
+  --lx-dur: 450ms;
+  --lx-dur-slow: 900ms;
+
+  /* Raed / Twilight bridge — components read these */
+  --font-main: "IBM Plex Sans Arabic";
+  --color-primary: var(--lx-charcoal);
+  --color-primary-dark: var(--lx-black);
+  --color-primary-light: #3A3A3A;
+  --color-primary-reverse: var(--lx-white);
+  --s-radius: 0;
+  --main-text-color: var(--lx-charcoal);
+}
+
+@media (min-width: 1024px) {
+  :root { --lx-header-h: 76px; }
+}

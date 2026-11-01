@@ -26,6 +26,61 @@
     ],
     "settings": [
         {
+            "type": "static",
+            "format": "title",
+            "id": "lx-static-title",
+            "value": "<div class='rounded-lg' style='background-color:#111111;display:flex;justify-content:center;align-items:center;padding:15px;margin-bottom:20px !important;'><h6 style='color:#F8F6F2;font-size:15px;font-weight:bold;letter-spacing:.1em'>هوية المتجر (LUXE)</h6></div>",
+            "variant": "h6"
+        },
+        {
+            "type": "string",
+            "format": "text",
+            "id": "lx_wordmark",
+            "icon": "sicon-format-text-alt",
+            "label": "اسم العلامة (يظهر كشعار نصي)",
+            "description": "اتركيه فارغاً لاستخدام شعار المتجر بدلاً منه",
+            "value": "MAISON D7",
+            "required": false,
+            "multilanguage": false
+        },
+        {
+            "type": "string",
+            "format": "text",
+            "id": "lx_intro_tagline",
+            "icon": "sicon-typography",
+            "label": "نص شاشة الافتتاح",
+            "description": "سطر قصير يظهر تحت اسم العلامة في أول زيارة",
+            "value": "New Season",
+            "required": false,
+            "multilanguage": false
+        },
+        {
+            "type": "string",
+            "format": "text",
+            "id": "lx_announcement",
+            "icon": "sicon-speaker",
+            "label": "شريط الإعلان",
+            "description": "اتركيه فارغاً لإخفاء الشريط",
+            "value": "موسم جديد — اكتشفي المجموعة الجديدة",
+            "required": false,
+            "multilanguage": false
+        },
+        {
+            "type": "string",
+            "format": "text",
+            "id": "lx_announcement_url",
+            "icon": "sicon-link",
+            "label": "رابط شريط الإعلان (اختياري)",
+            "value": "",
+            "required": false,
+            "multilanguage": false
+        },
+        {
+            "type": "static",
+            "format": "line",
+            "id": "lx-static-line"
+        },
+        {
             "id": "squar_photo_bg_image_size",
             "type": "items",
             "format": "dropdown-list",
@@ -1146,4 +1201,3 @@
         "en": "A wide range of features to support your business and provide an exciting shopping experience for your customers"
     }
 }
-

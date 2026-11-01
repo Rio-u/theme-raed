@@ -1,0 +1,257 @@
+/**
+ * LUXE — announcement bar, header, navigation (desktop + mobile drawer)
+ */
+.lx-only-desktop { display: none !important; }
+@media (min-width: 1024px) {
+  .lx-only-desktop { display: inline-flex !important; }
+  .lx-only-mobile { display: none !important; }
+}
+
+/* ---------- Announcement ---------- */
+.lx-announce {
+  background: var(--lx-black);
+  color: var(--lx-sand);
+  font-size: var(--lx-fs-xs);
+  letter-spacing: 0.14em;
+}
+
+.lx-announce__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--lx-announce-h);
+  max-width: var(--lx-container);
+  margin-inline: auto;
+  padding-inline: var(--lx-gutter);
+}
+
+.lx-announce__text {
+  color: inherit;
+  text-align: center;
+  &:is(a):hover { color: var(--lx-white); }
+}
+
+.lx-announce__tools {
+  position: absolute;
+  inset-inline-end: var(--lx-gutter);
+  display: none;
+  align-items: center;
+  gap: var(--lx-space-2);
+
+  @media (min-width: 1024px) { display: flex; }
+
+  // localization trigger inherits the bar colours
+  .s-localization-modal-trigger-btn,
+  button { color: inherit; background: none; border: 0; font-size: inherit; letter-spacing: 0.08em; }
+}
+
+.lx-announce__btn { display: inline-flex; align-items: center; gap: 0.4em; cursor: pointer; }
+
+/* ---------- Main bar ---------- */
+.lx-header .main-nav-container.lx-mainnav {
+  min-height: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.lx-mainnav .inner {
+  background: var(--lx-bg);
+  border-block-end: 1px solid transparent;
+  transition: background var(--lx-dur) var(--lx-ease), border-color var(--lx-dur) var(--lx-ease);
+}
+
+.lx-bar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: var(--lx-header-h);
+  max-width: var(--lx-container);
+  margin-inline: auto;
+  padding-inline: var(--lx-gutter);
+}
+
+.lx-bar__start,
+.lx-bar__end {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.lx-bar__start { margin-inline-start: -10px; }
+.lx-bar__end { justify-content: flex-end; margin-inline-end: -10px; }
+
+.lx-brand.navbar-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  color: var(--lx-black);
+
+  img { max-height: 40px; max-width: 160px; }
+}
+
+.lx-brand__word {
+  font-family: var(--lx-font-display);
+  font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  margin-inline-end: -0.3em; // optical centring, see intro
+  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* Header actions from Twilight */
+.lx-bar__end salla-user-menu,
+.lx-bar__end salla-cart-summary { min-width: 0; min-height: 0; margin: 0; }
+
+.lx-header .header-btn__icon,
+.lx-header .s-user-menu-trigger,
+.lx-header .s-cart-summary-wrapper,
+.lx-header .s-cart-summary-icon {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--lx-black);
+  font-size: 1.25rem;
+}
+
+.lx-header .header-btn__icon.icon { margin: 0; }
+
+.lx-header .s-cart-summary-total { display: none; }
+
+.lx-header .s-cart-summary-count {
+  top: 6px;
+  inset-inline-end: 4px;
+  inset-inline-start: auto;
+  left: auto;
+  right: auto;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--lx-black);
+  color: var(--lx-white);
+  font-size: 9px;
+  line-height: 16px;
+}
+
+.lx-header .s-user-menu-trigger-avatar,
+.lx-header .s-user-menu-trigger img { width: 26px; height: 26px; border-radius: 999px; }
+
+/* ---------- Sticky behaviour (classes added by app.js) ---------- */
+.lx-mainnav.fixed-pinned .inner {
+  background: rgba(255, 255, 255, 0.96);
+  border-block-end-color: var(--lx-line);
+  box-shadow: none;
+  backdrop-filter: saturate(1.4) blur(10px);
+  -webkit-backdrop-filter: saturate(1.4) blur(10px);
+}
+
+@media (min-width: 1025px) {
+  .lx-mainnav.fixed-pinned .lx-nav { display: none; }
+  .lx-mainnav.fixed-pinned .lx-bar { height: 60px; }
+}
+
+/* ---------- Desktop navigation ---------- */
+@media (min-width: 1024px) {
+  .lx-nav {
+    display: flex;
+    justify-content: center;
+    max-width: var(--lx-container);
+    margin-inline: auto;
+    padding-inline: var(--lx-gutter);
+    border-block-start: 1px solid var(--lx-line);
+  }
+
+  .lx-nav custom-main-menu { min-height: 0; display: block; }
+
+  .lx-nav .main-menu {
+    justify-content: center;
+    gap: 0 2.25rem;
+    margin: 0;
+    padding: 0;
+
+    > li.root-level > a {
+      position: relative;
+      padding: 1.05rem 0;
+      font-size: var(--lx-fs-xs);
+      font-weight: 500;
+      letter-spacing: var(--lx-tracking-wide);
+      text-transform: uppercase;
+      color: var(--lx-black);
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset-inline: 0;
+        bottom: 0.7rem;
+        height: 1px;
+        background: currentColor;
+        transform: scaleX(0);
+        transition: transform var(--lx-dur) var(--lx-ease);
+      }
+
+      &:hover { color: var(--lx-black); &::before { transform: scaleX(1); } }
+    }
+
+    > li > a[href*="offer"] { color: var(--lx-sale); }
+
+    .has-children > a:after { display: none; }
+
+    .sub-menu {
+      border: 1px solid var(--lx-line);
+      border-radius: 0;
+      box-shadow: 0 30px 60px -30px rgba(17, 17, 17, 0.12);
+      background: var(--lx-white);
+      transform: translateY(6px);
+      transition: opacity var(--lx-dur) var(--lx-ease), transform var(--lx-dur) var(--lx-ease), visibility var(--lx-dur);
+
+      li > a {
+        padding: 0.6rem 1.5rem;
+        font-size: var(--lx-fs-sm);
+        font-weight: 400;
+        color: var(--lx-charcoal);
+      }
+
+      li a:hover { background: none; color: var(--lx-gray); }
+    }
+
+    li:hover > .sub-menu { transform: none; }
+  }
+}
+
+/* ---------- Mobile drawer (mmenu-light) ---------- */
+@media (max-width: 1024px) {
+  .lx-nav { display: contents; }
+  .lx-bar__search { display: inline-flex; }
+
+  .mm-ocd__content { background: var(--lx-ivory); }
+
+  .mm-ocd .mm-spn {
+    background: var(--lx-ivory);
+    --mm-spn-item-height: 56px;
+    --mm-spn-item-indent: 24px;
+    font-family: var(--lx-font-sans);
+
+    li::after { border-color: var(--lx-line); opacity: 1; }
+
+    a, span {
+      font-size: var(--lx-fs-sm);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--lx-black);
+    }
+
+    &.mm-spn--navbar::after {
+      font-family: var(--lx-font-display);
+      font-size: 1.25rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      opacity: 1;
+    }
+  }
+}

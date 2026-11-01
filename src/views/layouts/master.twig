@@ -58,6 +58,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {{ theme.settings.set('placeholder', 'images/placeholder.png') }}
 
+    {# LUXE: decide before first paint whether the intro plays (once per session, never inside the editor iframe) #}
+    <script data-cfasync="false">
+        (function (d) {
+            var h = d.documentElement, seen = false;
+            h.className += ' lx-js';
+            try { seen = sessionStorage.getItem('lx-intro-seen') === '1'; } catch (e) {}
+            if (seen || window.self !== window.top) h.className += ' lx-intro-skip';
+        })(document);
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap">
+
+    {% set lx_wordmark = theme.settings.get('lx_wordmark', 'MAISON D7') %}
+
     <script defer data-cfasync="false" crossorigin="anonymous" src="{{ 'product-card.js'|asset }}"></script>
     <script defer src="{{ 'main-menu.js'|asset }}"></script>
     {% if theme.settings.get('enable_add_product_toast', true) %}
@@ -80,18 +95,13 @@
     {% hook head %}
     {% block styles %}{% endblock %}
     <link rel="stylesheet" href="{{ 'app.css' | asset }}">
-    <link rel="stylesheet" href="{{ theme.font.path|cdn }}"/>
     <link rel="stylesheet" href="{{ 'fonts/sallaicons.css'|cdn }}"/>
-    
+
+    {# LUXE: the palette and fonts are fixed by the design system (06-luxe/_tokens.scss).
+       The merchant's chosen colour is still exposed for apps that want it. #}
     <style>
         :root {
-            --font-main: '{{theme.font.name}}';
-            --color-primary: {{ theme.color.primary }};
-            --color-primary-dark: {{ theme.color.darker(0.15) }};
-            --color-primary-light: {{ theme.color.lighter(0.15) }};
-            --color-primary-reverse: {{ theme.color.reverse_text }};
-            /* Theme specific variables */
-            --s-radius: .75rem;
+            --lx-merchant-primary: {{ theme.color.primary }};
         }
     </style>
     {# tracking services, custom css feature. #}
@@ -107,6 +117,61 @@
     <a href="https://www.enable-javascript.com/" rel="noreferrer"
        target="_blank">To enable JavaScript on webpage</a>.
 </noscript>
+{# LUXE: signature intro. Hidden by CSS when skipped; hides itself after 4.5s if JS fails. #}
+<div class="lx-intro" id="lx-intro" aria-hidden="true">
+    <div class="lx-intro__mark">
+        {% if lx_wordmark %}
+            {% for ch in lx_wordmark|split('') %}<span style="--i: {{ loop.index0 }}">{{ ch }}</span>{% endfor %}
+        {% else %}
+            <img src="{{ store.logo }}" alt="">
+        {% endif %}
+    </div>
+    <div class="lx-intro__tag">{{ theme.settings.get('lx_intro_tagline', 'New Season') }}</div>
+    <div class="lx-intro__progress">
+        <span class="lx-intro__line"><i></i></span>
+        <span class="lx-intro__pct">0</span>
+    </div>
+</div>
+<script data-cfasync="false">
+    (function (d, w) {
+        var h = d.documentElement, el = d.getElementById('lx-intro');
+        if (!el || h.classList.contains('lx-intro-skip')) { el && el.remove(); return; }
+        try { sessionStorage.setItem('lx-intro-seen', '1'); } catch (e) {}
+
+        var reduced = w.matchMedia && w.matchMedia('(prefers-reduced-motion: reduce)').matches,
+            MIN = reduced ? 300 : 1600,   // never shorter: lets the wordmark finish
+            MAX = reduced ? 800 : 2800,   // never longer: shopping must not wait on us
+            line = el.querySelector('.lx-intro__line'),
+            pct = el.querySelector('.lx-intro__pct'),
+            start = Date.now(), loaded = false, finished = false, shown = 0;
+
+        h.classList.add('lx-intro-active');
+        w.addEventListener('load', function () { loaded = true; });
+        setTimeout(finish, MAX + 200); // rAF pauses in background tabs
+
+        function finish() {
+            if (finished) return;
+            finished = true;
+            line.style.setProperty('--p', 1); pct.textContent = '100';
+            setTimeout(function () {
+                el.classList.add('is-done');
+                h.classList.remove('lx-intro-active');
+                setTimeout(function () { el.remove(); }, 1200);
+            }, 180);
+        }
+
+        (function tick() {
+            if (finished) return;
+            var t = Date.now() - start,
+                target = loaded ? Math.min(1, t / MIN) : Math.min(0.9, t / MAX);
+            shown += (target - shown) * 0.18;
+            line.style.setProperty('--p', shown.toFixed(3));
+            pct.textContent = Math.round(shown * 100);
+            if ((loaded && t >= MIN) || t >= MAX) return finish();
+            w.requestAnimationFrame(tick);
+        })();
+    })(document, window);
+</script>
 <div class="app-inner flex flex-col min-h-full">
     {% hook 'body:start' %}
     {% component 'header.header' %}
