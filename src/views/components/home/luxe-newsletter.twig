@@ -1,0 +1,29 @@
+{#
+Newsletter. Salla has no built-in newsletter endpoint, so the form only renders when the merchant
+connects one (Mailchimp/Klaviyo form action URL). Without it, visitors see the heading only and
+the editor preview shows a note — never a button that does nothing.
+| component.eyebrow     | ?string |                                         |
+| component.title       | string  |                                         |
+| component.text        | ?string |                                         |
+| component.action_url  | ?string | Form action URL of the mailing service  |
+| component.field_name  | ?string | Email field name the service expects    |
+#}
+{% set action = component.action_url %}
+<section component-id="{{ componentId }}" data-testid="store-home-luxe-newsletter" class="s-block lx-newsletter">
+  <div class="lx-newsletter__inner" data-lx-stagger="100">
+    {% if component.eyebrow %}<span class="lx-eyebrow" data-lx-reveal>{{ component.eyebrow }}</span>{% endif %}
+    <h2 class="lx-newsletter__title lx-display" data-lx-reveal>{{ component.title|default(trans('blocks.luxe.newsletter_title')) }}</h2>
+    <p class="lx-newsletter__text" data-lx-reveal>{{ component.text|default(trans('blocks.luxe.newsletter_text')) }}</p>
+
+    {% if action %}
+      <form class="lx-newsletter__form" action="{{ action }}" method="post" target="_blank" data-lx-reveal>
+        <label class="lx-visually-hidden" for="lx-nl-{{ position }}">{{ trans('blocks.luxe.email') }}</label>
+        <input id="lx-nl-{{ position }}" type="email" name="{{ component.field_name|default('EMAIL') }}" required
+               autocomplete="email" placeholder="{{ trans('blocks.luxe.email') }}">
+        <button type="submit" class="lx-btn">{{ trans('blocks.luxe.subscribe') }}</button>
+      </form>
+    {% elseif theme.mode == 'preview' %}
+      <p class="lx-newsletter__note" data-lx-reveal>{{ trans('blocks.luxe.newsletter_pending') }}</p>
+    {% endif %}
+  </div>
+</section>

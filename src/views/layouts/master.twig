@@ -64,7 +64,9 @@
             var h = d.documentElement, seen = false;
             h.className += ' lx-js';
             try { seen = sessionStorage.getItem('lx-intro-seen') === '1'; } catch (e) {}
-            if (seen || window.self !== window.top) h.className += ' lx-intro-skip';
+            if (seen || window.self !== window.top) h.className += ' lx-intro-skip lx-ready';
+            // safety net: page content must never wait on the intro
+            setTimeout(function () { h.classList.add('lx-ready'); }, 5000);
         })(document);
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -135,7 +137,7 @@
 <script data-cfasync="false">
     (function (d, w) {
         var h = d.documentElement, el = d.getElementById('lx-intro');
-        if (!el || h.classList.contains('lx-intro-skip')) { el && el.remove(); return; }
+        if (!el || h.classList.contains('lx-intro-skip')) { el && el.remove(); h.classList.add('lx-ready'); return; }
         try { sessionStorage.setItem('lx-intro-seen', '1'); } catch (e) {}
 
         var reduced = w.matchMedia && w.matchMedia('(prefers-reduced-motion: reduce)').matches,
@@ -155,6 +157,7 @@
             line.style.setProperty('--p', 1); pct.textContent = '100';
             setTimeout(function () {
                 el.classList.add('is-done');
+                h.classList.add('lx-ready');
                 h.classList.remove('lx-intro-active');
                 setTimeout(function () { el.remove(); }, 1200);
             }, 180);

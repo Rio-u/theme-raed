@@ -2,6 +2,13 @@
    Every block comes from merchant data via Twilight components — nothing here is hardcoded content. #}
 {% set lx_wordmark = theme.settings.get('lx_wordmark', 'MAISON D7') %}
 <footer data-testid="store-footer" class="store-footer lx-footer">
+  <div class="lx-footer__top">
+    <p class="lx-footer__tagline lx-display" data-lx-reveal>{{ theme.settings.get('lx_footer_tagline', 'قطعٌ تُصنع لتدوم، بأناقةٍ لا تحتاج إلى ضجيج.') }}</p>
+    <a href="#app" class="lx-footer__top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
+      <span>{{ trans('blocks.luxe.back_to_top') }}</span>
+      <i class="sicon-arrow-up" aria-hidden="true"></i>
+    </a>
+  </div>
   <div aria-label="footer" class="store-footer__inner lx-footer__inner">
     <div class="lx-footer__grid">
       <div class="lx-footer__brand">
@@ -54,6 +61,10 @@
       </div>
     </div>
   </div>
+
+  {% if lx_wordmark %}
+    <div class="lx-footer__giant" aria-hidden="true"><span>{{ lx_wordmark }}</span></div>
+  {% endif %}
 
   <div class="lx-footer__bottom">
     <span class="copyright-text">{% hook copyright %}</span>

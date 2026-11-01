@@ -40,11 +40,36 @@ function initHeaderState() {
   window.addEventListener('scroll', update, { passive: true });
 }
 
+// Gentle parallax: the <img> inside [data-lx-parallax="0.08"] drifts against the scroll.
+// One rAF-throttled listener for all elements; transforms only, never layout.
+function initParallax() {
+  const items = [...document.querySelectorAll('[data-lx-parallax] img')];
+  if (!items.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  let ticking = false;
+  const update = () => {
+    const vh = window.innerHeight;
+    items.forEach(img => {
+      const box = img.parentElement.getBoundingClientRect();
+      if (box.bottom < 0 || box.top > vh) return;
+      const speed = Number(img.parentElement.dataset.lxParallax) || 0.06;
+      const progress = (box.top + box.height / 2 - vh / 2) / vh; // -1 … 1 around viewport centre
+      img.style.transform = `translate3d(0, ${(-progress * speed * 100).toFixed(2)}%, 0)`;
+    });
+    ticking = false;
+  };
+  window.addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  update();
+}
+
 function boot() {
   if (window.__lxBooted) return; // guard against double inclusion
   window.__lxBooted = true;
   initHeaderState();
   initReveals();
+  initParallax();
 }
 
 if (document.readyState === 'loading') {

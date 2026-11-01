@@ -1,0 +1,16 @@
+{#
+| component.text  | string | Phrase repeated across the moving band (use · to separate ideas) |
+| component.dark  | bool   | Black band instead of sand                                       |
+#}
+{% if component.text %}
+<section component-id="{{ componentId }}" data-testid="store-home-luxe-marquee"
+         class="s-block lx-marquee {{ component.dark ? 'lx-marquee--dark' : '' }}" aria-label="{{ component.text }}">
+  <div class="lx-marquee__track" aria-hidden="true">
+    {% for i in 1..2 %}
+      <div class="lx-marquee__group">
+        {% for j in 1..4 %}<span>{{ component.text }}</span><i>✦</i>{% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}

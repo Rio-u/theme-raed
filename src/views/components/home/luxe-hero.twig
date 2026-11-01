@@ -1,0 +1,52 @@
+{#
+| Variable                   | Type    | Description                                              |
+|----------------------------|---------|----------------------------------------------------------|
+| component.image            | string  | Main campaign image                                      |
+| component.image_2          | ?string | Secondary image (split layout only)                      |
+| component.full_bleed       | bool    | Full-width image with text overlay instead of split      |
+| component.eyebrow          | ?string |                                                          |
+| component.title            | string  | Main headline (Arabic display)                           |
+| component.title_en         | ?string | Latin serif line under the headline                      |
+| component.text             | ?string |                                                          |
+| component.cta_text         | ?string |                                                          |
+| component.cta_url          | ?string | variable-list link                                       |
+#}
+{% set has_cta = component.cta_text and component.cta_url and component.cta_url != '#' %}
+<section component-id="{{ componentId }}" data-testid="store-home-luxe-hero"
+         class="s-block lx-hero {{ component.full_bleed ? 'lx-hero--full' : 'lx-hero--split' }}">
+  <div class="lx-hero__media">
+    <figure class="lx-hero__img lx-hero__img--main">
+      <img src="{{ component.image }}" alt="{{ component.title }}" fetchpriority="high" loading="eager" width="900" height="1200">
+    </figure>
+    {% if component.image_2 and not component.full_bleed %}
+      <figure class="lx-hero__img lx-hero__img--aside">
+        <img src="{{ component.image_2 }}" alt="" loading="eager" width="600" height="800">
+      </figure>
+    {% endif %}
+    <span class="lx-hero__vertical" aria-hidden="true">{{ component.title_en|default(store.name) }}</span>
+  </div>
+
+  <div class="lx-hero__content">
+    <div class="lx-hero__inner">
+      {% if component.eyebrow %}
+        <span class="lx-eyebrow lx-hero__line" style="--l:0">{{ component.eyebrow }}</span>
+      {% endif %}
+      <h2 class="lx-hero__title lx-display">
+        <span class="lx-hero__mask"><span class="lx-hero__line" style="--l:1">{{ component.title }}</span></span>
+      </h2>
+      {% if component.title_en %}
+        <p class="lx-hero__en" lang="en"><span class="lx-hero__line" style="--l:2">{{ component.title_en }}</span></p>
+      {% endif %}
+      {% if component.text %}
+        <p class="lx-hero__text lx-hero__line" style="--l:3">{{ component.text }}</p>
+      {% endif %}
+      {% if has_cta %}
+        <div class="lx-hero__cta lx-hero__line" style="--l:4">
+          <a href="{{ component.cta_url }}" class="lx-btn {{ component.full_bleed ? 'lx-btn--light' : '' }}">{{ component.cta_text }}</a>
+        </div>
+      {% endif %}
+    </div>
+    <a href="#lx-after-hero" class="lx-hero__scroll" aria-label="scroll"><span></span></a>
+  </div>
+</section>
+<span id="lx-after-hero"></span>

@@ -1,0 +1,34 @@
+{#
+Featured collection — large image beside an editorial text column.
+| component.image      | string  |                                   |
+| component.image_2    | ?string | Small detail image over the main  |
+| component.reverse    | bool    | Put the image on the other side   |
+| component.eyebrow    | ?string |                                   |
+| component.title      | string  |                                   |
+| component.text       | ?string |                                   |
+| component.cta_text   | ?string |                                   |
+| component.cta_url    | ?string | variable-list link                |
+#}
+<section component-id="{{ componentId }}" data-testid="store-home-luxe-editorial"
+         class="s-block lx-section lx-editorial {{ component.reverse ? 'lx-editorial--reverse' : '' }}">
+  <div class="lx-wrap lx-editorial__grid">
+    <div class="lx-editorial__media">
+      <figure class="lx-editorial__img" data-lx-reveal="image" data-lx-parallax="0.06">
+        <img src="{{ component.image }}" alt="{{ component.title }}" loading="lazy">
+      </figure>
+      {% if component.image_2 %}
+        <figure class="lx-editorial__detail" data-lx-reveal="image" style="--lx-delay: 250ms">
+          <img src="{{ component.image_2 }}" alt="" loading="lazy">
+        </figure>
+      {% endif %}
+    </div>
+    <div class="lx-editorial__body" data-lx-stagger="110">
+      {% if component.eyebrow %}<span class="lx-eyebrow" data-lx-reveal>{{ component.eyebrow }}</span>{% endif %}
+      <h2 class="lx-editorial__title lx-display" data-lx-reveal>{{ component.title }}</h2>
+      {% if component.text %}<p class="lx-editorial__text" data-lx-reveal>{{ component.text }}</p>{% endif %}
+      {% if component.cta_text and component.cta_url and component.cta_url != '#' %}
+        <a href="{{ component.cta_url }}" class="lx-link" data-lx-reveal>{{ component.cta_text }}</a>
+      {% endif %}
+    </div>
+  </div>
+</section>

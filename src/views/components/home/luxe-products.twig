@@ -1,0 +1,36 @@
+{#
+| component.eyebrow          | ?string   |                                                          |
+| component.title            | string    |                                                          |
+| component.products         | Product[] | Optional hand-picked products (wins over best_sellers)   |
+| component.best_sellers     | bool      | Use Salla's best-selling source instead of newest        |
+| component.limit            | ?int      | How many products (default 8)                            |
+| component.display_all_url  | ?string   | variable-list link                                       |
+#}
+{% set limit = component.limit|default(8) %}
+{% if component.products|length %}
+  {% set source = 'selected' %}
+  {% set source_value = '[' ~ component.products|map(p => p.id)|join(',') ~ ']' %}
+{% else %}
+  {% set source = component.best_sellers ? 'sales' : 'latest' %}
+  {% set source_value = '' %}
+{% endif %}
+{% set display_all = component.display_all_url %}
+
+<section component-id="{{ componentId }}" data-testid="store-home-luxe-products" class="s-block lx-section lx-products">
+  <div class="lx-wrap">
+    <header class="lx-section-head" data-lx-reveal>
+      <div>
+        {% if component.eyebrow %}<span class="lx-eyebrow">{{ component.eyebrow }}</span>{% endif %}
+        <h2 class="lx-section-head__title">{{ component.title }}</h2>
+      </div>
+      {% if display_all and display_all != '#' %}
+        <a href="{{ display_all }}" class="lx-link">{{ trans('blocks.luxe.view_all') }}</a>
+      {% endif %}
+    </header>
+
+    <salla-products-list class="lx-products__list"
+        source="{{ source }}"
+        {% if source_value %}source-value="{{ source_value }}"{% endif %}
+        limit="{{ limit }}"></salla-products-list>
+  </div>
+</section>

@@ -1,0 +1,27 @@
+{#
+Brand story — a large statement, a wide image and a short signed note.
+| component.eyebrow    | ?string |                                   |
+| component.statement  | string  | Large display paragraph            |
+| component.image      | ?string | Wide image                         |
+| component.text       | ?string | Body copy                          |
+| component.signature  | ?string | e.g. the founder's name            |
+#}
+<section component-id="{{ componentId }}" data-testid="store-home-luxe-story" class="s-block lx-section lx-story">
+  <div class="lx-wrap">
+    <div class="lx-story__head" data-lx-stagger="120">
+      {% if component.eyebrow %}<span class="lx-eyebrow" data-lx-reveal>{{ component.eyebrow }}</span>{% endif %}
+      <p class="lx-story__statement lx-display" data-lx-reveal>{{ component.statement }}</p>
+    </div>
+    {% if component.image %}
+      <figure class="lx-story__img" data-lx-reveal="image" data-lx-parallax="0.08">
+        <img src="{{ component.image }}" alt="" loading="lazy">
+      </figure>
+    {% endif %}
+    {% if component.text or component.signature %}
+      <div class="lx-story__foot" data-lx-reveal>
+        {% if component.text %}<p class="lx-story__text">{{ component.text }}</p>{% endif %}
+        {% if component.signature %}<p class="lx-story__sign">— {{ component.signature }}</p>{% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
