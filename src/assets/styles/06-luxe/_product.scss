@@ -432,3 +432,28 @@ body.product-single .lx-acc {
 body.product-single .lx-related:not(.lx-recent):not(:has(custom-salla-product-card, .s-product-card-entry)) { display: none; }
 body.product-single .lx-related { margin-block-start: var(--lx-section); }
 body.product-single .lx-related + .lx-related { margin-block-start: var(--lx-space-5); }
+
+/* Twilight lays the two purchase buttons in a row and each option as label | field.
+   Stack both so every control spans the column. */
+body.product-single .sticky-product-bar__btn .s-add-product-button-main {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.6rem;
+
+  > * { width: 100% !important; max-width: none !important; flex: none !important; }
+  salla-button, .s-button-element { width: 100%; }
+}
+
+body.product-single .product-form .s-product-options-option {
+  display: flex !important;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.6rem;
+
+  > * { width: 100% !important; max-width: none !important; }
+}
+
+body.product-single .product-form .s-product-options-option-content,
+body.product-single .product-form .s-product-options-option-content > div { width: 100%; }
+
+body.product-single .product-form .s-product-options-option-container { padding-block: var(--lx-space-2) !important; }
