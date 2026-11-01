@@ -56,6 +56,46 @@
         },
         {
             "type": "string",
+            "format": "image",
+            "id": "lx_intro_image_1",
+            "icon": "sicon-image",
+            "label": "صورة شاشة الافتتاح 1",
+            "description": "تتقلّب الصور داخل القوس أثناء التحميل — يُفضّل صور طولية خفيفة الحجم",
+            "value": "https://salla-dev.s3.eu-central-1.amazonaws.com/nWzD/bL3FLXsYnlcjdn2TbeSdXh1y6nhiXWkzg7bMV9Lf.jpg",
+            "required": false
+        },
+        {
+            "type": "string",
+            "format": "image",
+            "id": "lx_intro_image_2",
+            "icon": "sicon-image",
+            "label": "صورة شاشة الافتتاح 2",
+            "description": null,
+            "value": "https://salla-dev.s3.eu-central-1.amazonaws.com/nWzD/ACknxzEIkcTdaFr1DETbQlXo5UwupBedJ9ZGyR8v.jpg",
+            "required": false
+        },
+        {
+            "type": "string",
+            "format": "image",
+            "id": "lx_intro_image_3",
+            "icon": "sicon-image",
+            "label": "صورة شاشة الافتتاح 3",
+            "description": null,
+            "value": "https://salla-dev.s3.eu-central-1.amazonaws.com/nWzD/iBBzFqENAn2B2X6cy8ssWkuzS7PAhZ9OQqpnd5ov.jpg",
+            "required": false
+        },
+        {
+            "type": "string",
+            "format": "image",
+            "id": "lx_intro_image_4",
+            "icon": "sicon-image",
+            "label": "صورة شاشة الافتتاح 4",
+            "description": null,
+            "value": "https://salla-dev.s3.eu-central-1.amazonaws.com/nWzD/wElvrlhUPDLY6p2qm7eVXFTzMx4SQlSzdptVVNMO.jpg",
+            "required": false
+        },
+        {
+            "type": "string",
             "format": "text",
             "id": "lx_announcement",
             "icon": "sicon-speaker",
