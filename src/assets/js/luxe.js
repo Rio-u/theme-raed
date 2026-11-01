@@ -440,9 +440,34 @@ function initQuotes() {
   });
 }
 
+// Discount chip on every product card (theme card and Salla's own <salla-product-card>),
+// computed from the card's product data. Cards render late, so watch the DOM.
+function initDiscountChips() {
+  const decorate = () => {
+    document.querySelectorAll('.s-product-card-entry').forEach(card => {
+      const img = card.querySelector('.s-product-card-image');
+      const p = card.product;
+      if (!img || !p || img.querySelector('.s-product-card-discount')) return;
+      const sale = Number(p.sale_price), regular = Number(p.regular_price);
+      if (!p.is_on_sale || !sale || !regular || regular <= sale) return;
+      const pct = Math.round((1 - sale / regular) * 100);
+      if (pct < 1) return;
+      const chip = document.createElement('span');
+      chip.className = 's-product-card-discount';
+      chip.textContent = `-${window.salla?.helpers?.number ? salla.helpers.number(pct) : pct}%`;
+      img.appendChild(chip);
+    });
+  };
+  let t = 0;
+  new MutationObserver(() => { clearTimeout(t); t = setTimeout(decorate, 120); })
+    .observe(document.body, { childList: true, subtree: true });
+  decorate();
+}
+
 function boot() {
   if (window.__lxBooted) return; // guard against double inclusion
   keepPreviewLinks();
+  initDiscountChips();
   initSliderArrows();
   initQuotes();
 

@@ -152,3 +152,19 @@ body.cart {
   .lx-js .lx-arch[data-lx-reveal]:nth-child(even) { transform: translateY(calc(var(--lx-space-5) + 28px)); }
   .lx-js .lx-arch[data-lx-reveal].is-revealed:nth-child(even) { transform: translateY(var(--lx-space-5)); }
 }
+
+@media (min-width: 1024px) {
+  body.cart .cart-item img.flex-none { width: 140px !important; height: 188px !important; }
+}
+
+/* phones: caption stacks (number · name · link) and follows its card's side */
+@media (max-width: 599px) {
+  .lx-arch__meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+  .lx-arch:nth-child(even) .lx-arch__meta { align-items: flex-end; justify-self: auto; }
+  .lx-arch__more { justify-self: auto; }
+}

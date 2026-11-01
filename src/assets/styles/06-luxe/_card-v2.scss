@@ -137,3 +137,6 @@ body.theme-raed .s-product-card-vertical .s-product-card-content-footer .s-butto
     i { display: inline-block !important; font-size: 1.05rem; margin: 0; }
   }
 }
+
+/* the caption block is position:relative in Raed — let the card be the positioning box */
+body.theme-raed .s-product-card-vertical .s-product-card-content { position: static; }
