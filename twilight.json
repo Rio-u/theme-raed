@@ -1,10 +1,10 @@
 {
     "name": {
-        "ar": "رائد",
-        "en": "Theme Raed"
+        "ar": "ثيم D7",
+        "en": "D7 Theme"
     },
-    "repository": "https://github.com/SallaApp/theme-raed",
-    "author_email": "support@salla.sa",
+    "repository": "https://github.com/Rio-u/theme-raed",
+    "author_email": "engahmedmohammedd7@gmail.com",
     "features": [
         "mega-menu",
         "fonts",
