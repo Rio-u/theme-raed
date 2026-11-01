@@ -201,7 +201,7 @@ html:not(.lx-js) .lx-hero__img img { transform: none; }
 .lx-hero--full {
   min-height: 78vh;
   min-height: 78svh;
-  color: var(--lx-white);
+  color: #FFFFFF;
 
   @media (min-width: 1024px) { min-height: calc(100svh - var(--lx-announce-h) - 140px); }
 
@@ -226,10 +226,10 @@ html:not(.lx-js) .lx-hero__img img { transform: none; }
     margin-inline: auto;
   }
 
-  .lx-hero__title, .lx-hero__text, .lx-eyebrow { color: var(--lx-white); }
-  .lx-hero__en { color: var(--lx-sand); }
+  .lx-hero__title, .lx-hero__text, .lx-eyebrow { color: #FFFFFF; }
+  .lx-hero__en { color: #E8E0D7; }
   .lx-hero__vertical { color: rgba(255, 255, 255, 0.7); }
-  .lx-hero__scroll { background: rgba(255, 255, 255, 0.3); span { background: var(--lx-white); } }
+  .lx-hero__scroll { background: rgba(255, 255, 255, 0.3); span { background: #FFFFFF; } }
 }
 
 /* =====================================================================
@@ -324,7 +324,7 @@ html:not(.lx-js) .lx-hero__img img { transform: none; }
   position: relative;
   display: block;
   scroll-snap-align: start;
-  color: var(--lx-white);
+  color: #FFFFFF; /* on image: fixed in both themes */
   overflow: hidden;
 }
 
@@ -378,7 +378,7 @@ html:not(.lx-js) .lx-hero__img img { transform: none; }
   font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.5rem);
   font-weight: 300;
   line-height: 1.1;
-  color: var(--lx-white);
+  color: #FFFFFF;
 }
 
 .lx-cat__more {

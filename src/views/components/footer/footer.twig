@@ -1,47 +1,46 @@
-{# LUXE footer: wordmark + description · footer menu · customer care (contacts) · social/apps; payments + copyright row.
-   Every block comes from merchant data via Twilight components — nothing here is hardcoded content. #}
+{# LUXE footer — quiet and light: brand + social · pages menu · contact · trust; then a slim bottom bar.
+   Contacts and social links come from store settings (store.contacts / store.social); icons are a
+   single thin-line set drawn here so every channel matches. #}
 {% set lx_wordmark = theme.settings.get('lx_wordmark', 'MAISON D7') %}
+{% set ico = {
+  'instagram': '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".6" fill="currentColor"/>',
+  'twitter': '<path d="M4.5 4.5l15 15M19.5 4.5l-15 15" stroke-linecap="round"/>',
+  'snapchat': '<path d="M12 3.5c3 0 5 2.2 5 5.2v2.1l1.8.6c.5.2.4.9-.1 1-1 .3-1.8.8-1.4 1.7.6 1.3 1.7 2.3 3 2.7-.3.8-1.5 1-2.4 1.1-.3.6-.2 1.2-.9 1.2-1 0-1.9-.5-3 .3-.8.6-1.4 1.1-2.4 1.1s-1.6-.5-2.4-1.1c-1.1-.8-2-.3-3-.3-.7 0-.6-.6-.9-1.2-.9-.1-2.1-.3-2.4-1.1 1.3-.4 2.4-1.4 3-2.7.4-.9-.4-1.4-1.4-1.7-.5-.1-.6-.8-.1-1l1.8-.6V8.7c0-3 2-5.2 5-5.2z" stroke-linejoin="round"/>',
+  'youtube': '<rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10.2 9.3l4.6 2.7-4.6 2.7z" fill="currentColor" stroke="none"/>',
+  'facebook': '<path d="M14.5 8.5h2v-3h-2.5c-2.2 0-3.5 1.4-3.5 3.6v1.9H8.5v3h2v6.5h3V14h2.3l.4-3h-2.7V9.4c0-.6.3-.9 1-.9z" stroke-linejoin="round"/>',
+  'tiktok': '<path d="M14 3.5v11.2a3.3 3.3 0 1 1-3.3-3.3M14 3.5c.4 2.6 2.1 4.2 4.8 4.4" stroke-linecap="round"/>',
+  'pinterest': '<circle cx="12" cy="12" r="8.5"/><path d="M11 9.5l-2.5 11M10.3 12.6c.6 1 1.3 1.4 2.3 1.4 2 0 3.4-1.8 3.4-4 0-2.3-1.8-3.8-4-3.8-2.5 0-4 1.8-4 3.7 0 .8.3 1.5.8 1.9" stroke-linecap="round"/>',
+  'whatsapp': '<path d="M4.3 19.7l1.1-3.9A8.3 8.3 0 1 1 8.6 19l-4.3.7z" stroke-linejoin="round"/><path d="M9.2 8.6c.2-.4.6-.4.9-.2l.8 1.7c.1.3 0 .5-.2.7l-.4.4c.5 1 1.3 1.8 2.4 2.4l.4-.4c.2-.2.5-.3.7-.2l1.7.8c.3.2.3.6.1.9-.5.7-1.2 1.1-2 .9-2.4-.6-4.3-2.5-4.9-4.9-.2-.8.1-1.5.5-2.1z" fill="currentColor" stroke="none"/>',
+  'telegram': '<path d="M20.5 4.5L3.6 11.2c-.6.2-.6 1.1 0 1.3l4.3 1.5 1.6 5c.2.6 1 .7 1.3.2l2.3-2.8 4.3 3.1c.5.3 1.1 0 1.2-.5l2.8-13.3c.1-.7-.5-1.2-1.1-.9z" stroke-linejoin="round"/><path d="M8 14l9-6.5"/>',
+  'maroof': '<path d="M12 3l2.2 1.6 2.7-.1.8 2.6 2.2 1.6-.9 2.6.9 2.6-2.2 1.6-.8 2.6-2.7-.1L12 21l-2.2-1.6-2.7.1-.8-2.6-2.2-1.6.9-2.6-.9-2.6 2.2-1.6.8-2.6 2.7.1z" stroke-linejoin="round"/><path d="M9 12.2l2 2 4-4.2" stroke-linecap="round" stroke-linejoin="round"/>',
+  'email': '<rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3.5 7l8.5 6 8.5-6" stroke-linejoin="round"/>',
+  'phone': '<path d="M7 3.5h2.4l1.3 4-2 1.3a10.5 10.5 0 0 0 6.5 6.5l1.3-2 4 1.3V17a2.5 2.5 0 0 1-2.7 2.5C10.6 19 5 13.4 4.5 6.2A2.5 2.5 0 0 1 7 3.5z" stroke-linejoin="round"/>',
+  'mobile': '<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2" stroke-linecap="round"/>',
+  'link': '<path d="M10 14l4-4M9 7l1.5-1.5a4 4 0 0 1 5.7 5.7L14.7 12.7M15 17l-1.5 1.5a4 4 0 0 1-5.7-5.7L9.3 11.3" stroke-linecap="round"/>'
+} %}
+{% set contact_href = { 'email': 'mailto:', 'phone': 'tel:', 'mobile': 'tel:', 'whatsapp': 'https://wa.me/', 'telegram': 'https://t.me/' } %}
+
 <footer data-testid="store-footer" class="store-footer lx-footer">
-  <div class="lx-footer__top">
-    <p class="lx-footer__tagline lx-display" data-lx-reveal>{{ theme.settings.get('lx_footer_tagline', 'قطعٌ تُصنع لتدوم، بأناقةٍ لا تحتاج إلى ضجيج.') }}</p>
-    <a href="#app" class="lx-footer__top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
-      <span>{{ trans('blocks.luxe.back_to_top') }}</span>
-      <i class="sicon-arrow-up" aria-hidden="true"></i>
-    </a>
-  </div>
   <div aria-label="footer" class="store-footer__inner lx-footer__inner">
     <div class="lx-footer__grid">
+
       <div class="lx-footer__brand">
-        <a href="{{ link('/') }}" class="lx-footer__word">
-          {% if lx_wordmark %}{{ lx_wordmark }}{% else %}<h3>{{ store.name }}</h3>{% endif %}
-        </a>
+        <a href="{{ link('/') }}" class="lx-footer__word">{{ lx_wordmark|default(store.name) }}</a>
         {% if store.description %}
           <div class="lx-footer__desc">{{ store.description|raw }}</div>
         {% endif %}
-
-        <div class="lx-footer__trust">
-          <salla-trust-badges data-testid="store-footer-trust-badges"></salla-trust-badges>
-          {% if store.settings.tax.number %}
-            <div class="lx-footer__tax">
-              {% if store.settings.tax.certificate %}
-                <a class="load-img-onclick" data-modal-id="modal-value-tax" href="#/" alt="{{ store.settings.tax.number }}">
-                  <img width="40" height="50" src="{{'images/tax.png' | cdn(70,70)}}" loading="lazy" alt="value added tax">
+        {% set socials = store.social|default({}) %}
+        <ul class="lx-footer__social" aria-label="{{ trans('blocks.luxe.follow') }}">
+          {% for key, url in socials %}
+            {% if url %}
+              <li>
+                <a href="{{ url }}" target="_blank" rel="noopener" aria-label="{{ key }}" class="lx-footer__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true">{{ (ico[key] ?? ico['link'])|raw }}</svg>
                 </a>
-              {% endif %}
-              <div>
-                <p>{{ trans('common.elements.tax_number') }}</p>
-                <b>{{ store.settings.tax.number }}</b>
-              </div>
-            </div>
-            {% if store.settings.tax.certificate %}
-              <salla-modal data-testid="store-footer-tax-modal" sub-title-first sub-title="{{ trans('common.elements.tax_number') }}" modal-title="{{ store.settings.tax.number }}" id="modal-value-tax">
-                <div class="flex justify-center max-w-full">
-                  <img class="w-full" loading="lazy" data-src="{{ store.settings.tax.certificate }}" alt="{{ store.settings.tax.number }}"/>
-                </div>
-              </salla-modal>
+              </li>
             {% endif %}
-          {% endif %}
-        </div>
+          {% endfor %}
+        </ul>
       </div>
 
       <div class="lx-footer__col">
@@ -51,23 +50,56 @@
 
       <div class="lx-footer__col">
         <h3 class="lx-footer__title">{{ trans('blocks.luxe.customer_care') }}</h3>
-        <salla-contacts data-testid="store-footer-contacts"></salla-contacts>
+        <ul class="lx-footer__contacts">
+          {% for key, value in store.contacts|default({}) %}
+            {% if value %}
+              {% set href = (contact_href[key] ?? '') ~ (key in ['whatsapp', 'phone', 'mobile'] ? value|replace({' ': '', '+': ''}) : value) %}
+              <li>
+                <a href="{{ contact_href[key] is defined ? href : '#' }}" {% if key in ['whatsapp', 'telegram'] %}target="_blank" rel="noopener"{% endif %}>
+                  <span class="lx-footer__icon lx-footer__icon--sm">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true">{{ (ico[key] ?? ico['link'])|raw }}</svg>
+                  </span>
+                  <span class="lx-footer__contact-text" dir="ltr">{{ value }}</span>
+                </a>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
       </div>
 
-      <div class="lx-footer__col">
-        <h3 class="lx-footer__title">{{ trans('blocks.luxe.follow') }}</h3>
-        <salla-social data-testid="store-footer-social" class="lx-footer__social"></salla-social>
+      <div class="lx-footer__col lx-footer__col--trust">
+        <salla-trust-badges data-testid="store-footer-trust-badges"></salla-trust-badges>
+        {% if store.settings.tax.number %}
+          <div class="lx-footer__tax">
+            {% if store.settings.tax.certificate %}
+              <a class="load-img-onclick" data-modal-id="modal-value-tax" href="#/" alt="{{ store.settings.tax.number }}">
+                <img width="32" height="40" src="{{'images/tax.png' | cdn(70,70)}}" loading="lazy" alt="value added tax">
+              </a>
+            {% endif %}
+            <div>
+              <p>{{ trans('common.elements.tax_number') }}</p>
+              <b>{{ store.settings.tax.number }}</b>
+            </div>
+          </div>
+          {% if store.settings.tax.certificate %}
+            <salla-modal data-testid="store-footer-tax-modal" sub-title-first sub-title="{{ trans('common.elements.tax_number') }}" modal-title="{{ store.settings.tax.number }}" id="modal-value-tax">
+              <div class="flex justify-center max-w-full">
+                <img class="w-full" loading="lazy" data-src="{{ store.settings.tax.certificate }}" alt="{{ store.settings.tax.number }}"/>
+              </div>
+            </salla-modal>
+          {% endif %}
+        {% endif %}
         <salla-apps-icons data-testid="store-footer-apps" class="lx-footer__apps"></salla-apps-icons>
       </div>
     </div>
   </div>
 
-  {% if lx_wordmark %}
-    <div class="lx-footer__giant" aria-hidden="true"><span>{{ lx_wordmark }}</span></div>
-  {% endif %}
-
   <div class="lx-footer__bottom">
     <span class="copyright-text">{% hook copyright %}</span>
     <salla-payments data-testid="store-footer-payments"></salla-payments>
+    <a href="#app" class="lx-footer__top" aria-label="{{ trans('blocks.luxe.back_to_top') }}"
+       onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
   </div>
 </footer>

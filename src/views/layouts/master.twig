@@ -61,8 +61,13 @@
     {# LUXE: decide before first paint whether the intro plays (once per session, never inside the editor iframe) #}
     <script data-cfasync="false">
         (function (d) {
-            var h = d.documentElement, seen = false;
+            var h = d.documentElement, seen = false, saved = null;
             h.className += ' lx-js';
+            // colour scheme: visitor's choice > merchant default ('light' | 'dark' | 'system')
+            try { saved = localStorage.getItem('lx-theme'); } catch (e) {}
+            var mode = saved || '{{ theme.settings.get('lx_color_mode', 'light') }}';
+            if (mode === 'dark' || (mode === 'system' && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches)) h.className += ' lx-dark';
+            {% if not theme.settings.get('lx_cursor', true) %}h.setAttribute('data-lx-cursor', 'off');{% endif %}
             try { seen = sessionStorage.getItem('lx-intro-seen') === '1'; } catch (e) {}
             if (seen || window.self !== window.top) h.className += ' lx-intro-skip lx-ready';
             // safety net: page content must never wait on the intro

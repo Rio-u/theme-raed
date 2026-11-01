@@ -1,0 +1,146 @@
+/**
+ * LUXE — dark mode (html.lx-dark, set before first paint in layouts/master.twig)
+ * The design system uses --lx-black as "ink" and --lx-white as "paper", so swapping the raw
+ * palette inverts every luxe component at once. Below that: Raed/Twilight surfaces that
+ * hard-code white or gray.
+ */
+html.lx-dark {
+  color-scheme: dark;
+
+  --lx-ivory: #121110;
+  --lx-white: #1A1917;
+  --lx-charcoal: #E9E4DD;
+  --lx-black: #F4F0EA;
+  --lx-gray: #A39C93;
+  --lx-taupe: #B4A596;
+  --lx-sand: #24211E;
+  --lx-line: #2F2C29;
+  --lx-sale: #E08C76;
+
+  --color-primary-reverse: #121110;
+  --color-primary-light: #CFC9C1;
+  --main-text-color: var(--lx-charcoal);
+  --infinte-color: var(--lx-line);
+  --color-grey: var(--lx-sand);
+  --color-light-grey: var(--lx-line);
+  --bg-gray: rgba(255, 255, 255, 0.04);
+
+  img { filter: brightness(0.94); }
+}
+
+/* Header glass when pinned */
+html.lx-dark .lx-mainnav.fixed-pinned .inner { background: rgba(26, 25, 23, 0.92); }
+
+/* ---- Raed / Tailwind utilities that hard-code light surfaces ---- */
+html.lx-dark body.theme-raed {
+  .bg-white,
+  .bg-gray-50,
+  .bg-gray-100,
+  .bg-gray-200\/20 { background-color: var(--lx-white) !important; }
+
+  .bg-gray-100\/50,
+  .bg-gray-200\/50 { background-color: var(--lx-sand) !important; }
+
+  .text-gray-800,
+  .text-gray-900,
+  .text-black,
+  .text-dark { color: var(--lx-black) !important; }
+
+  .text-gray-700,
+  .text-gray-600,
+  .text-gray-500,
+  .text-gray-400,
+  .text-text-grey,
+  .color-grey { color: var(--lx-gray) !important; }
+
+  .border-gray-100,
+  .border-gray-200,
+  .border-gray-300,
+  .divide-gray-200 > * { border-color: var(--lx-line) !important; }
+
+  .shadow-default,
+  .shadow-light,
+  .shadow-md,
+  .shadow-sm { box-shadow: none !important; }
+
+  /* Twilight components */
+  .s-modal-body,
+  .s-modal-wrapper .s-modal-body,
+  .s-search-modal .s-search-container,
+  .s-search-results,
+  .s-user-menu-dropdown,
+  .s-localization-modal-inner,
+  .s-login-modal-wrapper,
+  .s-cart-summary-card,
+  .s-dropdown-content,
+  .swal2-popup,
+  .s-comments-container,
+  .s-comment-form-wrapper,
+  .s-filters-widget-wrapper,
+  .s-products-slider-wrapper,
+  .s-product-options-wrapper,
+  .s-quick-order-container,
+  .s-add-product-toast,
+  .mm-ocd__content {
+    background-color: var(--lx-white) !important;
+    color: var(--lx-charcoal);
+    border-color: var(--lx-line) !important;
+  }
+
+  .s-search-input,
+  .s-form-control,
+  .form-input,
+  input,
+  select,
+  textarea {
+    background-color: var(--lx-ivory) !important;
+    color: var(--lx-black) !important;
+    border-color: var(--lx-line) !important;
+  }
+
+  .s-button-light,
+  .s-button-light-outline,
+  .s-button-gray,
+  .s-button-gray-outline {
+    background-color: var(--lx-sand) !important;
+    color: var(--lx-black) !important;
+    border-color: var(--lx-line) !important;
+  }
+
+  .s-quantity-input-container,
+  .s-quantity-input-button { background: var(--lx-ivory) !important; color: var(--lx-black) !important; border-color: var(--lx-line) !important; }
+
+  .s-product-card-wishlist-btn .s-button-element { color: #111111 !important; }
+
+  .s-payments-list-item { background: #F4F0EA; }
+
+  hr { border-color: var(--lx-line); }
+}
+
+/* ---- Toggle button ---- */
+.lx-theme-toggle {
+  position: relative;
+  overflow: hidden;
+
+  svg {
+    position: absolute;
+    width: 19px;
+    height: 19px;
+    transition: transform 0.6s var(--lx-ease), opacity 0.4s ease;
+  }
+
+  .lx-icon-sun { opacity: 0; transform: rotate(-90deg) scale(0.6); }
+  .lx-icon-moon { opacity: 1; transform: none; }
+}
+
+html.lx-dark .lx-theme-toggle {
+  .lx-icon-sun { opacity: 1; transform: none; }
+  .lx-icon-moon { opacity: 0; transform: rotate(90deg) scale(0.6); }
+}
+
+/* Smooth swap, but never on first paint */
+html.lx-theme-anim,
+html.lx-theme-anim body,
+html.lx-theme-anim body * {
+  transition: background-color 0.5s ease, border-color 0.5s ease, color 0.3s ease !important;
+}

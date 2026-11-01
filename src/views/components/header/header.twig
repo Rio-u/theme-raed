@@ -65,6 +65,13 @@ LUXE header: announcement bar + one bar (menu · logo · actions) + centred navi
         </a>
 
         <div class="lx-bar__end">
+          {% if theme.settings.get('lx_dark_toggle', true) %}
+            <button type="button" class="lx-icon-btn lx-theme-toggle" data-lx-theme-toggle aria-pressed="false"
+                    aria-label="{{ trans('blocks.luxe.dark_mode') }}">
+              <svg class="lx-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7Z"/></svg>
+              <svg class="lx-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>
+            </button>
+          {% endif %}
           <salla-user-menu data-testid="store-header-user-menu" class="lx-only-desktop" avatar-only show-header show-trigger></salla-user-menu>
           <a href="{{ link('wishlist') }}" class="lx-icon-btn lx-only-desktop" aria-label="{{ trans('blocks.luxe.wishlist') }}">
             <i class="sicon-heart" aria-hidden="true"></i>

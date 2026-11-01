@@ -1,0 +1,253 @@
+/**
+ * LUXE — skin for everything else a merchant can add:
+ * Twilight components (modals, comments, reviews, filters, tabs, count-down…),
+ * Raed's built-in home sections, category and cart pages. Square corners, hairlines,
+ * one type system — so any block dropped into the editor matches the theme.
+ */
+
+/* ============ Shared surfaces ============ */
+body.theme-raed {
+  .rounded-md,
+  .rounded-lg,
+  .rounded-xl,
+  .rounded { border-radius: 0 !important; }
+
+  .shadow-default,
+  .shadow-md,
+  .shadow-light { box-shadow: none !important; }
+
+  /* Section titles used by Raed blocks */
+  .s-block__title {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-block-end: var(--lx-space-4);
+
+    h2, h3 { font-family: var(--lx-font-display); font-size: var(--lx-fs-lg); font-weight: 300; color: var(--lx-black); }
+  }
+
+  .s-block__display-all,
+  .s-slider-block__display-all {
+    font-size: var(--lx-fs-sm);
+    color: var(--lx-black);
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+
+  .s-slider-block__title h2 { font-family: var(--lx-font-display); font-weight: 300; color: var(--lx-black); }
+
+  /* Slider arrows everywhere */
+  .s-slider-nav-arrow,
+  .s-slider-prev,
+  .s-slider-next,
+  .s-slider-thumbs-prev,
+  .s-slider-thumbs-next {
+    border: 1px solid var(--lx-line) !important;
+    border-radius: 999px !important;
+    background: var(--lx-white) !important;
+    color: var(--lx-black) !important;
+    box-shadow: none !important;
+    &:hover { border-color: var(--lx-black) !important; }
+  }
+
+  .swiper-pagination-bullet { background: var(--lx-gray); opacity: 0.4; }
+  .swiper-pagination-bullet-active { background: var(--lx-black); opacity: 1; width: 22px; border-radius: 2px; }
+}
+
+/* ============ Modals, dialogs, toasts ============ */
+body.theme-raed {
+  .s-modal-body,
+  .s-offer-modal-body { border-radius: 0 !important; background: var(--lx-white); }
+
+  .s-modal-title,
+  .s-modal-header-inner h2 { font-family: var(--lx-font-display); font-weight: 400; color: var(--lx-black); }
+
+  .s-modal-close { border-radius: 999px; }
+
+  .swal2-popup { border-radius: 0 !important; font-family: var(--lx-font-sans) !important; }
+  .swal2-styled.swal2-confirm { border-radius: 0 !important; background: var(--lx-black) !important; color: var(--lx-white) !important; }
+  .swal2-styled.swal2-cancel { border-radius: 0 !important; }
+}
+
+/* ============ Inputs & controls ============ */
+body.theme-raed {
+  .s-form-control:focus,
+  input:focus,
+  select:focus,
+  textarea:focus { border-color: var(--lx-black) !important; box-shadow: none !important; outline: none; }
+
+  .s-quantity-input-container { border-radius: 0; border-color: var(--lx-line); }
+
+  .s-tabs-header { border-block-end: 1px solid var(--lx-line); gap: var(--lx-space-3); background: transparent; }
+  .s-tabs-header-item { border-radius: 0; background: transparent !important; color: var(--lx-gray); font-size: var(--lx-fs-sm); padding-inline: 0; }
+  .s-tabs-active { color: var(--lx-black) !important; box-shadow: inset 0 -1px 0 var(--lx-black); }
+
+  .s-rating-stars-selected svg,
+  .s-rating-stars-element.s-rating-stars-selected { fill: var(--lx-black); color: var(--lx-black); }
+
+  .s-count-down-item { border-radius: 0; border-color: var(--lx-line); background: transparent; }
+  .s-count-down-item-value { font-family: var(--lx-font-display); color: var(--lx-black); }
+
+  .s-breadcrumb-item,
+  .s-breadcrumb-item a { font-size: var(--lx-fs-xs); color: var(--lx-gray); }
+  .s-breadcrumb-item:last-child { color: var(--lx-black); }
+
+  .btn--rounded-gray,
+  .btn--circle-gray { border-radius: 999px; background: transparent; border: 1px solid var(--lx-line); }
+}
+
+/* ============ Reviews & comments ============ */
+body.theme-raed {
+  .s-comments-container { border: 0; background: transparent; }
+  .s-comments-item { border-block-end: 1px solid var(--lx-line); border-radius: 0; background: transparent; padding-block: var(--lx-space-3); }
+  .s-comments-item-avatar-img { border-radius: 999px; filter: grayscale(0.3); }
+  .s-comments-header h2,
+  .s-comments-header h3 { font-family: var(--lx-font-display); font-weight: 300; color: var(--lx-black); }
+
+  .s-reviews-testimonial {
+    border: 1px solid var(--lx-line);
+    border-radius: 0;
+    background: var(--lx-white);
+    box-shadow: none;
+  }
+
+  .s-reviews-testimonial__text { font-family: var(--lx-font-display); font-size: var(--lx-fs-md); line-height: 1.8; color: var(--lx-black); }
+  .s-reviews-testimonial__icon,
+  .s-reviews-quote-icon { color: var(--lx-taupe); opacity: 0.6; }
+  .s-reviews-avatar-image { border-radius: 999px; }
+  .s-reviews-header h2,
+  .s-reviews-header h3 { font-family: var(--lx-font-display); font-weight: 300; color: var(--lx-black); }
+}
+
+/* ============ LUXE voices section ============ */
+.lx-voices { background: var(--lx-white); }
+
+.lx-voices__head {
+  position: relative;
+  margin-block-end: var(--lx-space-5);
+  text-align: center;
+
+  .lx-section-head__title { font-size: var(--lx-fs-xl); }
+}
+
+.lx-voices__mark {
+  position: absolute;
+  inset-block-start: -0.35em;
+  inset-inline: 0;
+  font-family: var(--lx-font-display);
+  font-size: clamp(7rem, 5rem + 8vw, 12rem);
+  line-height: 1;
+  color: var(--lx-sand);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.lx-voices .lx-voices__head { isolation: isolate; }
+
+.lx-voices__grid {
+  display: grid;
+  gap: var(--lx-space-3);
+  @media (min-width: 768px) { grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 1100px) { grid-template-columns: repeat(3, 1fr); }
+}
+
+.lx-voice {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--lx-space-4);
+  margin: 0;
+  padding: var(--lx-space-4);
+  border: 1px solid var(--lx-line);
+  background: var(--lx-bg);
+}
+
+.lx-voice__text {
+  margin: 0;
+  font-family: var(--lx-font-display);
+  font-size: var(--lx-fs-md);
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--lx-black);
+}
+
+.lx-voice__by { display: flex; flex-direction: column; gap: 0.2rem; }
+.lx-voice__name { font-size: var(--lx-fs-sm); font-weight: 500; color: var(--lx-black); }
+.lx-voice__meta { font-size: var(--lx-fs-xs); color: var(--lx-gray); }
+
+/* ============ Raed built-in home sections ============ */
+body.theme-raed {
+  .s-block--hero-slider .swiper-slide { border-radius: 0; }
+  .s-block--hero-slider h2 { font-family: var(--lx-font-display); font-weight: 300; }
+
+  .banner-entry,
+  .s-block--banners .banner-entry,
+  .square-photos { border-radius: 0 !important; overflow: hidden; }
+
+  .banner-entry img { transition: transform 1.4s var(--lx-ease); }
+  .banner-entry:hover img { transform: scale(1.04); }
+
+  .s-block--features__item {
+    border: 1px solid var(--lx-line);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    .feature-icon { background: transparent; color: var(--lx-black); border: 1px solid var(--lx-line); border-radius: 999px; }
+    h2, h3 { font-family: var(--lx-font-display); font-weight: 400; color: var(--lx-black); }
+  }
+
+  .brand-item { border: 1px solid var(--lx-line); border-radius: 0; background: var(--lx-white); img { filter: grayscale(1); opacity: 0.8; transition: filter var(--lx-dur), opacity var(--lx-dur); } }
+  .brand-item:hover img { filter: none; opacity: 1; }
+
+  .s-block--categories .slide--cat-entry { border-radius: 0; background: var(--lx-white); border: 1px solid var(--lx-line); }
+
+  .s-block--full-bg { background-color: var(--lx-sand); }
+  .s-block--video lite-youtube { border-radius: 0; }
+}
+
+/* ============ Category / listing pages ============ */
+body.product-index,
+body.theme-raed .products-index {
+  .s-filters-label,
+  .s-filters-option-name { font-size: var(--lx-fs-sm); color: var(--lx-black); }
+
+  .s-filters-checkbox,
+  .s-filters-radio { border-radius: 0; border-color: var(--lx-line); accent-color: var(--lx-black); }
+
+  .s-filters-footer .s-button-element { border-radius: 0; }
+
+  h1 { font-family: var(--lx-font-display); font-weight: 300; color: var(--lx-black); }
+}
+
+body.product-index .s-products-list-vertical-cards {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  @media (min-width: 768px) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  @media (min-width: 1280px) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* ============ Cart ============ */
+body.cart {
+  .cart-item {
+    border: 0;
+    border-block-end: 1px solid var(--lx-line);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .cart-item img { border-radius: 0; aspect-ratio: 3 / 4; object-fit: cover; }
+
+  .cart-options,
+  .cart-options form { border-radius: 0; }
+
+  h1, h2 { font-family: var(--lx-font-display); font-weight: 300; color: var(--lx-black); }
+
+  .s-cart-summary-card { border-radius: 0; box-shadow: none; border: 1px solid var(--lx-line); }
+}
+
+/* ============ Empty states ============ */
+body.theme-raed .no-content-placeholder,
+body.theme-raed .s-placeholder {
+  i, svg { color: var(--lx-taupe); }
+  p, h3 { color: var(--lx-gray); }
+}

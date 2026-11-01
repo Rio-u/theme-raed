@@ -125,10 +125,10 @@ body.theme-raed .container {
   &:hover { background: transparent; color: var(--lx-black); }
 
   &--light {
-    background: var(--lx-white);
-    border-color: var(--lx-white);
-    color: var(--lx-black);
-    &:hover { background: transparent; color: var(--lx-white); }
+    background: #FFFFFF;
+    border-color: #FFFFFF;
+    color: #111111;
+    &:hover { background: transparent; color: #FFFFFF; }
   }
 
   &--ghost {

@@ -76,14 +76,58 @@
             "multilanguage": false
         },
         {
-            "type": "string",
-            "format": "text",
-            "id": "lx_footer_tagline",
-            "icon": "sicon-quote-open",
-            "label": "جملة الفوتر الكبيرة",
-            "value": "قطعٌ تُصنع لتدوم، بأناقةٍ لا تحتاج إلى ضجيج.",
-            "required": false,
-            "multilanguage": false
+            "id": "lx_color_mode",
+            "type": "items",
+            "format": "dropdown-list",
+            "label": "الوضع اللوني الافتراضي",
+            "description": "الزائرة تستطيع التبديل من زر القمر في الأعلى، ويُحفظ اختيارها",
+            "icon": "sicon-moon",
+            "selected": [
+                {
+                    "label": "فاتح",
+                    "value": "light",
+                    "key": "6a1f2b0e-1c2d-4e3f-8a9b-0c1d2e3f4a51"
+                }
+            ],
+            "options": [
+                {
+                    "label": "فاتح",
+                    "value": "light",
+                    "key": "6a1f2b0e-1c2d-4e3f-8a9b-0c1d2e3f4a51"
+                },
+                {
+                    "label": "داكن",
+                    "value": "dark",
+                    "key": "6a1f2b0e-1c2d-4e3f-8a9b-0c1d2e3f4a52"
+                },
+                {
+                    "label": "حسب جهاز الزائر",
+                    "value": "system",
+                    "key": "6a1f2b0e-1c2d-4e3f-8a9b-0c1d2e3f4a53"
+                }
+            ],
+            "source": "Manual",
+            "required": true
+        },
+        {
+            "type": "boolean",
+            "format": "switch",
+            "id": "lx_dark_toggle",
+            "icon": "sicon-toggle-off",
+            "label": "إظهار زر الوضع الداكن",
+            "value": true,
+            "selected": true,
+            "required": false
+        },
+        {
+            "type": "boolean",
+            "format": "switch",
+            "id": "lx_cursor",
+            "icon": "sicon-toggle-off",
+            "label": "مؤشر فأرة مخصّص (للحاسوب فقط)",
+            "value": true,
+            "selected": true,
+            "required": false
         },
         {
             "type": "static",
@@ -1042,6 +1086,93 @@
                     "icon": "sicon-format-text-alt",
                     "multilanguage": true,
                     "required": false
+                }
+            ],
+            "is_default": true
+        },
+        {
+            "key": "7c1e4a52-3b9d-4f0e-9a61-2d8c5f7b1e08",
+            "path": "home.luxe-testimonials",
+            "icon": "sicon-star2",
+            "title": {
+                "ar": "LUXE — آراء العملاء",
+                "en": "LUXE — Customer voices"
+            },
+            "fields": [
+                {
+                    "type": "string",
+                    "format": "text",
+                    "id": "eyebrow",
+                    "label": "سطر علوي صغير",
+                    "value": "آراء عميلاتنا",
+                    "icon": "sicon-format-text-alt",
+                    "multilanguage": true,
+                    "required": false
+                },
+                {
+                    "type": "string",
+                    "format": "text",
+                    "id": "title",
+                    "label": "العنوان",
+                    "value": "بكلماتهنّ",
+                    "icon": "sicon-format-text-alt",
+                    "multilanguage": true,
+                    "required": false
+                },
+                {
+                    "type": "number",
+                    "format": "integer",
+                    "id": "limit",
+                    "label": "عدد التقييمات الحقيقية",
+                    "value": 8,
+                    "minimum": 3,
+                    "maximum": 20,
+                    "required": false,
+                    "icon": "sicon-list-numbers"
+                },
+                {
+                    "id": "items",
+                    "type": "collection",
+                    "format": "collection",
+                    "required": false,
+                    "minLength": 0,
+                    "maxLength": 6,
+                    "item_label": "رأي",
+                    "label": "آراء مختارة يدوياً (اختياري — تستبدل التقييمات الحقيقية)",
+                    "value": [],
+                    "fields": [
+                        {
+                            "type": "string",
+                            "format": "textarea",
+                            "id": "items.text",
+                            "label": "نص الرأي",
+                            "value": null,
+                            "icon": "sicon-typography",
+                            "multilanguage": true,
+                            "required": false,
+                            "maxLength": 600
+                        },
+                        {
+                            "type": "string",
+                            "format": "text",
+                            "id": "items.name",
+                            "label": "الاسم",
+                            "value": null,
+                            "icon": "sicon-format-text-alt",
+                            "multilanguage": true,
+                            "required": false
+                        },
+                        {
+                            "type": "string",
+                            "format": "text",
+                            "id": "items.meta",
+                            "label": "تفصيل صغير (المدينة أو المنتج)",
+                            "value": null,
+                            "icon": "sicon-format-text-alt",
+                            "multilanguage": true,
+                            "required": false
+                        }
+                    ]
                 }
             ],
             "is_default": true

@@ -1,0 +1,74 @@
+/**
+ * LUXE — custom cursor (fine pointers only; enabled by luxe.js adding html.lx-cursor-on)
+ * The native cursor stays on form fields and inside iframes (payment, maps…).
+ */
+.lx-cursor,
+.lx-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  pointer-events: none;
+  border-radius: 999px;
+  opacity: 0;
+  will-change: transform;
+}
+
+.lx-cursor {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  background: var(--lx-black);
+  transition: opacity 0.3s ease, width 0.3s var(--lx-ease), height 0.3s var(--lx-ease), margin 0.3s var(--lx-ease);
+}
+
+.lx-cursor-ring {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  margin: -19px 0 0 -19px;
+  border: 1px solid var(--lx-black);
+  color: #FFFFFF;
+  font-family: var(--lx-font-sans);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  transition: opacity 0.3s ease, width 0.45s var(--lx-ease), height 0.45s var(--lx-ease),
+              margin 0.45s var(--lx-ease), background-color 0.45s var(--lx-ease), border-color 0.45s var(--lx-ease);
+
+  span { opacity: 0; transform: scale(0.6); transition: opacity 0.3s ease, transform 0.45s var(--lx-ease); }
+}
+
+html.lx-cursor-on {
+  &, a, button, [role="button"], label, summary, salla-button, salla-add-product-button { cursor: none; }
+  input, textarea, select, iframe, [contenteditable="true"] { cursor: auto; }
+
+  .lx-cursor, .lx-cursor-ring { opacity: 1; }
+  &.lx-cursor-out .lx-cursor,
+  &.lx-cursor-out .lx-cursor-ring,
+  &.lx-cursor-native .lx-cursor,
+  &.lx-cursor-native .lx-cursor-ring { opacity: 0; }
+}
+
+/* over links & buttons: ring grows, dot shrinks */
+html.lx-cursor-link {
+  .lx-cursor { width: 0; height: 0; margin: 0; }
+  .lx-cursor-ring { width: 56px; height: 56px; margin: -28px 0 0 -28px; border-color: var(--lx-taupe); }
+}
+
+/* over product / campaign imagery: filled disc with a label */
+html.lx-cursor-view {
+  .lx-cursor { width: 0; height: 0; margin: 0; }
+  .lx-cursor-ring {
+    width: 84px;
+    height: 84px;
+    margin: -42px 0 0 -42px;
+    border-color: transparent;
+    background: rgba(17, 17, 17, 0.82);
+    backdrop-filter: blur(4px);
+    span { opacity: 1; transform: none; }
+  }
+}
+
+html.lx-cursor-down .lx-cursor-ring { transform-origin: center; scale: 0.85; }

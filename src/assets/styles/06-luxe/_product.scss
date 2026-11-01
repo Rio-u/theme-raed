@@ -1,0 +1,203 @@
+/**
+ * LUXE — product page (pages/product/single.twig)
+ * Gallery-led layout: large imagery, a narrow sticky information column, hairline sections.
+ */
+body.product-single {
+  .container--breadcrumbs { max-width: var(--lx-container); }
+
+  .breadcrumbs { padding-block: var(--lx-space-3) var(--lx-space-2); }
+
+  .s-breadcrumb-item,
+  .s-breadcrumb-item a { font-size: var(--lx-fs-xs); color: var(--lx-gray); }
+
+  .container--product-details > .flex {
+    gap: var(--lx-space-5);
+
+    @media (min-width: 768px) { gap: clamp(2rem, 4vw, 5.5rem); }
+  }
+}
+
+/* ---- Gallery ---- */
+body.product-single .sidebar {
+  margin: 0 !important;
+  border-radius: 0;
+  overflow: visible;
+
+  @media (min-width: 768px) {
+    width: 58% !important;
+    top: calc(var(--lx-header-h) + 1.5rem);
+  }
+}
+
+body.product-single .details-slider {
+  border-radius: 0;
+
+  .swiper-slide,
+  .swiper-slide img { border-radius: 0; background: var(--lx-sand); }
+
+  .s-slider-thumbs { margin-block-start: 0.75rem; }
+
+  .s-slider-thumbs .swiper-slide {
+    opacity: 0.55;
+    transition: opacity var(--lx-dur) var(--lx-ease);
+    img { border-radius: 0 !important; aspect-ratio: 3 / 4; }
+  }
+
+  .s-slider-thumbs .swiper-slide-thumb-active { opacity: 1; outline: 1px solid var(--lx-black); outline-offset: -1px; }
+
+  .s-slider-nav-arrow,
+  .s-slider-prev,
+  .s-slider-next {
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: #111111;
+    box-shadow: none;
+  }
+}
+
+body.product-single .promotion-title {
+  top: 1rem;
+  inset-inline-start: 1rem;
+  border-radius: 0;
+  background: var(--lx-white);
+  color: var(--lx-black);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+body.product-single .btn--wishlist.sws {
+  top: 1rem;
+  inset-inline-end: 1rem;
+  .s-button-element { border: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.92) !important; color: #111111; }
+}
+
+/* ---- Information column ---- */
+body.product-single .main-content {
+  @media (min-width: 768px) {
+    width: 42% !important;
+    max-width: 30rem;
+    top: calc(var(--lx-header-h) + 1.5rem);
+  }
+
+  > h1 {
+    margin-block-end: var(--lx-space-2) !important;
+    font-family: var(--lx-font-display);
+    font-size: var(--lx-fs-xl) !important;
+    font-weight: 300 !important;
+    line-height: 1.2 !important;
+    color: var(--lx-black) !important;
+  }
+
+  .product-entry__sub-title { color: var(--lx-gray); }
+
+  [data-testid="store-product-price"] {
+    margin-block: var(--lx-space-2) var(--lx-space-3);
+    p { font-size: var(--lx-fs-md) !important; font-weight: 500 !important; }
+    .text-red-800 { color: var(--lx-sale) !important; }
+    .line-through { color: var(--lx-gray) !important; }
+  }
+
+  .product__description {
+    padding: var(--lx-space-3) 0 !important;
+    border-block: 1px solid var(--lx-line);
+    color: var(--lx-gray);
+    font-size: var(--lx-fs-sm);
+    line-height: 1.9;
+  }
+
+  #btn-show-more { font-size: var(--lx-fs-sm); color: var(--lx-black); text-decoration: underline; text-underline-offset: 4px; }
+
+  /* Raed boxes every block in white cards; flatten them into hairline rows */
+  section.bg-white,
+  .product-sku-wrapper > div,
+  .product-barcode-wrapper > div,
+  .bg-white.rounded-md {
+    background: transparent !important;
+    border-radius: 0 !important;
+    padding-inline: 0 !important;
+    border-block-end: 1px solid var(--lx-line);
+  }
+
+  .form-label,
+  .form-label b,
+  .s-product-options-option-label { font-size: var(--lx-fs-sm); font-weight: 500; color: var(--lx-black); }
+
+  .total-price { font-size: var(--lx-fs-md) !important; font-weight: 500 !important; }
+  .total-price.text-red-800 { color: var(--lx-sale) !important; }
+}
+
+/* Options: size chips, colour swatches, selects */
+body.product-single .s-product-options-wrapper {
+  .s-product-options-option-container { padding-block: var(--lx-space-2); }
+
+  .s-product-options-thumbnails-wrapper label,
+  .s-product-options-colors-wrapper label,
+  .s-product-options-multiple-options-wrapper label {
+    border-radius: 0;
+  }
+
+  select,
+  .s-form-control { min-height: 48px; border-radius: 0; border-color: var(--lx-line); background-color: transparent; }
+}
+
+body.product-single .s-quantity-input-container {
+  border: 1px solid var(--lx-line);
+  border-radius: 0;
+  .s-quantity-input-button { border-radius: 0; background: transparent; }
+  input { background: transparent; }
+}
+
+/* Purchase buttons */
+body.product-single .sticky-product-bar__btn .s-button-element,
+body.product-single salla-add-product-button[data-testid="store-product-add-to-cart"] .s-button-element {
+  min-height: 56px;
+  border-radius: 0;
+  font-size: var(--lx-fs-sm);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+body.product-single .s-add-product-button-mini-checkout .s-button-element,
+body.product-single .s-add-product-button-with-quick-buy .s-button-outline {
+  border-radius: 0;
+}
+
+/* Installment / gifting / quick order widgets: quiet bordered boxes */
+body.product-single salla-installment,
+body.product-single salla-quick-order,
+body.product-single salla-gifting {
+  .s-installment-wrapper,
+  .s-quick-order-container,
+  .s-gifting-widget { border-radius: 0; border-color: var(--lx-line); background: transparent; box-shadow: none; }
+}
+
+/* Social share + wishlist row */
+body.product-single salla-social-share .s-button-element,
+body.product-single .main-content .btn--wishlist .s-button-element {
+  width: 40px; height: 40px; border-radius: 999px; border-color: var(--lx-line); background: transparent;
+}
+
+/* ---- Below the fold ---- */
+body.product-single salla-comments,
+body.product-single .s-comments-container { display: block; max-width: var(--lx-container); margin-inline: auto; }
+
+/* Related products: hide the whole block when Salla returns nothing */
+body.product-single .container:has(> salla-products-slider[source="related"]):not(:has(custom-salla-product-card)) { display: none; }
+
+body.product-single .s-slider-block__title h2,
+body.product-single .s-products-slider-wrapper .s-slider-block__title h2 {
+  font-family: var(--lx-font-display);
+  font-size: var(--lx-fs-lg);
+  font-weight: 300;
+  color: var(--lx-black);
+}
+
+/* Sticky add-to-cart bar on mobile (theme setting) */
+.is-sticky-product-bar .sticky-product-bar[class~="fixed"] {
+  border-block-start: 1px solid var(--lx-line);
+  background: var(--lx-white) !important;
+  box-shadow: none;
+}
