@@ -562,3 +562,28 @@ html:not(.lx-js) .lx-hero__img img { transform: none; }
   .lx-marquee__track { animation: none; }
   .lx-hero__line, .lx-hero__img, .lx-hero__img img { transition: none; }
 }
+
+/* ---- Fixes after live review ---- */
+/* text + CTA are block lines, not inline siblings */
+.lx-hero__text.lx-hero__line,
+.lx-hero__cta.lx-hero__line { display: block; }
+
+/* marquee track must run in LTR space, otherwise RTL pins it off-screen */
+.lx-marquee { direction: ltr; }
+
+/* Story: statement on top, then a portrait image beside the note — no upscaled panorama */
+.lx-story .lx-wrap { display: grid; gap: var(--lx-space-5); }
+.lx-story__head { margin-block-end: 0; }
+.lx-story__img { aspect-ratio: 4 / 5; max-height: 720px; }
+.lx-story__img img { height: 115%; object-position: center top; }
+.lx-story__foot { margin: 0; grid-template-columns: 1fr; align-content: center; gap: var(--lx-space-4); }
+.lx-story__text { font-size: var(--lx-fs-md); max-width: 36ch; }
+
+@media (min-width: 1024px) {
+  .lx-story .lx-wrap { grid-template-columns: 5fr 6fr; column-gap: var(--lx-space-7); align-items: center; }
+  .lx-story__head { grid-column: 1 / -1; }
+  .lx-story__foot { padding-inline-end: var(--lx-space-5); }
+}
+
+/* Product grid: tighter rhythm on the homepage */
+.lx-products .s-products-list-wrapper { row-gap: var(--lx-space-4); }
