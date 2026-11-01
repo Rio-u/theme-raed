@@ -252,9 +252,135 @@ function initRecentlyViewed() {
   box.hidden = false;
 }
 
+const fineMotion = () => matchMedia('(hover: hover) and (pointer: fine)').matches
+  && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Hero depth: layers drift against the pointer (--mx/--my in -1…1).
+function initHeroDepth() {
+  if (!fineMotion()) return;
+  document.querySelectorAll('[data-lx-hero]').forEach(hero => {
+    let raf = 0;
+    hero.addEventListener('pointermove', e => {
+      const r = hero.getBoundingClientRect();
+      const mx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+      const my = ((e.clientY - r.top) / r.height - 0.5) * 2;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => { hero.style.setProperty('--mx', mx.toFixed(3)); hero.style.setProperty('--my', my.toFixed(3)); });
+    });
+    hero.addEventListener('pointerleave', () => { hero.style.setProperty('--mx', 0); hero.style.setProperty('--my', 0); });
+  });
+}
+
+// Story statement: split into words that light up as the paragraph scrolls through the viewport.
+function initStoryWords() {
+  const el = document.querySelector('.lx-story__statement');
+  if (!el || el.dataset.lxSplit) return;
+  el.dataset.lxSplit = '1';
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const words = el.textContent.trim().split(/\s+/);
+  el.textContent = '';
+  const spans = words.map((w, i) => {
+    const s = document.createElement('span');
+    s.className = 'lx-word';
+    s.textContent = w;
+    el.append(s, i < words.length - 1 ? ' ' : '');
+    return s;
+  });
+  const update = () => {
+    const r = el.getBoundingClientRect(), vh = innerHeight;
+    // 0 when the top enters the lower 85% of the screen, 1 when the bottom passes 40%
+    const p = Math.min(1, Math.max(0, (vh * 0.85 - r.top) / (r.height + vh * 0.45)));
+    const lit = Math.round(p * spans.length);
+    spans.forEach((s, i) => s.classList.toggle('is-lit', i < lit));
+  };
+  addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+  update();
+}
+
+// Marquee: skew follows scroll velocity, then settles.
+function initMarqueeVelocity() {
+  const bands = [...document.querySelectorAll('[data-lx-marquee]')];
+  if (!bands.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  let lastY = scrollY, skew = 0, raf = 0;
+  const settle = () => {
+    skew *= 0.88;
+    bands.forEach(b => b.style.setProperty('--lx-skew', `${skew.toFixed(2)}deg`));
+    raf = Math.abs(skew) > 0.05 ? requestAnimationFrame(settle) : 0;
+  };
+  addEventListener('scroll', () => {
+    const v = scrollY - lastY; lastY = scrollY;
+    skew = Math.max(-10, Math.min(10, skew + v * -0.08));
+    if (!raf) raf = requestAnimationFrame(settle);
+  }, { passive: true });
+}
+
+// Category index: the hovered row's image floats after the pointer.
+function initIndexFloat() {
+  if (!fineMotion()) return;
+  document.querySelectorAll('[data-lx-index]').forEach(sec => {
+    const fig = sec.querySelector('.lx-index__float');
+    const img = fig?.querySelector('img');
+    if (!fig || !img) return;
+    let x = 0, y = 0, fx = 0, fy = 0, running = false;
+    const loop = () => {
+      fx += (x - fx) * 0.14; fy += (y - fy) * 0.14;
+      fig.style.transform = `translate3d(${(fx - fig.offsetWidth / 2).toFixed(1)}px, ${(fy - fig.offsetHeight / 2).toFixed(1)}px, 0)`;
+      running = fig.classList.contains('is-on') || Math.abs(x - fx) > 0.5;
+      if (running) requestAnimationFrame(loop);
+    };
+    sec.querySelectorAll('.lx-index__link').forEach(link => {
+      link.addEventListener('pointerenter', e => {
+        img.src = link.dataset.image;
+        if (!fig.classList.contains('is-on')) { fx = x = e.clientX; fy = y = e.clientY; }
+        fig.classList.add('is-on');
+        if (!running) { running = true; requestAnimationFrame(loop); }
+      });
+      link.addEventListener('pointerleave', () => fig.classList.remove('is-on'));
+    });
+    sec.addEventListener('pointermove', e => { x = e.clientX; y = e.clientY; });
+  });
+}
+
+// Shop the look: hotspot ↔ list highlight.
+function initLookbook() {
+  document.querySelectorAll('[data-lx-look]').forEach(sec => {
+    const all = sec.querySelectorAll('[data-look]');
+    const set = n => all.forEach(el => el.classList.toggle('is-active', el.dataset.look === n));
+    all.forEach(el => {
+      el.addEventListener('pointerenter', () => set(el.dataset.look));
+      el.addEventListener('focus', () => set(el.dataset.look));
+      el.addEventListener('pointerleave', () => set(null));
+    });
+    // a tapped dot scrolls its list item into view on small screens
+    sec.querySelectorAll('.lx-look__dot').forEach(dot => dot.addEventListener('click', () => {
+      set(dot.dataset.look);
+      sec.querySelector(`.lx-look__item[data-look="${dot.dataset.look}"]`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }));
+  });
+}
+
+// Magnetic controls drift a few pixels toward the pointer.
+function initMagnetic() {
+  if (!fineMotion()) return;
+  document.querySelectorAll('[data-lx-magnetic]').forEach(el => {
+    el.addEventListener('pointermove', e => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--tx', `${((e.clientX - r.left - r.width / 2) * 0.25).toFixed(1)}px`);
+      el.style.setProperty('--ty', `${((e.clientY - r.top - r.height / 2) * 0.25).toFixed(1)}px`);
+    });
+    el.addEventListener('pointerleave', () => { el.style.setProperty('--tx', '0px'); el.style.setProperty('--ty', '0px'); });
+  });
+}
+
 function boot() {
   if (window.__lxBooted) return; // guard against double inclusion
   keepPreviewLinks();
+  initHeroDepth();
+  initStoryWords();
+  initMarqueeVelocity();
+  initIndexFloat();
+  initLookbook();
+  initMagnetic();
   initRecentlyViewed();
   initPromo();
   window.__lxBooted = true;

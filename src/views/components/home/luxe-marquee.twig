@@ -1,14 +1,21 @@
 {#
-| component.text  | string | Phrase repeated across the moving band (use · to separate ideas) |
-| component.dark  | bool   | Black band instead of sand                                       |
+| component.text  | string | Phrases separated by · — they alternate between outlined and italic type |
+| component.dark  | bool   | Black band instead of sand                                              |
 #}
 {% if component.text %}
-<section component-id="{{ componentId }}" data-testid="store-home-luxe-marquee"
+{% set parts = component.text|split('·') %}
+<section component-id="{{ componentId }}" data-testid="store-home-luxe-marquee" data-lx-marquee
          class="s-block lx-marquee {{ component.dark ? 'lx-marquee--dark' : '' }}" aria-label="{{ component.text }}">
   <div class="lx-marquee__track" aria-hidden="true">
     {% for i in 1..2 %}
       <div class="lx-marquee__group">
-        {% for j in 1..4 %}<span>{{ component.text }}</span><i>✦</i>{% endfor %}
+        {% for r in 1..3 %}
+          {% for part in parts %}
+            {% if part|trim %}
+              <span class="{{ loop.index is even ? 'is-outline' : 'is-italic' }}">{{ part|trim }}</span><i>✦</i>
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
       </div>
     {% endfor %}
   </div>

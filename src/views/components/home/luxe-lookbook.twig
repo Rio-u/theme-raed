@@ -1,0 +1,48 @@
+{#
+Shop-the-look: a campaign image with numbered hotspots, mirrored by a list of the pieces.
+Hovering / focusing either side highlights the other.
+| component.image             | string  | Campaign image (portrait)                       |
+| component.eyebrow           | ?string |                                                 |
+| component.title             | string  |                                                 |
+| component.text              | ?string |                                                 |
+| component.points[].x        | int     | Horizontal position on the image, 0–100 (%)     |
+| component.points[].y        | int     | Vertical position, 0–100 (%)                    |
+| component.points[].title    | string  | Piece name                                      |
+| component.points[].meta     | ?string | Small line (fabric, price…)                     |
+| component.points[].url      | ?string | variable-list link to the product               |
+#}
+<section component-id="{{ componentId }}" data-testid="store-home-luxe-lookbook" class="s-block lx-section lx-look" data-lx-look>
+  <div class="lx-wrap lx-look__grid">
+    <figure class="lx-look__media" data-lx-reveal="image">
+      <img src="{{ component.image }}" alt="{{ component.title }}" loading="lazy">
+      {% for p in component.points %}
+        <button type="button" class="lx-look__dot" style="--x: {{ p.x|default(50) }}%; --y: {{ p.y|default(50) }}%"
+                data-look="{{ loop.index }}" aria-label="{{ p.title }}">
+          <span>{{ loop.index }}</span>
+        </button>
+      {% endfor %}
+    </figure>
+
+    <div class="lx-look__body">
+      <header data-lx-reveal>
+        {% if component.eyebrow %}<span class="lx-eyebrow">{{ component.eyebrow }}</span>{% endif %}
+        <h2 class="lx-look__title lx-display">{{ component.title }}</h2>
+        {% if component.text %}<p class="lx-look__text">{{ component.text }}</p>{% endif %}
+      </header>
+
+      <ol class="lx-look__list" data-lx-stagger="90">
+        {% for p in component.points %}
+          {% set tag = p.url and p.url != '#' ? 'a' : 'div' %}
+          <li data-lx-reveal>
+            <{{ tag }} {% if tag == 'a' %}href="{{ p.url }}"{% endif %} class="lx-look__item" data-look="{{ loop.index }}">
+              <span class="lx-look__num">{{ '%02d'|format(loop.index) }}</span>
+              <span class="lx-look__name">{{ p.title }}</span>
+              {% if p.meta %}<span class="lx-look__meta">{{ p.meta }}</span>{% endif %}
+              {% if tag == 'a' %}<span class="lx-look__go" aria-hidden="true">→</span>{% endif %}
+            </{{ tag }}>
+          </li>
+        {% endfor %}
+      </ol>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,438 @@
+/**
+ * LUXE — signature moments
+ * Arch hero with rotating seal and oversized italic word · scroll-lit story · velocity marquee ·
+ * magazine index with floating preview · shop-the-look hotspots · magnetic controls ·
+ * page transitions · film grain · numbered sections.
+ */
+
+/* =====================================================================
+   1. HERO — arch, oversized word, seal, depth on pointer
+   ===================================================================== */
+.lx-hero { --mx: 0; --my: 0; isolation: isolate; }
+
+.lx-hero__img { --d: 1; }
+.lx-hero__img--main { --d: 0.5; }
+.lx-hero__img--aside { --d: 1.3; }
+
+/* pointer depth (set by luxe.js), layered on top of the reveal */
+.lx-hero__img,
+.lx-hero__bigword {
+  translate: calc(var(--mx) * var(--d) * -14px) calc(var(--my) * var(--d) * -10px);
+  transition: clip-path 1.4s var(--lx-ease-in-out), translate 0.9s var(--lx-ease);
+}
+
+@media (min-width: 1024px) {
+  .lx-hero--split {
+    min-height: calc(100svh - var(--lx-announce-h) - 120px);
+
+    .lx-hero__media { padding-block: var(--lx-space-3) 0; }
+
+    /* the arch */
+    .lx-hero__img--main {
+      inset: var(--lx-space-3) var(--lx-gutter) 0 auto;
+      width: 58%;
+      border-radius: 999px 999px 0 0;
+      [dir="rtl"] & { inset: var(--lx-space-3) auto 0 var(--lx-gutter); }
+    }
+
+    .lx-hero__img--aside {
+      inset-block-end: 9%;
+      inset-inline-start: 18%;      /* overlaps the arch edge */
+      width: 30%;
+      aspect-ratio: 3 / 4;
+      border: 8px solid var(--lx-bg);
+      box-shadow: none;
+    }
+  }
+}
+
+@media (max-width: 1023px) {
+  .lx-hero--split .lx-hero__img--main {
+    inset: var(--lx-space-2) var(--lx-gutter) 0;
+    border-radius: 999px 999px 0 0;
+  }
+}
+
+/* oversized italic word, outlined, crossing image and type */
+.lx-hero__bigword {
+  --d: -0.8;
+  position: absolute;
+  z-index: 2;
+  inset-block-end: -0.12em;
+  inset-inline: 0;
+  font-family: var(--lx-font-display);
+  font-size: clamp(6rem, 3rem + 13vw, 19rem);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  text-align: center;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(17, 17, 17, 0.35);
+  pointer-events: none;
+  user-select: none;
+  direction: ltr;
+  opacity: 0;
+  transition: opacity 1.6s var(--lx-ease) 0.6s, translate 0.9s var(--lx-ease);
+
+  @media (max-width: 1023px) { display: none; }
+}
+
+.lx-ready .lx-hero__bigword,
+html:not(.lx-js) .lx-hero__bigword { opacity: 1; }
+html.lx-dark .lx-hero__bigword { -webkit-text-stroke-color: rgba(244, 240, 234, 0.35); }
+
+/* rotating seal */
+.lx-seal {
+  position: absolute;
+  z-index: 3;
+  inset-block-start: 14%;
+  inset-inline-start: calc(58% - 70px + var(--lx-gutter));
+  display: grid;
+  place-items: center;
+  width: 140px;
+  height: 140px;
+  border-radius: 999px;
+  background: var(--lx-bg);
+  color: var(--lx-black);
+  opacity: 0;
+  scale: 0.6;
+  transition: opacity 0.8s var(--lx-ease) 1s, scale 1s var(--lx-ease) 1s, background var(--lx-dur);
+
+  .lx-ready & { opacity: 1; scale: 1; }
+
+  &:hover { background: var(--lx-black); color: var(--lx-bg); }
+
+  @media (max-width: 1023px) {
+    inset-block-start: auto;
+    inset-block-end: -50px;
+    inset-inline-start: auto;
+    inset-inline-end: calc(var(--lx-gutter) + 8px);
+    width: 112px;
+    height: 112px;
+  }
+}
+
+/* desktop: seal sits on the inner edge of the arch */
+@media (min-width: 1024px) {
+  .lx-hero--split .lx-seal { inset-inline-start: auto; inset-inline-end: calc(var(--lx-gutter) + 58% - 70px); }
+}
+
+.lx-seal__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: lx-spin 22s linear infinite;
+  text {
+    font-family: var(--lx-font-sans);
+    font-size: 12.5px;
+    letter-spacing: 0.32em;
+    fill: currentColor;
+  }
+}
+
+.lx-seal:hover .lx-seal__ring { animation-duration: 8s; }
+.lx-seal__arrow { width: 26px; height: 26px; transition: transform var(--lx-dur) var(--lx-ease); }
+.lx-seal:hover .lx-seal__arrow { transform: rotate(45deg); }
+
+@keyframes lx-spin { to { transform: rotate(360deg); } }
+
+/* hero CTA gets a sliding fill */
+.lx-hero .lx-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--lx-taupe);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.6s var(--lx-ease);
+  }
+  &:hover { background: var(--lx-black); color: var(--lx-white); }
+  &:hover::before { transform: scaleY(1); }
+}
+
+/* =====================================================================
+   2. MARQUEE — outlined / italic rhythm, skew with scroll velocity
+   ===================================================================== */
+.lx-marquee { --lx-skew: 0deg; padding-block: 0.4rem; }
+
+.lx-marquee__group {
+  gap: 2rem;
+  padding-block: 1.2rem;
+
+  span {
+    font-size: clamp(1.8rem, 1.2rem + 2.6vw, 3.6rem);
+    font-weight: 300;
+    transform: skewX(var(--lx-skew));
+    transition: transform 0.4s var(--lx-ease);
+  }
+
+  .is-italic { font-style: italic; }
+
+  .is-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px currentColor;
+  }
+
+  i { font-size: 1rem; }
+}
+
+.lx-marquee--dark .is-outline { -webkit-text-stroke-color: var(--lx-sand); }
+.lx-marquee:not(.lx-marquee--dark) .is-outline { -webkit-text-stroke-color: var(--lx-black); }
+
+/* =====================================================================
+   3. STORY — words light up as you read down the page
+   ===================================================================== */
+.lx-story__statement .lx-word {
+  opacity: 0.16;
+  transition: opacity 0.5s var(--lx-ease), color 0.5s var(--lx-ease);
+}
+.lx-story__statement .lx-word.is-lit { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lx-story__statement .lx-word { opacity: 1; }
+}
+
+/* =====================================================================
+   4. CATEGORY INDEX — big type list, floating preview
+   ===================================================================== */
+.lx-cats--index { position: relative; }
+
+.lx-index {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-block-start: 1px solid var(--lx-line);
+}
+
+.lx-index__row { border-block-end: 1px solid var(--lx-line); }
+
+.lx-index__link {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.5rem 1fr auto;
+  align-items: center;
+  gap: var(--lx-space-2);
+  padding-block: clamp(1rem, 0.6rem + 1.5vw, 2rem);
+  color: var(--lx-black);
+  overflow: hidden;
+}
+
+.lx-index__num {
+  font-family: var(--lx-font-display);
+  font-style: italic;
+  font-size: var(--lx-fs-md);
+  color: var(--lx-taupe);
+}
+
+.lx-index__title {
+  font-family: var(--lx-font-display);
+  font-size: clamp(2.2rem, 1.2rem + 4.5vw, 6rem);
+  font-weight: 300;
+  line-height: 1.05;
+  transition: transform 0.7s var(--lx-ease), letter-spacing 0.7s var(--lx-ease), color 0.4s;
+}
+
+.lx-index__thumb { display: none; }
+
+.lx-index__arrow {
+  display: inline-flex;
+  width: clamp(2.5rem, 2rem + 2vw, 4rem);
+  height: clamp(2.5rem, 2rem + 2vw, 4rem);
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--lx-line);
+  border-radius: 999px;
+  transition: background 0.5s var(--lx-ease), color 0.5s var(--lx-ease), transform 0.6s var(--lx-ease), border-color 0.5s;
+  svg { width: 40%; height: 40%; }
+  [dir="ltr"] & svg { transform: scaleX(-1); }
+}
+
+@media (hover: hover) {
+  .lx-index:hover .lx-index__title { color: var(--lx-line); }
+  .lx-index__row:hover .lx-index__title { color: var(--lx-black); transform: translateX(-1.25rem); }
+  [dir="ltr"] .lx-index__row:hover .lx-index__title { transform: translateX(1.25rem); }
+  .lx-index__row:hover .lx-index__arrow { background: var(--lx-black); border-color: var(--lx-black); color: var(--lx-white); transform: rotate(-45deg); }
+}
+
+/* floating image that follows the pointer */
+.lx-index__float {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: clamp(200px, 18vw, 300px);
+  aspect-ratio: 3 / 4;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 999px 999px 0 0;
+  pointer-events: none;
+  opacity: 0;
+  scale: 0.85;
+  rotate: -4deg;
+  transition: opacity 0.35s ease, scale 0.6s var(--lx-ease), rotate 0.6s var(--lx-ease);
+  will-change: transform;
+
+  img { width: 100%; height: 100%; object-fit: cover; }
+  &.is-on { opacity: 1; scale: 1; rotate: 0deg; }
+}
+
+/* touch / small screens: show a thumbnail in the row instead */
+@media (hover: none), (max-width: 767px) {
+  .lx-index__link { grid-template-columns: 2.5rem 1fr 64px; }
+  .lx-index__thumb { display: block; width: 64px; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 999px 999px 0 0; }
+  .lx-index__arrow { display: none; }
+  .lx-index__float { display: none; }
+}
+
+/* =====================================================================
+   5. SHOP THE LOOK — hotspots ↔ list
+   ===================================================================== */
+.lx-look__grid {
+  display: grid;
+  gap: var(--lx-space-5);
+  align-items: center;
+  @media (min-width: 1024px) { grid-template-columns: 1.1fr 1fr; gap: var(--lx-space-7); }
+}
+
+.lx-look__media {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 999px 999px 0 0;
+  background: var(--lx-sand);
+  img { width: 100%; height: 100%; object-fit: cover; }
+}
+
+.lx-look__dot {
+  position: absolute;
+  left: var(--x);              /* image coordinates: always from the physical left */
+  top: var(--y);
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #111111;
+  font-family: var(--lx-font-display);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.4s var(--lx-ease), background 0.3s;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    border-radius: inherit;
+    animation: lx-ping 2.4s var(--lx-ease) infinite;
+  }
+
+  &.is-active, &:hover, &:focus-visible { transform: scale(1.25); background: #111111; color: #FFFFFF; }
+}
+
+@keyframes lx-ping {
+  0% { transform: scale(0.8); opacity: 0.9; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.lx-look__title { margin: var(--lx-space-2) 0; font-size: var(--lx-fs-xl); }
+.lx-look__text { margin: 0 0 var(--lx-space-4); color: var(--lx-gray); max-width: 38ch; }
+
+.lx-look__list { margin: 0; padding: 0; list-style: none; border-block-start: 1px solid var(--lx-line); }
+
+.lx-look__item {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr auto;
+  grid-template-areas: "num name go" "num meta go";
+  align-items: center;
+  column-gap: 1rem;
+  padding: 1.1rem 0.25rem;
+  border-block-end: 1px solid var(--lx-line);
+  color: var(--lx-black);
+  transition: background 0.4s var(--lx-ease), padding 0.4s var(--lx-ease);
+
+  &.is-active { background: var(--lx-white); padding-inline: 1rem; }
+}
+
+.lx-look__num { grid-area: num; font-family: var(--lx-font-display); font-style: italic; color: var(--lx-taupe); }
+.lx-look__name { grid-area: name; font-size: var(--lx-fs-md); }
+.lx-look__meta { grid-area: meta; font-size: var(--lx-fs-xs); color: var(--lx-gray); }
+.lx-look__go { grid-area: go; font-size: 1.1rem; [dir="rtl"] & { transform: scaleX(-1); } }
+
+/* =====================================================================
+   6. MAGNETIC CONTROLS (luxe.js sets --tx/--ty)
+   ===================================================================== */
+[data-lx-magnetic] {
+  translate: var(--tx, 0) var(--ty, 0);
+  transition: translate 0.5s var(--lx-ease), background var(--lx-dur), color var(--lx-dur);
+}
+
+/* =====================================================================
+   7. PAGE TRANSITIONS (cross-document View Transitions, progressive)
+   ===================================================================== */
+@view-transition { navigation: auto; }
+
+::view-transition-old(root) { animation: lx-vt-out 0.45s var(--lx-ease-in-out) both; }
+::view-transition-new(root) { animation: lx-vt-in 0.7s var(--lx-ease) both; }
+
+@keyframes lx-vt-out { to { opacity: 0; transform: translateY(-12px); filter: blur(2px); } }
+@keyframes lx-vt-in { from { opacity: 0; transform: translateY(18px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}
+
+/* =====================================================================
+   8. FILM GRAIN + NUMBERED SECTIONS
+   ===================================================================== */
+body.theme-raed::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: 9990;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: lx-grain 1.2s steps(6) infinite;
+}
+
+html.lx-dark body.theme-raed::after { opacity: 0.07; }
+
+@keyframes lx-grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) { body.theme-raed::after { animation: none; } }
+
+#main-content { counter-reset: lx-sec; }
+
+.lx-section-head .lx-eyebrow::before,
+.lx-look__body .lx-eyebrow::before,
+.lx-editorial__body .lx-eyebrow::before {
+  counter-increment: lx-sec;
+  content: "(" counter(lx-sec, decimal-leading-zero) ")";
+  margin-inline-end: 0.75em;
+  font-family: var(--lx-font-display);
+  font-style: italic;
+  font-size: 1.15em;
+  letter-spacing: 0;
+  color: var(--lx-taupe);
+}

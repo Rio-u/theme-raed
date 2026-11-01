@@ -1,11 +1,13 @@
 {#
-| component.eyebrow          | ?string  |                                           |
-| component.title            | ?string  |                                           |
-| component.items[].image    | string   | Portrait image works best (4:5)           |
-| component.items[].title    | string   |                                           |
-| component.items[].url      | ?string  | variable-list link (category, offers...)  |
+| component.eyebrow          | ?string  |                                                         |
+| component.title            | ?string  |                                                         |
+| component.as_index         | bool     | Magazine index: big type list, image follows the cursor |
+| component.items[].image    | string   | Portrait image works best (4:5)                         |
+| component.items[].title    | string   |                                                         |
+| component.items[].url      | ?string  | variable-list link (category, offers...)                |
 #}
-<section component-id="{{ componentId }}" data-testid="store-home-luxe-categories" class="s-block lx-section lx-cats">
+<section component-id="{{ componentId }}" data-testid="store-home-luxe-categories"
+         class="s-block lx-section lx-cats {{ component.as_index ? 'lx-cats--index' : '' }}" {{ component.as_index ? 'data-lx-index' : '' }}>
   <div class="lx-wrap">
     {% if component.title or component.eyebrow %}
       <header class="lx-section-head" data-lx-reveal>
@@ -16,20 +18,39 @@
       </header>
     {% endif %}
 
-    <div class="lx-cats__grid lx-cats__grid--{{ component.items|length }}" data-lx-stagger="120">
-      {% for item in component.items %}
-        {% set tag = item.url and item.url != '#' ? 'a' : 'div' %}
-        <{{ tag }} {% if tag == 'a' %}href="{{ item.url }}"{% endif %} class="lx-cat" data-lx-reveal>
-          <figure class="lx-cat__img">
-            <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy">
-          </figure>
-          <div class="lx-cat__body">
-            <span class="lx-cat__index" aria-hidden="true">{{ '%02d'|format(loop.index) }}</span>
-            <h3 class="lx-cat__title">{{ item.title }}</h3>
-            {% if tag == 'a' %}<span class="lx-cat__more">{{ trans('blocks.luxe.shop') }} <i class="sicon-arrow-left" aria-hidden="true"></i></span>{% endif %}
-          </div>
-        </{{ tag }}>
-      {% endfor %}
-    </div>
+    {% if component.as_index %}
+      <ol class="lx-index">
+        {% for item in component.items %}
+          {% set tag = item.url and item.url != '#' ? 'a' : 'div' %}
+          <li class="lx-index__row" data-lx-reveal>
+            <{{ tag }} {% if tag == 'a' %}href="{{ item.url }}"{% endif %} class="lx-index__link" data-image="{{ item.image }}">
+              <span class="lx-index__num">{{ '%02d'|format(loop.index) }}</span>
+              <span class="lx-index__title">{{ item.title }}</span>
+              <img class="lx-index__thumb" src="{{ item.image }}" alt="" loading="lazy">
+              <span class="lx-index__arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M17 7L7 17M15 17H7V9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </{{ tag }}>
+          </li>
+        {% endfor %}
+      </ol>
+      <figure class="lx-index__float" aria-hidden="true"><img alt=""></figure>
+    {% else %}
+      <div class="lx-cats__grid lx-cats__grid--{{ component.items|length }}" data-lx-stagger="120">
+        {% for item in component.items %}
+          {% set tag = item.url and item.url != '#' ? 'a' : 'div' %}
+          <{{ tag }} {% if tag == 'a' %}href="{{ item.url }}"{% endif %} class="lx-cat" data-lx-reveal>
+            <figure class="lx-cat__img">
+              <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy">
+            </figure>
+            <div class="lx-cat__body">
+              <span class="lx-cat__index" aria-hidden="true">{{ '%02d'|format(loop.index) }}</span>
+              <h3 class="lx-cat__title">{{ item.title }}</h3>
+              {% if tag == 'a' %}<span class="lx-cat__more">{{ trans('blocks.luxe.shop') }} <i class="sicon-arrow-left" aria-hidden="true"></i></span>{% endif %}
+            </div>
+          </{{ tag }}>
+        {% endfor %}
+      </div>
+    {% endif %}
   </div>
 </section>

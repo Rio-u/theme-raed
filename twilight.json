@@ -591,6 +591,27 @@
                 },
                 {
                     "type": "string",
+                    "format": "text",
+                    "id": "big_word",
+                    "label": "كلمة ضخمة خلف التصميم",
+                    "value": "Élégance",
+                    "icon": "sicon-format-text-alt",
+                    "multilanguage": false,
+                    "required": false,
+                    "description": "كلمة واحدة لاتينية تُكتب بخط مائل ضخم"
+                },
+                {
+                    "type": "string",
+                    "format": "text",
+                    "id": "badge_text",
+                    "label": "نص الختم الدائري",
+                    "value": "New Collection · Maison D7 · ",
+                    "icon": "sicon-format-text-alt",
+                    "multilanguage": false,
+                    "required": false
+                },
+                {
+                    "type": "string",
                     "format": "textarea",
                     "id": "text",
                     "label": "نص قصير",
@@ -742,6 +763,17 @@
                     "icon": "sicon-format-text-alt",
                     "multilanguage": true,
                     "required": false
+                },
+                {
+                    "type": "boolean",
+                    "format": "switch",
+                    "id": "as_index",
+                    "label": "عرض كفهرس مجلة (أسماء كبيرة وصورة تتبع المؤشر)",
+                    "value": false,
+                    "selected": false,
+                    "icon": "sicon-toggle-off",
+                    "required": false,
+                    "description": null
                 },
                 {
                     "id": "items",
@@ -1358,6 +1390,201 @@
                             "icon": "sicon-format-text-alt",
                             "multilanguage": true,
                             "required": false
+                        }
+                    ]
+                }
+            ],
+            "is_default": true
+        },
+        {
+            "key": "7c1e4a52-3b9d-4f0e-9a61-2d8c5f7b1e09",
+            "path": "home.luxe-lookbook",
+            "icon": "sicon-image",
+            "title": {
+                "ar": "LUXE — تسوّقي الإطلالة (Lookbook)",
+                "en": "LUXE — Shop the look"
+            },
+            "fields": [
+                {
+                    "type": "string",
+                    "format": "image",
+                    "id": "image",
+                    "label": "صورة الإطلالة",
+                    "value": "https://salla-dev.s3.eu-central-1.amazonaws.com/nWzD/bL3FLXsYnlcjdn2TbeSdXh1y6nhiXWkzg7bMV9Lf.jpg",
+                    "icon": "sicon-image",
+                    "required": true,
+                    "description": "صورة طولية، ثم حدّدي مكان كل نقطة بالنسب المئوية"
+                },
+                {
+                    "type": "string",
+                    "format": "text",
+                    "id": "eyebrow",
+                    "label": "سطر علوي صغير",
+                    "value": "تسوّقي الإطلالة",
+                    "icon": "sicon-format-text-alt",
+                    "multilanguage": true,
+                    "required": false
+                },
+                {
+                    "type": "string",
+                    "format": "text",
+                    "id": "title",
+                    "label": "العنوان",
+                    "value": "إطلالة الربيع",
+                    "icon": "sicon-format-text-alt",
+                    "multilanguage": true,
+                    "required": false
+                },
+                {
+                    "type": "string",
+                    "format": "textarea",
+                    "id": "text",
+                    "label": "نص قصير",
+                    "value": "كل قطعة في هذه الإطلالة متوفرة الآن — اضغطي على الرقم لاكتشافها.",
+                    "icon": "sicon-typography",
+                    "multilanguage": true,
+                    "required": false,
+                    "maxLength": 600
+                },
+                {
+                    "id": "points",
+                    "type": "collection",
+                    "format": "collection",
+                    "required": false,
+                    "minLength": 1,
+                    "maxLength": 6,
+                    "item_label": "نقطة",
+                    "label": "القطع في الصورة",
+                    "value": [
+                        {
+                            "points.x": 52,
+                            "points.y": 30,
+                            "points.title": "فستان شيفون طويل",
+                            "points.meta": "نقشة زهور ناعمة"
+                        },
+                        {
+                            "points.x": 45,
+                            "points.y": 52,
+                            "points.title": "حزام بخصر مطاطي",
+                            "points.meta": "يحدّد الخصر بأناقة"
+                        },
+                        {
+                            "points.x": 58,
+                            "points.y": 88,
+                            "points.title": "حذاء بكعب رفيع",
+                            "points.meta": "جلد ناعم"
+                        }
+                    ],
+                    "fields": [
+                        {
+                            "type": "number",
+                            "format": "integer",
+                            "id": "points.x",
+                            "label": "الموضع الأفقي (0–100)",
+                            "value": 50,
+                            "minimum": 0,
+                            "maximum": 100,
+                            "required": true,
+                            "icon": "sicon-arrow-left"
+                        },
+                        {
+                            "type": "number",
+                            "format": "integer",
+                            "id": "points.y",
+                            "label": "الموضع الرأسي (0–100)",
+                            "value": 50,
+                            "minimum": 0,
+                            "maximum": 100,
+                            "required": true,
+                            "icon": "sicon-arrow-down"
+                        },
+                        {
+                            "type": "string",
+                            "format": "text",
+                            "id": "points.title",
+                            "label": "اسم القطعة",
+                            "value": null,
+                            "icon": "sicon-format-text-alt",
+                            "multilanguage": true,
+                            "required": false
+                        },
+                        {
+                            "type": "string",
+                            "format": "text",
+                            "id": "points.meta",
+                            "label": "سطر صغير",
+                            "value": null,
+                            "icon": "sicon-format-text-alt",
+                            "multilanguage": true,
+                            "required": false
+                        },
+                        {
+                            "type": "items",
+                            "format": "variable-list",
+                            "id": "points.url",
+                            "label": "رابط المنتج",
+                            "value": [],
+                            "icon": "sicon-link",
+                            "required": false,
+                            "searchable": true,
+                            "source": "custom",
+                            "sources": [
+                                {
+                                    "label": "منتج",
+                                    "key": "products",
+                                    "value": "products"
+                                },
+                                {
+                                    "label": "منتجات مع وسم",
+                                    "key": "products_tags",
+                                    "value": "products_tags"
+                                },
+                                {
+                                    "label": "تصنيف",
+                                    "key": "categories",
+                                    "value": "categories"
+                                },
+                                {
+                                    "label": "ماركة تجارية",
+                                    "key": "brands",
+                                    "value": "brands"
+                                },
+                                {
+                                    "label": "صفحة تعريفية",
+                                    "key": "pages",
+                                    "value": "pages"
+                                },
+                                {
+                                    "label": "مقالة",
+                                    "key": "blog_articles",
+                                    "value": "blog_articles"
+                                },
+                                {
+                                    "label": "تصنيف ضمن المدونة",
+                                    "key": "blog_categories",
+                                    "value": "blog_categories"
+                                },
+                                {
+                                    "label": "التخفيضات",
+                                    "key": "offers_link",
+                                    "value": "offers_link"
+                                },
+                                {
+                                    "label": "الماركات التجارية",
+                                    "key": "brands_link",
+                                    "value": "brands_link"
+                                },
+                                {
+                                    "label": "المدونة",
+                                    "key": "blog_link",
+                                    "value": "blog_link"
+                                },
+                                {
+                                    "label": "رابط خارجي",
+                                    "key": "custom",
+                                    "value": "custom"
+                                }
+                            ]
                         }
                     ]
                 }

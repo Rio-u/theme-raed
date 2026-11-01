@@ -1,29 +1,47 @@
 {#
 | Variable                   | Type    | Description                                              |
 |----------------------------|---------|----------------------------------------------------------|
-| component.image            | string  | Main campaign image                                      |
+| component.image            | string  | Main campaign image (shown in an arch)                   |
 | component.image_2          | ?string | Secondary image (split layout only)                      |
 | component.full_bleed       | bool    | Full-width image with text overlay instead of split      |
 | component.eyebrow          | ?string |                                                          |
 | component.title            | string  | Main headline (Arabic display)                           |
 | component.title_en         | ?string | Latin serif line under the headline                      |
+| component.big_word         | ?string | Oversized italic word set behind the composition         |
+| component.badge_text       | ?string | Text running around the rotating seal                    |
 | component.text             | ?string |                                                          |
 | component.cta_text         | ?string |                                                          |
 | component.cta_url          | ?string | variable-list link                                       |
 #}
 {% set has_cta = component.cta_text and component.cta_url and component.cta_url != '#' %}
-<section component-id="{{ componentId }}" data-testid="store-home-luxe-hero"
+{% set big_word = component.big_word|default('Élégance') %}
+{% set badge = component.badge_text|default('New Collection · ' ~ "now"|date("Y") ~ ' · ' ~ theme.settings.get('lx_wordmark', 'Maison') ~ ' · ') %}
+<section component-id="{{ componentId }}" data-testid="store-home-luxe-hero" data-lx-hero
          class="s-block lx-hero {{ component.full_bleed ? 'lx-hero--full' : 'lx-hero--split' }}">
+  {% if not component.full_bleed and big_word %}
+    <span class="lx-hero__bigword" aria-hidden="true" lang="fr">{{ big_word }}</span>
+  {% endif %}
+
   <div class="lx-hero__media">
-    <figure class="lx-hero__img lx-hero__img--main">
+    <figure class="lx-hero__img lx-hero__img--main" data-depth="0.6">
       <img src="{{ component.image }}" alt="{{ component.title }}" fetchpriority="high" loading="eager" width="900" height="1200">
     </figure>
     {% if component.image_2 and not component.full_bleed %}
-      <figure class="lx-hero__img lx-hero__img--aside">
+      <figure class="lx-hero__img lx-hero__img--aside" data-depth="1.4">
         <img src="{{ component.image_2 }}" alt="" loading="eager" width="600" height="800">
       </figure>
     {% endif %}
-    <span class="lx-hero__vertical" aria-hidden="true">{{ component.title_en|default(store.name) }}</span>
+
+    {% if not component.full_bleed %}
+      {% set seal_href = has_cta ? component.cta_url : '#lx-after-hero' %}
+      <a href="{{ seal_href }}" class="lx-seal" data-lx-magnetic aria-label="{{ component.cta_text|default(component.title) }}">
+        <svg class="lx-seal__ring" viewBox="0 0 200 200" aria-hidden="true">
+          <defs><path id="lx-seal-path-{{ position }}" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
+          <text><textPath href="#lx-seal-path-{{ position }}" startOffset="0">{{ badge|upper }}{{ badge|upper }}</textPath></text>
+        </svg>
+        <svg class="lx-seal__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    {% endif %}
   </div>
 
   <div class="lx-hero__content">
@@ -42,7 +60,9 @@
       {% endif %}
       {% if has_cta %}
         <div class="lx-hero__cta lx-hero__line" style="--l:4">
-          <a href="{{ component.cta_url }}" class="lx-btn {{ component.full_bleed ? 'lx-btn--light' : '' }}">{{ component.cta_text }}</a>
+          <a href="{{ component.cta_url }}" class="lx-btn {{ component.full_bleed ? 'lx-btn--light' : '' }}" data-lx-magnetic>
+            <span>{{ component.cta_text }}</span>
+          </a>
         </div>
       {% endif %}
     </div>
