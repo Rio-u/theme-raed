@@ -43,7 +43,8 @@
       "details": "Product details",
       "share": "Share",
       "same_category": "From the same collection",
-      "recently_viewed": "Recently viewed"
+      "recently_viewed": "Recently viewed",
+      "collection": "Collection"
     }
   },
   "pages": {

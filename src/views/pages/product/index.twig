@@ -33,6 +33,12 @@
     Fires before the products grid and filter sidebar wrapper.
     Use this hook to inject content above the products listing area.
   #}
+	{# LUXE: editorial collection heading (the h1 below is rewritten to a product count by JS) #}
+	<header class="container lx-cat-head" data-lx-reveal>
+		<span class="lx-eyebrow">{{ trans('blocks.luxe.collection') }}</span>
+		<h2 class="lx-display lx-cat-head__title">{{ page.title|striptags }}</h2>
+	</header>
+
 	<div class="s-blocks-wrapper s-before-products-list !mt-0">{% hook 'product.index.before_products_group_with_filter' %}</div>
 
 	<div class="container container--products-list flex items-start flex-col md:flex-row">
