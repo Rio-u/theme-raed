@@ -383,9 +383,9 @@ function initMagnetic() {
 function boot() {
   if (window.__lxBooted) return; // guard against double inclusion
   keepPreviewLinks();
-  initHeroDepth();
+
   initStoryWords();
-  initMarqueeVelocity();
+
   initIndexFloat();
   initLookbook();
   initMagnetic();

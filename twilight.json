@@ -589,10 +589,31 @@
                     "description": null
                 },
                 {
+                    "type": "string",
+                    "format": "image",
+                    "id": "image_3",
+                    "label": "الصورة الثالثة (للتصميم الثلاثي)",
+                    "value": "https://salla-dev.s3.eu-central-1.amazonaws.com/nWzD/ACknxzEIkcTdaFr1DETbQlXo5UwupBedJ9ZGyR8v.jpg",
+                    "icon": "sicon-image",
+                    "required": false,
+                    "description": null
+                },
+                {
+                    "type": "boolean",
+                    "format": "switch",
+                    "id": "layout_split",
+                    "label": "تصميم مقسوم (قوس + نص) بدلاً من الثلاث صور",
+                    "value": false,
+                    "selected": false,
+                    "icon": "sicon-toggle-off",
+                    "required": false,
+                    "description": null
+                },
+                {
                     "type": "boolean",
                     "format": "switch",
                     "id": "full_bleed",
-                    "label": "صورة بعرض الشاشة مع نص فوقها",
+                    "label": "صورة واحدة بعرض الشاشة مع نص فوقها",
                     "value": false,
                     "selected": false,
                     "icon": "sicon-toggle-off",
@@ -625,27 +646,6 @@
                     "id": "title_en",
                     "label": "سطر إنجليزي (خط كلاسيكي)",
                     "value": "The Art of Everyday Elegance",
-                    "icon": "sicon-format-text-alt",
-                    "multilanguage": false,
-                    "required": false
-                },
-                {
-                    "type": "string",
-                    "format": "text",
-                    "id": "big_word",
-                    "label": "كلمة ضخمة خلف التصميم",
-                    "value": "Élégance",
-                    "icon": "sicon-format-text-alt",
-                    "multilanguage": false,
-                    "required": false,
-                    "description": "كلمة واحدة لاتينية تُكتب بخط مائل ضخم"
-                },
-                {
-                    "type": "string",
-                    "format": "text",
-                    "id": "badge_text",
-                    "label": "نص الختم الدائري",
-                    "value": "New Collection · Maison D7 · ",
                     "icon": "sicon-format-text-alt",
                     "multilanguage": false,
                     "required": false

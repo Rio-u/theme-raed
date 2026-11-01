@@ -437,3 +437,168 @@ html.lx-dark body.theme-raed::after { opacity: 0.07; }
   letter-spacing: 0;
   color: var(--lx-taupe);
 }
+
+/* =====================================================================
+   HERO — TRIPTYCH (default): three portrait frames, headline across them
+   ===================================================================== */
+.lx-hero--triptych {
+  position: relative;
+  height: calc(100vh - var(--lx-announce-h));
+  height: calc(100svh - var(--lx-announce-h));
+  min-height: 560px;
+  max-height: 1000px;
+  overflow: hidden;
+  background: var(--lx-black);
+  color: #FFFFFF;
+}
+
+.lx-tri {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  background: var(--lx-ivory);
+}
+
+.lx-tri__frame {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  background: #1A1917;
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.5s var(--lx-ease-in-out);
+  transition-delay: calc(var(--f) * 140ms);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    transform: scale(1.18);
+    transition: transform 2.8s var(--lx-ease);
+    transition-delay: calc(var(--f) * 140ms);
+  }
+
+  /* bottom shade so the headline reads on any photo */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10, 9, 8, 0.62) 0%, rgba(10, 9, 8, 0.12) 42%, rgba(10, 9, 8, 0) 60%);
+  }
+}
+
+.lx-ready .lx-tri__frame,
+html:not(.lx-js) .lx-tri__frame { clip-path: inset(0 0 0 0); }
+.lx-ready .lx-tri__frame img,
+html:not(.lx-js) .lx-tri__frame img { transform: scale(1); }
+
+.lx-tri__content {
+  position: absolute;
+  z-index: 2;
+  inset-inline: 0;
+  inset-block-end: clamp(3rem, 2rem + 4vw, 6rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  padding-inline: var(--lx-gutter);
+  text-align: center;
+}
+
+.lx-tri__eyebrow {
+  font-size: var(--lx-fs-xs);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
+  [dir="rtl"] & { letter-spacing: 0; font-size: var(--lx-fs-sm); }
+}
+
+.lx-tri__title {
+  margin: 0;
+  font-family: var(--lx-font-display);
+  font-size: clamp(2.8rem, 1.4rem + 5.6vw, 7.5rem);
+  font-weight: 300;
+  line-height: 1.1;
+  color: #FFFFFF;
+  text-shadow: 0 2px 40px rgba(0, 0, 0, 0.18);
+}
+
+.lx-tri__en {
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--lx-font-display);
+  font-size: clamp(1.2rem, 1rem + 0.9vw, 1.9rem);
+  font-style: italic;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.86);
+  direction: ltr;
+}
+
+.lx-tri__cta {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.75rem;
+  margin-block-start: 0.6rem;
+  padding-block-end: 0.4rem;
+  border-block-end: 1px solid rgba(255, 255, 255, 0.7);
+  font-size: var(--lx-fs-sm);
+  letter-spacing: 0.08em;
+  color: #FFFFFF;
+  transition: gap 0.5s var(--lx-ease), border-color 0.4s;
+
+  svg { width: 18px; height: 18px; }
+  [dir="ltr"] & svg { transform: scaleX(-1); }
+  &:hover { gap: 1.25rem; border-color: #FFFFFF; color: #FFFFFF; }
+}
+
+.lx-tri__scroll {
+  position: absolute;
+  z-index: 2;
+  inset-block-end: 0;
+  left: 50%;
+  width: 1px;
+  height: clamp(2rem, 1rem + 2vw, 3rem);
+  background: rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+  span { position: absolute; inset: 0; background: #FFFFFF; animation: lx-scroll-cue 2.4s var(--lx-ease-in-out) infinite; }
+}
+
+@media (max-width: 767px) {
+  .lx-hero--triptych { height: 82svh; min-height: 520px; }
+  .lx-tri { grid-template-columns: 1.25fr 1fr; }
+  .lx-tri__frame:nth-child(3) { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lx-tri__frame, .lx-tri__frame img { transition: none; clip-path: none; transform: none; }
+}
+
+/* =====================================================================
+   MARQUEE v2 — quiet ribbon under the hero
+   ===================================================================== */
+.lx-marquee { padding-block: 0; border: 0; }
+
+.lx-marquee__group {
+  gap: 1.75rem;
+  padding-inline-end: 1.75rem;
+  padding-block: 0.95rem;
+
+  span {
+    font-family: var(--lx-font-sans);
+    font-size: var(--lx-fs-sm);
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: 0.04em;
+    transform: none;
+    color: inherit;
+    -webkit-text-stroke: 0;
+  }
+
+  .is-italic, .is-outline { font-style: normal; color: inherit; -webkit-text-stroke: 0; }
+  i { font-size: 0; width: 4px; height: 4px; border-radius: 999px; background: currentColor; opacity: 0.45; }
+}
+
+.lx-marquee__track { animation-duration: 55s; }
+.lx-marquee--dark { background: var(--lx-black); color: var(--lx-sand); }

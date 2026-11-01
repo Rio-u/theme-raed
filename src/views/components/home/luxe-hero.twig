@@ -1,72 +1,76 @@
 {#
-| Variable                   | Type    | Description                                              |
-|----------------------------|---------|----------------------------------------------------------|
-| component.image            | string  | Main campaign image (shown in an arch)                   |
-| component.image_2          | ?string | Secondary image (split layout only)                      |
-| component.full_bleed       | bool    | Full-width image with text overlay instead of split      |
-| component.eyebrow          | ?string |                                                          |
-| component.title            | string  | Main headline (Arabic display)                           |
-| component.title_en         | ?string | Latin serif line under the headline                      |
-| component.big_word         | ?string | Oversized italic word set behind the composition         |
-| component.badge_text       | ?string | Text running around the rotating seal                    |
-| component.text             | ?string |                                                          |
-| component.cta_text         | ?string |                                                          |
-| component.cta_url          | ?string | variable-list link                                       |
+Campaign hero.
+Default "triptych": three portrait images edge to edge, headline set over them.
+Alternatives: split (arch + text) or full_bleed (one wide image).
+| component.layout_split     | bool    | Use the arch + text layout instead of the triptych      |
+| component.full_bleed       | bool    | One wide image with text overlay                        |
+| component.image            | string  |                                                         |
+| component.image_2          | ?string |                                                         |
+| component.image_3          | ?string |                                                         |
+| component.eyebrow          | ?string |                                                         |
+| component.title            | string  | Main headline (Arabic display)                          |
+| component.title_en         | ?string | Latin serif line                                        |
+| component.text             | ?string |                                                         |
+| component.cta_text         | ?string |                                                         |
+| component.cta_url          | ?string | variable-list link                                      |
 #}
 {% set has_cta = component.cta_text and component.cta_url and component.cta_url != '#' %}
-{% set big_word = component.big_word|default('Élégance') %}
-{% set badge = component.badge_text|default('New Collection · ' ~ "now"|date("Y") ~ ' · ' ~ theme.settings.get('lx_wordmark', 'Maison') ~ ' · ') %}
-<section component-id="{{ componentId }}" data-testid="store-home-luxe-hero" data-lx-hero
-         class="s-block lx-hero {{ component.full_bleed ? 'lx-hero--full' : 'lx-hero--split' }}">
-  {% if not component.full_bleed and big_word %}
-    <span class="lx-hero__bigword" aria-hidden="true" lang="fr">{{ big_word }}</span>
-  {% endif %}
+{% set lx_img_base = 'https://salla-dev.s3.eu-central-1.amazonaws.com/nWzD/' %}
+{% set img3 = component.image_3|default(lx_img_base ~ 'ACknxzEIkcTdaFr1DETbQlXo5UwupBedJ9ZGyR8v.jpg') %}
 
-  <div class="lx-hero__media">
-    <figure class="lx-hero__img lx-hero__img--main" data-depth="0.6">
-      <img src="{{ component.image }}" alt="{{ component.title }}" fetchpriority="high" loading="eager" width="900" height="1200">
-    </figure>
-    {% if component.image_2 and not component.full_bleed %}
-      <figure class="lx-hero__img lx-hero__img--aside" data-depth="1.4">
-        <img src="{{ component.image_2 }}" alt="" loading="eager" width="600" height="800">
+{% if component.full_bleed or component.layout_split %}
+  {# ---------- split / full-bleed ---------- #}
+  <section component-id="{{ componentId }}" data-testid="store-home-luxe-hero" data-lx-hero
+           class="s-block lx-hero {{ component.full_bleed ? 'lx-hero--full' : 'lx-hero--split' }}">
+    <div class="lx-hero__media">
+      <figure class="lx-hero__img lx-hero__img--main">
+        <img src="{{ component.image }}" alt="{{ component.title }}" fetchpriority="high" loading="eager">
       </figure>
-    {% endif %}
-
-    {% if not component.full_bleed %}
-      {% set seal_href = has_cta ? component.cta_url : '#lx-after-hero' %}
-      <a href="{{ seal_href }}" class="lx-seal" data-lx-magnetic aria-label="{{ component.cta_text|default(component.title) }}">
-        <svg class="lx-seal__ring" viewBox="0 0 200 200" aria-hidden="true" direction="ltr">
-          <defs><path id="lx-seal-path-{{ position }}" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
-          <text direction="ltr"><textPath href="#lx-seal-path-{{ position }}" startOffset="0" textLength="486" lengthAdjust="spacing">{{ badge|upper }}</textPath></text>
-        </svg>
-        <svg class="lx-seal__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    {% endif %}
-  </div>
-
-  <div class="lx-hero__content">
-    <div class="lx-hero__inner">
-      {% if component.eyebrow %}
-        <span class="lx-eyebrow lx-hero__line" style="--l:0">{{ component.eyebrow }}</span>
+      {% if component.image_2 and not component.full_bleed %}
+        <figure class="lx-hero__img lx-hero__img--aside"><img src="{{ component.image_2 }}" alt="" loading="eager"></figure>
       {% endif %}
-      <h2 class="lx-hero__title lx-display">
+    </div>
+    <div class="lx-hero__content">
+      <div class="lx-hero__inner">
+        {% if component.eyebrow %}<span class="lx-eyebrow lx-hero__line" style="--l:0">{{ component.eyebrow }}</span>{% endif %}
+        <h2 class="lx-hero__title lx-display"><span class="lx-hero__mask"><span class="lx-hero__line" style="--l:1">{{ component.title }}</span></span></h2>
+        {% if component.title_en %}<p class="lx-hero__en" lang="en"><span class="lx-hero__line" style="--l:2">{{ component.title_en }}</span></p>{% endif %}
+        {% if component.text %}<p class="lx-hero__text lx-hero__line" style="--l:3">{{ component.text }}</p>{% endif %}
+        {% if has_cta %}
+          <div class="lx-hero__cta lx-hero__line" style="--l:4"><a href="{{ component.cta_url }}" class="lx-btn {{ component.full_bleed ? 'lx-btn--light' : '' }}">{{ component.cta_text }}</a></div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% else %}
+  {# ---------- triptych ---------- #}
+  {% set frames = [component.image, component.image_2|default(component.image), img3] %}
+  <section component-id="{{ componentId }}" data-testid="store-home-luxe-hero" data-lx-hero class="s-block lx-hero lx-hero--triptych">
+    <div class="lx-tri">
+      {% for src in frames %}
+        <figure class="lx-tri__frame" style="--f: {{ loop.index0 }}">
+          <img src="{{ src }}" alt="{{ loop.first ? component.title : '' }}" {{ loop.first ? 'fetchpriority="high"' : '' }} loading="eager">
+        </figure>
+      {% endfor %}
+    </div>
+
+    <div class="lx-tri__content">
+      {% if component.eyebrow %}<span class="lx-tri__eyebrow lx-hero__line" style="--l:0">{{ component.eyebrow }}</span>{% endif %}
+      <h2 class="lx-tri__title">
         <span class="lx-hero__mask"><span class="lx-hero__line" style="--l:1">{{ component.title }}</span></span>
       </h2>
       {% if component.title_en %}
-        <p class="lx-hero__en" lang="en"><span class="lx-hero__line" style="--l:2">{{ component.title_en }}</span></p>
-      {% endif %}
-      {% if component.text %}
-        <p class="lx-hero__text lx-hero__line" style="--l:3">{{ component.text }}</p>
+        <p class="lx-tri__en" lang="en"><span class="lx-hero__line" style="--l:2">{{ component.title_en }}</span></p>
       {% endif %}
       {% if has_cta %}
-        <div class="lx-hero__cta lx-hero__line" style="--l:4">
-          <a href="{{ component.cta_url }}" class="lx-btn {{ component.full_bleed ? 'lx-btn--light' : '' }}" data-lx-magnetic>
-            <span>{{ component.cta_text }}</span>
-          </a>
-        </div>
+        <a href="{{ component.cta_url }}" class="lx-tri__cta lx-hero__line" style="--l:3">
+          <span>{{ component.cta_text }}</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
       {% endif %}
     </div>
-    <a href="#lx-after-hero" class="lx-hero__scroll" aria-label="scroll"><span></span></a>
-  </div>
-</section>
+
+    <a href="#lx-after-hero" class="lx-tri__scroll" aria-label="scroll"><span></span></a>
+  </section>
+{% endif %}
 <span id="lx-after-hero"></span>
