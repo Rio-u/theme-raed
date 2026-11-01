@@ -16,10 +16,11 @@ If the merchant adds quotes by hand (component.items), those are shown instead.
       <span class="lx-voices__mark" aria-hidden="true">&ldquo;</span>
     </header>
 
-    {% if component.items|length %}
+    {% if not component.real_reviews and component.items|length %}
       <div class="lx-voices__grid" data-lx-stagger="120">
         {% for item in component.items %}
           <figure class="lx-voice" data-lx-reveal>
+            <span class="lx-voice__stars" aria-hidden="true">★★★★★</span>
             <blockquote class="lx-voice__text">{{ item.text }}</blockquote>
             <figcaption class="lx-voice__by">
               <span class="lx-voice__name">{{ item.name }}</span>

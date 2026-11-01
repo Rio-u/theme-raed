@@ -25,7 +25,19 @@
       "best_sellers": "الأكثر مبيعاً",
       "products_count": "منتج",
       "back_to_top": "العودة للأعلى",
-      "dark_mode": "الوضع الداكن"
+      "dark_mode": "الوضع الداكن",
+      "join_whatsapp": "تابعي جديدنا عبر واتساب",
+      "join_instagram": "تابعينا على إنستغرام",
+      "join_telegram": "قناتنا على تيليجرام",
+      "copy": "نسخ",
+      "copied": "تم النسخ",
+      "close": "إغلاق",
+      "ends_in": "ينتهي العرض خلال",
+      "days": "يوم",
+      "hours": "ساعة",
+      "minutes": "دقيقة",
+      "seconds": "ثانية",
+      "shop_now": "تسوّقي الآن"
     }
   },
   "pages": {

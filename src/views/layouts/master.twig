@@ -109,6 +109,7 @@
     <style>
         :root {
             --lx-merchant-primary: {{ theme.color.primary }};
+            --lx-wordmark: "{{ lx_wordmark|default(store.name)|replace({'"': ''}) }}";
         }
     </style>
     {# tracking services, custom css feature. #}
@@ -180,6 +181,59 @@
         })();
     })(document, window);
 </script>
+{# LUXE: welcome / promotion dialog — every field is a theme setting (twilight.json → lx_promo_*) #}
+{% if theme.settings.get('lx_promo_enabled', true) %}
+  {% set promo_img = theme.settings.get('lx_promo_image') %}
+  {% set promo_code = theme.settings.get('lx_promo_code') %}
+  {% set promo_ends = theme.settings.get('lx_promo_ends') %}
+  {% set promo_cta = theme.settings.get('lx_promo_cta_text', 'تسوّقي الآن') %}
+  {% set promo_url = theme.settings.get('lx_promo_cta_url') %}
+  <div class="lx-promo {{ promo_img ? 'lx-promo--media' : '' }}" id="lx-promo" role="dialog" aria-modal="true" aria-labelledby="lx-promo-title" hidden
+       data-delay="{{ theme.settings.get('lx_promo_delay', 4) }}"
+       data-days="{{ theme.settings.get('lx_promo_days', 1) }}"
+       data-ends="{{ promo_ends }}"
+       data-key="{{ (promo_code ~ '|' ~ promo_ends ~ '|' ~ theme.settings.get('lx_promo_title', ''))|url_encode }}">
+    <div class="lx-promo__backdrop" data-lx-promo-close></div>
+    <div class="lx-promo__panel">
+      <button type="button" class="lx-promo__close" data-lx-promo-close aria-label="{{ trans('blocks.luxe.close') }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>
+      </button>
+      {% if promo_img %}
+        <figure class="lx-promo__media"><img src="{{ promo_img }}" alt="" loading="lazy"></figure>
+      {% endif %}
+      <div class="lx-promo__body">
+        {% if theme.settings.get('lx_promo_eyebrow', 'مرحباً بكِ') %}<span class="lx-eyebrow">{{ theme.settings.get('lx_promo_eyebrow', 'مرحباً بكِ') }}</span>{% endif %}
+        <h2 class="lx-promo__title lx-display" id="lx-promo-title">{{ theme.settings.get('lx_promo_title', 'خصم ترحيبي على طلبك الأول') }}</h2>
+        {% set promo_text = theme.settings.get('lx_promo_text', 'اكتشفي المجموعة الجديدة واستمتعي بتجربة تسوّق هادئة وأنيقة.') %}
+        {% if promo_text %}<p class="lx-promo__text">{{ promo_text }}</p>{% endif %}
+
+        {% if promo_ends %}
+          <div class="lx-promo__timer" data-lx-countdown="{{ promo_ends }}" aria-live="off">
+            <span class="lx-promo__timer-label">{{ trans('blocks.luxe.ends_in') }}</span>
+            <div class="lx-promo__timer-units">
+              <span><b data-u="d">00</b><small>{{ trans('blocks.luxe.days') }}</small></span>
+              <span><b data-u="h">00</b><small>{{ trans('blocks.luxe.hours') }}</small></span>
+              <span><b data-u="m">00</b><small>{{ trans('blocks.luxe.minutes') }}</small></span>
+              <span><b data-u="s">00</b><small>{{ trans('blocks.luxe.seconds') }}</small></span>
+            </div>
+          </div>
+        {% endif %}
+
+        {% if promo_code %}
+          <div class="lx-promo__code">
+            <span class="lx-promo__code-value" dir="ltr">{{ promo_code }}</span>
+            <button type="button" class="lx-promo__copy" data-lx-copy="{{ promo_code }}"
+                    data-copied="{{ trans('blocks.luxe.copied') }}">{{ trans('blocks.luxe.copy') }}</button>
+          </div>
+        {% endif %}
+
+        {% if promo_cta and promo_url %}
+          <a href="{{ promo_url }}" class="lx-btn lx-promo__cta" data-lx-promo-close>{{ promo_cta }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}
 <div class="app-inner flex flex-col min-h-full">
     {% hook 'body:start' %}
     {% component 'header.header' %}

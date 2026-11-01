@@ -135,6 +135,133 @@
             "id": "lx-static-line"
         },
         {
+            "type": "static",
+            "format": "title",
+            "id": "lx-promo-title",
+            "value": "<div class='rounded-lg' style='background-color:#B4A596;display:flex;justify-content:center;align-items:center;padding:12px;margin-bottom:16px !important;'><h6 style='color:#111;font-size:14px;font-weight:bold'>نافذة العرض الترحيبي</h6></div>",
+            "variant": "h6"
+        },
+        {
+            "type": "boolean",
+            "format": "switch",
+            "id": "lx_promo_enabled",
+            "icon": "sicon-toggle-off",
+            "label": "إظهار نافذة العرض للزوار",
+            "value": true,
+            "selected": true,
+            "required": false
+        },
+        {
+            "type": "string",
+            "format": "text",
+            "id": "lx_promo_eyebrow",
+            "label": "سطر علوي صغير",
+            "value": "مرحباً بكِ",
+            "icon": "sicon-format-text-alt",
+            "required": false,
+            "multilanguage": false
+        },
+        {
+            "type": "string",
+            "format": "text",
+            "id": "lx_promo_title",
+            "label": "العنوان",
+            "value": "خصم ترحيبي على طلبك الأول",
+            "icon": "sicon-format-text-alt",
+            "required": false,
+            "multilanguage": false
+        },
+        {
+            "type": "string",
+            "format": "text",
+            "id": "lx_promo_text",
+            "label": "النص",
+            "value": "اكتشفي المجموعة الجديدة واستمتعي بتجربة تسوّق هادئة وأنيقة.",
+            "icon": "sicon-format-text-alt",
+            "required": false,
+            "multilanguage": false
+        },
+        {
+            "type": "string",
+            "format": "text",
+            "id": "lx_promo_code",
+            "label": "كود الخصم (اختياري)",
+            "value": "",
+            "icon": "sicon-format-text-alt",
+            "required": false,
+            "multilanguage": false,
+            "description": "أنشئي الكوبون أولاً من: التسويق ← كوبونات التخفيض، ثم انسخي الكود هنا"
+        },
+        {
+            "type": "string",
+            "format": "text",
+            "id": "lx_promo_ends",
+            "label": "تاريخ انتهاء العرض (اختياري)",
+            "value": "",
+            "icon": "sicon-format-text-alt",
+            "required": false,
+            "multilanguage": false,
+            "description": "بصيغة 2026-12-31 23:59 — يظهر عدّاد تنازلي، وتختفي النافذة تلقائياً بعد انتهائه"
+        },
+        {
+            "type": "string",
+            "format": "image",
+            "id": "lx_promo_image",
+            "icon": "sicon-image",
+            "label": "صورة جانبية (اختياري)",
+            "value": null,
+            "required": false
+        },
+        {
+            "type": "string",
+            "format": "text",
+            "id": "lx_promo_cta_text",
+            "label": "نص الزر",
+            "value": "تسوّقي الآن",
+            "icon": "sicon-format-text-alt",
+            "required": false,
+            "multilanguage": false
+        },
+        {
+            "type": "string",
+            "format": "text",
+            "id": "lx_promo_cta_url",
+            "label": "رابط الزر",
+            "value": "",
+            "icon": "sicon-format-text-alt",
+            "required": false,
+            "multilanguage": false,
+            "description": "مثال: رابط صفحة التخفيضات أو تصنيف معيّن"
+        },
+        {
+            "type": "number",
+            "format": "integer",
+            "id": "lx_promo_delay",
+            "icon": "sicon-time",
+            "label": "تظهر بعد (ثوانٍ)",
+            "value": 4,
+            "minimum": 0,
+            "maximum": 60,
+            "required": false
+        },
+        {
+            "type": "number",
+            "format": "integer",
+            "id": "lx_promo_days",
+            "icon": "sicon-calendar",
+            "label": "تظهر مرة أخرى للزائرة بعد (أيام)",
+            "description": "0 = مرة في كل زيارة",
+            "value": 1,
+            "minimum": 0,
+            "maximum": 60,
+            "required": false
+        },
+        {
+            "type": "static",
+            "format": "line",
+            "id": "lx-promo-line"
+        },
+        {
             "id": "squar_photo_bg_image_size",
             "type": "items",
             "format": "dropdown-list",
@@ -783,10 +910,43 @@
                     "maxLength": 12
                 },
                 {
+                    "type": "string",
+                    "format": "textarea",
+                    "id": "text",
+                    "label": "سطر وصفي قصير (اختياري)",
+                    "value": null,
+                    "icon": "sicon-typography",
+                    "multilanguage": true,
+                    "required": false,
+                    "maxLength": 600
+                },
+                {
                     "type": "boolean",
                     "format": "switch",
                     "id": "best_sellers",
                     "label": "عرض الأكثر مبيعاً بدلاً من الأحدث",
+                    "value": false,
+                    "selected": false,
+                    "icon": "sicon-toggle-off",
+                    "required": false,
+                    "description": null
+                },
+                {
+                    "type": "boolean",
+                    "format": "switch",
+                    "id": "on_sale",
+                    "label": "عرض المنتجات المخفّضة فقط",
+                    "value": false,
+                    "selected": false,
+                    "icon": "sicon-toggle-off",
+                    "required": false,
+                    "description": null
+                },
+                {
+                    "type": "boolean",
+                    "format": "switch",
+                    "id": "as_slider",
+                    "label": "عرض كشريط متحرك بدلاً من الشبكة",
                     "value": false,
                     "selected": false,
                     "icon": "sicon-toggle-off",
@@ -1120,6 +1280,17 @@
                     "required": false
                 },
                 {
+                    "type": "boolean",
+                    "format": "switch",
+                    "id": "real_reviews",
+                    "label": "عرض تقييمات المتجر الحقيقية من سلة بدلاً من الآراء المكتوبة",
+                    "value": false,
+                    "selected": false,
+                    "icon": "sicon-toggle-off",
+                    "required": false,
+                    "description": "فعّليها بعد أن تتجمع تقييمات حقيقية لمتجرك"
+                },
+                {
                     "type": "number",
                     "format": "integer",
                     "id": "limit",
@@ -1138,8 +1309,24 @@
                     "minLength": 0,
                     "maxLength": 6,
                     "item_label": "رأي",
-                    "label": "آراء مختارة يدوياً (اختياري — تستبدل التقييمات الحقيقية)",
-                    "value": [],
+                    "label": "آراء مكتوبة (نماذج — استبدليها بآراء عميلاتك الفعلية)",
+                    "value": [
+                        {
+                            "items.text": "القماش أجمل من الصور، والقصّة مريحة طوال اليوم. وصلني الطلب مغلّفاً بعناية كأنه هدية.",
+                            "items.name": "نورة",
+                            "items.meta": "الرياض · فستان كتان"
+                        },
+                        {
+                            "items.text": "أحببت أن التصميم بسيط لكنه مختلف. لبسته في مناسبتين وسألني الجميع من أين اشتريته.",
+                            "items.name": "سارة",
+                            "items.meta": "جدة · بلوزة حرير"
+                        },
+                        {
+                            "items.text": "المقاسات دقيقة جداً وخدمة العملاء ساعدتني في الاختيار. تجربة تسوّق راقية بكل تفاصيلها.",
+                            "items.name": "ريم",
+                            "items.meta": "الدمام · تنورة بليسيه"
+                        }
+                    ],
                     "fields": [
                         {
                             "type": "string",

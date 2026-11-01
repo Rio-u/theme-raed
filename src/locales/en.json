@@ -25,7 +25,19 @@
       "best_sellers": "Best sellers",
       "products_count": "products",
       "back_to_top": "Back to top",
-      "dark_mode": "Dark mode"
+      "dark_mode": "Dark mode",
+      "join_whatsapp": "Get updates on WhatsApp",
+      "join_instagram": "Follow us on Instagram",
+      "join_telegram": "Join our Telegram",
+      "copy": "Copy",
+      "copied": "Copied",
+      "close": "Close",
+      "ends_in": "Offer ends in",
+      "days": "days",
+      "hours": "hrs",
+      "minutes": "min",
+      "seconds": "sec",
+      "shop_now": "Shop now"
     }
   },
   "pages": {

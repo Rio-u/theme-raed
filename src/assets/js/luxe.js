@@ -102,32 +102,43 @@ function initCursor() {
   const LINK = 'a, button, [role="button"], salla-button, salla-add-product-button, label, summary, .swiper-button-next, .swiper-button-prev';
   const NATIVE = 'input, textarea, select, iframe, [contenteditable="true"], .s-modal-wrapper input';
 
-  let x = -100, y = -100, rx = -100, ry = -100, started = false;
+  let x = -100, y = -100, rx = -100, ry = -100, started = false, running = false;
+
+  const setState = t => {
+    root.classList.toggle('lx-cursor-native', !!t?.closest(NATIVE));
+    const view = !!t?.closest(VIEW);
+    root.classList.toggle('lx-cursor-view', view);
+    root.classList.toggle('lx-cursor-link', !view && !!t?.closest(LINK));
+  };
+
+  // The ring trails the dot only slightly, and parks exactly on it once the mouse stops.
+  const loop = () => {
+    rx += (x - rx) * 0.35;
+    ry += (y - ry) * 0.35;
+    if (Math.abs(x - rx) < 0.3 && Math.abs(y - ry) < 0.3) { rx = x; ry = y; running = false; }
+    ring.style.transform = `translate3d(${rx.toFixed(1)}px, ${ry.toFixed(1)}px, 0)`;
+    if (running) requestAnimationFrame(loop);
+  };
+  const kick = () => { if (!running) { running = true; requestAnimationFrame(loop); } };
 
   window.addEventListener('pointermove', e => {
     if (e.pointerType !== 'mouse') return;
     x = e.clientX; y = e.clientY;
     if (!started) { started = true; rx = x; ry = y; root.classList.add('lx-cursor-on'); }
+    root.classList.remove('lx-cursor-out');
     dot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-
-    const t = e.target instanceof Element ? e.target : null;
-    root.classList.toggle('lx-cursor-native', !!t?.closest(NATIVE));
-    const view = !!t?.closest(VIEW);
-    root.classList.toggle('lx-cursor-view', view);
-    root.classList.toggle('lx-cursor-link', !view && !!t?.closest(LINK));
+    setState(e.target instanceof Element ? e.target : null);
+    kick();
   }, { passive: true });
 
-  document.addEventListener('pointerleave', () => root.classList.add('lx-cursor-out'));
-  document.addEventListener('pointerenter', () => root.classList.remove('lx-cursor-out'));
+  // Content scrolls under a still mouse: refresh the hover state.
+  window.addEventListener('scroll', () => { if (started) setState(document.elementFromPoint(x, y)); }, { passive: true });
+
+  // Leaving the window (or entering an iframe such as payment or login) hides it.
+  document.addEventListener('mouseout', e => { if (!e.relatedTarget) root.classList.add('lx-cursor-out'); });
+  window.addEventListener('blur', () => root.classList.add('lx-cursor-out'));
   window.addEventListener('pointerdown', () => root.classList.add('lx-cursor-down'));
   window.addEventListener('pointerup', () => root.classList.remove('lx-cursor-down'));
-
-  (function loop() {
-    rx += (x - rx) * 0.18;
-    ry += (y - ry) * 0.18;
-    ring.style.transform = `translate3d(${rx.toFixed(1)}px, ${ry.toFixed(1)}px, 0)`;
-    requestAnimationFrame(loop);
-  })();
 }
 
 // Theme preview only: Salla renders links with the store's live domain, which drops the visitor
@@ -146,9 +157,84 @@ function keepPreviewLinks() {
   }, true);
 }
 
+// Countdown blocks: [data-lx-countdown="2026-12-31 23:59"] with <b data-u="d|h|m|s">.
+// Returns false when the date is missing or already past.
+function startCountdown(el) {
+  const end = new Date(String(el.dataset.lxCountdown).trim().replace(' ', 'T'));
+  if (isNaN(end)) return false;
+  const pad = n => String(n).padStart(2, '0');
+  const tick = () => {
+    let s = Math.max(0, Math.floor((end - Date.now()) / 1000));
+    const v = { d: Math.floor(s / 86400), h: Math.floor(s % 86400 / 3600), m: Math.floor(s % 3600 / 60), s: s % 60 };
+    el.querySelectorAll('[data-u]').forEach(b => { b.textContent = salla?.helpers?.number ? salla.helpers.number(pad(v[b.dataset.u])) : pad(v[b.dataset.u]); });
+    return s > 0;
+  };
+  if (!tick()) return false;
+  const id = setInterval(() => { if (!tick()) clearInterval(id); }, 1000);
+  return true;
+}
+
+// Welcome / promotion dialog driven by theme settings (see layouts/master.twig).
+function initPromo() {
+  const box = document.getElementById('lx-promo');
+  if (!box || window.self !== window.top) return;                       // never inside the editor
+  if (document.body.classList.contains('cart') || /checkout/.test(location.pathname)) return;
+
+  const timer = box.querySelector('[data-lx-countdown]');
+  if (box.dataset.ends && timer && !startCountdown(timer)) return;     // offer already over
+
+  const storeKey = 'lx-promo:' + box.dataset.key;
+  const days = Number(box.dataset.days);
+  try {
+    const last = Number(localStorage.getItem(storeKey) || 0);
+    if (last && (days <= 0 ? sessionStorage.getItem(storeKey) : Date.now() - last < days * 864e5)) return;
+  } catch (e) {}
+
+  let lastFocus = null;
+  const close = () => {
+    box.classList.remove('is-open');
+    document.documentElement.classList.remove('lx-promo-open');
+    setTimeout(() => { box.hidden = true; }, 500);
+    lastFocus?.focus?.();
+    document.removeEventListener('keydown', onKey);
+  };
+  const onKey = e => { if (e.key === 'Escape') close(); };
+
+  const open = () => {
+    try { localStorage.setItem(storeKey, String(Date.now())); sessionStorage.setItem(storeKey, '1'); } catch (e) {}
+    lastFocus = document.activeElement;
+    box.hidden = false;
+    requestAnimationFrame(() => box.classList.add('is-open'));
+    document.documentElement.classList.add('lx-promo-open');
+    box.querySelector('.lx-promo__close')?.focus({ preventScroll: true });
+    document.addEventListener('keydown', onKey);
+  };
+
+  box.querySelectorAll('[data-lx-promo-close]').forEach(el => el.addEventListener('click', close));
+  box.querySelector('[data-lx-copy]')?.addEventListener('click', async e => {
+    const btn = e.currentTarget, label = btn.textContent;
+    try { await navigator.clipboard.writeText(btn.dataset.lxCopy); } catch (err) {
+      const r = document.createRange(); r.selectNodeContents(box.querySelector('.lx-promo__code-value'));
+      getSelection().removeAllRanges(); getSelection().addRange(r); document.execCommand('copy');
+    }
+    btn.textContent = btn.dataset.copied;
+    btn.classList.add('is-done');
+    setTimeout(() => { btn.textContent = label; btn.classList.remove('is-done'); }, 1800);
+  });
+
+  // wait for the intro to finish, then the merchant's delay
+  const delay = Math.max(0, Number(box.dataset.delay) || 0) * 1000;
+  const whenReady = () => setTimeout(open, delay);
+  if (document.documentElement.classList.contains('lx-ready')) whenReady();
+  else new MutationObserver((m, obs) => {
+    if (document.documentElement.classList.contains('lx-ready')) { obs.disconnect(); whenReady(); }
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+}
+
 function boot() {
   if (window.__lxBooted) return; // guard against double inclusion
   keepPreviewLinks();
+  initPromo();
   window.__lxBooted = true;
   initHeaderState();
   initReveals();

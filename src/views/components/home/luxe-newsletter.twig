@@ -22,8 +22,18 @@ the editor preview shows a note — never a button that does nothing.
                autocomplete="email" placeholder="{{ trans('blocks.luxe.email') }}">
         <button type="submit" class="lx-btn">{{ trans('blocks.luxe.subscribe') }}</button>
       </form>
-    {% elseif theme.mode == 'preview' %}
-      <p class="lx-newsletter__note" data-lx-reveal>{{ trans('blocks.luxe.newsletter_pending') }}</p>
+    {% else %}
+      {# No mailing service yet: offer the store's real channels instead of a dead form #}
+      {% set wa = store.contacts.whatsapp|default('') %}
+      {% set ig = store.social.instagram|default('') %}
+      {% set tg = store.contacts.telegram|default('') %}
+      {% if wa or ig or tg %}
+        <div class="lx-newsletter__channels" data-lx-reveal>
+          {% if wa %}<a class="lx-btn" target="_blank" rel="noopener" href="https://wa.me/{{ wa|replace({' ': '', '+': ''}) }}">{{ trans('blocks.luxe.join_whatsapp') }}</a>{% endif %}
+          {% if ig %}<a class="lx-btn lx-btn--ghost" target="_blank" rel="noopener" href="{{ ig }}">{{ trans('blocks.luxe.join_instagram') }}</a>{% endif %}
+          {% if tg %}<a class="lx-btn lx-btn--ghost" target="_blank" rel="noopener" href="https://t.me/{{ tg|replace({'@': ''}) }}">{{ trans('blocks.luxe.join_telegram') }}</a>{% endif %}
+        </div>
+      {% endif %}
     {% endif %}
   </div>
 </section>
