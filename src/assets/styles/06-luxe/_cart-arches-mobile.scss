@@ -1,0 +1,154 @@
+/**
+ * LUXE — cart v3 and the season wardrobe on phones
+ */
+
+/* ============ Cart v3 ============ */
+body.cart {
+  .main-content { padding-inline-end: 0; }
+
+  /* each line: photo · details · quantity/total */
+  .cart-item {
+    border-block-end: 1px solid var(--lx-line) !important;
+    padding-block: var(--lx-space-4) !important;
+
+    &:first-of-type { border-block-start: 1px solid var(--lx-line) !important; }
+  }
+
+  .cart-item > div:first-child { margin-block-end: var(--lx-space-2) !important; }
+
+  .cart-item img.flex-none {
+    width: 112px !important;
+    height: 150px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: var(--lx-sand) !important;
+    object-fit: cover;
+
+    @media (max-width: 480px) { width: 92px !important; height: 124px !important; }
+  }
+
+  .cart-item .space-y-1 > :first-child,
+  .cart-item h3,
+  .cart-item h3 a,
+  .cart-item .text-lg {
+    font-family: var(--lx-font-display) !important;
+    font-size: clamp(1.1rem, 1rem + 0.4vw, 1.35rem) !important;
+    font-weight: 400 !important;
+    line-height: 1.35 !important;
+    color: var(--lx-black) !important;
+  }
+
+  .item-price { font-size: var(--lx-fs-base) !important; font-weight: 500; }
+  .item-total { font-size: var(--lx-fs-md); font-weight: 500; color: var(--lx-black); }
+  .text-primary.font-bold { color: var(--lx-black) !important; font-weight: 500 !important; }
+
+  /* quantity / total row */
+  .cart-item .border-t.border-b { border-color: var(--lx-line) !important; }
+
+  salla-quantity-input .s-quantity-input-container {
+    height: 40px;
+    border: 1px solid var(--lx-line) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+  }
+
+  /* item options (size…) as a quiet inline field */
+  .cart-item .s-product-options-wrapper,
+  .cart-item salla-product-options > div,
+  .cart-item .s-product-options-option-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+  }
+
+  .cart-item select { min-height: 40px; max-width: 220px; border-color: var(--lx-line) !important; background-color: transparent !important; }
+
+  /* summary column: sticky sheet */
+  aside, .cart-summary, #cart-summary,
+  .main-content + div {
+    @media (min-width: 1024px) {
+      position: sticky;
+      top: calc(84px + var(--lx-space-3));
+      align-self: flex-start;
+    }
+  }
+
+  .s-cart-summary-card {
+    padding: var(--lx-space-4) !important;
+    background: var(--lx-white) !important;
+  }
+
+  .s-cart-summary-card h3,
+  .s-cart-summary-card h4,
+  .s-cart-summary-card [class*="title"] {
+    font-family: var(--lx-font-display);
+    font-size: var(--lx-fs-md);
+    font-weight: 400;
+    color: var(--lx-black);
+  }
+
+  .s-cart-summary-card [class*="total"] { font-size: var(--lx-fs-md); font-weight: 500; color: var(--lx-black); }
+
+  .s-cart-summary-card .s-button-element {
+    min-height: 56px;
+    background: var(--lx-black) !important;
+    color: var(--lx-white) !important;
+    letter-spacing: 0.04em;
+  }
+
+  /* free shipping progress */
+  #free-shipping { padding: var(--lx-space-3) !important; }
+  #free-shipping .shipping-item { font-family: var(--lx-font-display); font-weight: 400 !important; font-size: var(--lx-fs-md) !important; }
+  #free-shipping [class*="rounded-full"] { height: 2px !important; border-radius: 0 !important; background: var(--lx-line) !important; }
+}
+
+/* ============ Season wardrobe on phones: zigzag, one under another ============ */
+@media (max-width: 599px) {
+  .lx-arches {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    grid-template-columns: 1fr;
+    gap: var(--lx-space-5);
+    overflow: visible;
+    margin-inline: 0;
+    padding: 0;
+    scroll-snap-type: none;
+  }
+
+  .lx-arch {
+    width: 80%;
+    scroll-snap-align: none;
+  }
+
+  .lx-arch:nth-child(even) {
+    margin-inline-start: auto;
+
+    .lx-arch__meta { justify-self: end; text-align: end; }
+  }
+
+  .lx-arch__img { aspect-ratio: 4 / 5; }
+
+  .lx-arch__title { font-size: 1.85rem; }
+}
+
+/* tablets: two columns, second column lowered */
+@media (min-width: 600px) and (max-width: 1023px) {
+  .lx-arches {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--lx-space-4) var(--lx-space-3);
+    overflow: visible;
+    margin-inline: 0;
+    padding: 0 0 var(--lx-space-5);
+    scroll-snap-type: none;
+
+    > .lx-arch:nth-child(even) { transform: translateY(var(--lx-space-5)); }
+  }
+}
+
+@media (min-width: 600px) and (max-width: 1023px) {
+  .lx-js .lx-arch[data-lx-reveal]:nth-child(even) { transform: translateY(calc(var(--lx-space-5) + 28px)); }
+  .lx-js .lx-arch[data-lx-reveal].is-revealed:nth-child(even) { transform: translateY(var(--lx-space-5)); }
+}

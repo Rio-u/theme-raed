@@ -1,0 +1,74 @@
+/**
+ * LUXE — product page v2
+ * Desktop: stacked editorial gallery (one large, then pairs) + a sticky purchase column.
+ * Phones/tablets: Salla's swipe slider, untouched.
+ */
+.lx-gallery { display: none; }
+
+@media (min-width: 1024px) {
+  body.product-single .sidebar:has(.lx-gallery) {
+    position: static !important;
+    overflow: visible !important;
+    width: 60% !important;
+
+    .details-slider { display: none; }
+  }
+
+  body.product-single .main-content {
+    width: 40% !important;
+    max-width: 30rem;
+    align-self: flex-start;
+    position: sticky !important;
+    top: calc(84px + var(--lx-space-3)) !important;
+  }
+
+  .lx-gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .lx-gallery__item {
+    margin: 0;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background: var(--lx-sand);
+
+    img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.4s var(--lx-ease); }
+
+    /* first photo spans both columns; if the count is even, the last one does too */
+    &:first-child { grid-column: 1 / -1; aspect-ratio: 4 / 5; }
+  }
+
+  .lx-gallery[data-count="2"] .lx-gallery__item:last-child,
+  .lx-gallery[data-count="4"] .lx-gallery__item:last-child,
+  .lx-gallery[data-count="6"] .lx-gallery__item:last-child { grid-column: 1 / -1; aspect-ratio: 4 / 5; }
+}
+
+@media (hover: hover) and (min-width: 1024px) {
+  .lx-gallery__item:hover img { transform: scale(1.03); }
+}
+
+/* ---- information column refinements ---- */
+body.product-single .main-content > h1 {
+  font-size: clamp(2rem, 1.5rem + 1.6vw, 3rem) !important;
+  line-height: 1.15 !important;
+}
+
+body.product-single .lx-product-eyebrow {
+  align-self: flex-start;
+  padding-block-end: 0.2rem;
+  border-block-end: 1px solid var(--lx-line);
+}
+
+/* breadcrumbs sit quietly above the info column on desktop */
+@media (min-width: 1024px) {
+  body.product-single .container--breadcrumbs .breadcrumbs { padding-block: var(--lx-space-2) var(--lx-space-3); }
+}
+
+/* mobile: the slider bleeds edge to edge */
+@media (max-width: 1023px) {
+  body.product-single .container--product-details { padding-inline: 0; }
+  body.product-single .main-content { padding-inline: var(--lx-gutter); }
+  body.product-single .details-slider .swiper-slide img { aspect-ratio: 3 / 4; object-fit: cover; }
+}

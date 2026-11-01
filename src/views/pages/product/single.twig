@@ -106,6 +106,18 @@
     <div class="container container--product-details">
         <div class="flex flex-col items-start md:flex-row" id="product-{{ product.id }}">
             <div class="sidebar md:sticky top-24 w-full md:!w-2/4 rtl:ml-8 ltr:mr-8 mb-5 md:mb-0 overflow-hidden shrink-0">
+                {# LUXE: desktop editorial gallery — every photo laid out, the purchase column stays beside it.
+                   Phones/tablets keep Salla's swipe slider below. #}
+                {% set lx_gallery = product.images|filter(i => not i.video_url and not i.three_d_image_url) %}
+                {% if lx_gallery|length > 1 %}
+                    <div class="lx-gallery" data-count="{{ lx_gallery|length }}">
+                        {% for image in lx_gallery %}
+                            <figure class="lx-gallery__item" data-lx-reveal="image">
+                                <img src="{{ image.url }}" alt="{{ image.alt|default(product.name) }}" {{ loop.first ? 'fetchpriority="high" loading="eager"' : 'loading="lazy"' }}>
+                            </figure>
+                        {% endfor %}
+                    </div>
+                {% endif %}
                 {% set has_many_images = product.images|length > 1 %}
                 <salla-slider
                         data-testid="store-product-image-slider"

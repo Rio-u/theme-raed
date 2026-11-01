@@ -49,6 +49,14 @@ class ProductCard extends HTMLElement {
     return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
   } 
 
+  // LUXE: discount as a percentage chip, from the card's own sale/regular prices
+  getDiscountChip() {
+    const sale = Number(this.product?.sale_price), regular = Number(this.product?.regular_price);
+    if (!this.product?.is_on_sale || !sale || !regular || regular <= sale) return '';
+    const pct = Math.round((1 - sale / regular) * 100);
+    return pct >= 1 ? `<span class="s-product-card-discount">-${salla.helpers.number(pct)}%</span>` : '';
+  }
+
   getProductBadge() {
     if (this.product?.preorder?.label) {
       return `<div class="s-product-card-promotion-title">${this.product.preorder.label}</div>`
@@ -194,6 +202,7 @@ class ProductCard extends HTMLElement {
               loading="lazy"
             />
             ${!this.fullImage && !this.minimal ? this.getProductBadge() : ''}
+            ${!this.fullImage && !this.minimal ? this.getDiscountChip() : ''}
           </a>
           ${this.fullImage ? `<a href="${this.product?.url}" aria-label=${this.product.name} class="s-product-card-overlay"></a>`:''}
           ${!this.horizontal && !this.fullImage ?

@@ -1,0 +1,139 @@
+/**
+ * LUXE — product card v2
+ * Centred caption, discount chip, add-to-cart living on the photo:
+ *   mouse  → a full-width bar that rises from the bottom of the image on hover
+ *   touch  → a round bag button in the image corner, always visible
+ * The card is a size container so the button can sit on the image's bottom edge
+ * (image height = card width × 4/3 → 133.33cqw).
+ */
+body.theme-raed .s-product-card-vertical {
+  position: relative;
+  container-type: inline-size;
+}
+
+/* ---- image frame ---- */
+body.theme-raed .s-product-card-vertical .s-product-card-image {
+  isolation: isolate;
+
+  &::after {                      /* hairline inner frame */
+    content: "";
+    position: absolute;
+    inset: 8px;
+    z-index: 1;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.6s var(--lx-ease);
+  }
+}
+
+@media (hover: hover) {
+  body.theme-raed .s-product-card-vertical:hover .s-product-card-image::after { opacity: 1; }
+}
+
+/* ---- discount chip ---- */
+body.theme-raed .s-product-card-discount {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 0.75rem;
+  inset-inline-start: 0.75rem;
+  padding: 0.25rem 0.55rem;
+  background: var(--lx-sale);
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  direction: ltr;
+}
+
+/* promotion text moves under the chip when both exist */
+body.theme-raed .s-product-card-image:has(.s-product-card-discount) .s-product-card-promotion-title { top: 2.5rem; }
+
+/* ---- centred caption ---- */
+body.theme-raed .s-product-card-vertical .s-product-card-content {
+  padding-block-start: 1rem;
+  text-align: center !important;
+  align-items: center;
+}
+
+body.theme-raed .s-product-card-vertical .s-product-card-content-main,
+body.theme-raed .s-product-card-vertical .s-product-card-content-title,
+body.theme-raed .s-product-card-vertical .s-product-card-content-title a { text-align: center !important; width: 100%; }
+
+body.theme-raed .s-product-card-vertical .s-product-card-content-title a {
+  font-family: var(--lx-font-display);
+  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.1rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+body.theme-raed .s-product-card-vertical .s-product-card-content-subtitle { display: none; }
+
+body.theme-raed .s-product-card-vertical .s-product-card-content-sub {
+  justify-content: center;
+  margin-block-end: 0;
+}
+
+body.theme-raed .s-product-card-vertical .s-product-card-sale-price {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  h4 { font-size: var(--lx-fs-base); }
+  span { font-size: var(--lx-fs-xs); }
+}
+
+body.theme-raed .s-product-card-vertical .s-product-card-rating { display: none; }
+
+/* ---- add to cart on the photo ---- */
+body.theme-raed .s-product-card-vertical .s-product-card-content-footer {
+  position: absolute;
+  z-index: 3;
+  inset-inline: 0.75rem;
+  top: calc(133.33cqw - 3.5rem);
+  margin: 0;
+  opacity: 1;
+  transform: none;
+}
+
+body.theme-raed .s-product-card-vertical .s-product-card-content-footer .s-button-element {
+  min-height: 44px;
+  border: 0 !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  color: #111111 !important;
+  font-size: 12px;
+  backdrop-filter: blur(6px);
+
+  &:hover { background: #111111 !important; color: #FFFFFF !important; }
+}
+
+/* mouse: the bar rises on hover */
+@media (hover: hover) and (pointer: fine) {
+  body.theme-raed .s-product-card-vertical .s-product-card-content-footer {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.45s var(--lx-ease), transform 0.45s var(--lx-ease);
+  }
+  body.theme-raed .s-product-card-vertical:hover .s-product-card-content-footer,
+  body.theme-raed .s-product-card-vertical:focus-within .s-product-card-content-footer { opacity: 1; transform: none; }
+}
+
+/* touch: a round bag button in the corner */
+@media (hover: none), (pointer: coarse) {
+  body.theme-raed .s-product-card-vertical .s-product-card-content-footer {
+    inset-inline: auto 0.6rem;
+    inset-inline-start: auto;
+    top: calc(133.33cqw - 3.1rem);
+    width: 40px;
+  }
+
+  body.theme-raed .s-product-card-vertical .s-product-card-content-footer .s-button-element {
+    width: 40px;
+    min-height: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 999px !important;
+
+    span { display: none; }
+    i { display: inline-block !important; font-size: 1.05rem; margin: 0; }
+  }
+}
