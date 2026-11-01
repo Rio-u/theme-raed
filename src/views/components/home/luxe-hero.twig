@@ -35,9 +35,9 @@
     {% if not component.full_bleed %}
       {% set seal_href = has_cta ? component.cta_url : '#lx-after-hero' %}
       <a href="{{ seal_href }}" class="lx-seal" data-lx-magnetic aria-label="{{ component.cta_text|default(component.title) }}">
-        <svg class="lx-seal__ring" viewBox="0 0 200 200" aria-hidden="true">
+        <svg class="lx-seal__ring" viewBox="0 0 200 200" aria-hidden="true" direction="ltr">
           <defs><path id="lx-seal-path-{{ position }}" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
-          <text><textPath href="#lx-seal-path-{{ position }}" startOffset="0">{{ badge|upper }}{{ badge|upper }}</textPath></text>
+          <text direction="ltr"><textPath href="#lx-seal-path-{{ position }}" startOffset="0" textLength="486" lengthAdjust="spacing">{{ badge|upper }}</textPath></text>
         </svg>
         <svg class="lx-seal__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>

@@ -125,10 +125,11 @@ html.lx-dark .lx-hero__bigword { -webkit-text-stroke-color: rgba(244, 240, 234, 
   width: 100%;
   height: 100%;
   animation: lx-spin 22s linear infinite;
+  direction: ltr;
   text {
     font-family: var(--lx-font-sans);
-    font-size: 12.5px;
-    letter-spacing: 0.32em;
+    font-size: 12px;
+    font-weight: 500;
     fill: currentColor;
   }
 }

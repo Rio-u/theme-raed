@@ -338,6 +338,14 @@ function initIndexFloat() {
       link.addEventListener('pointerleave', () => fig.classList.remove('is-on'));
     });
     sec.addEventListener('pointermove', e => { x = e.clientX; y = e.clientY; });
+    // content can scroll under a still pointer: no pointerleave fires, so drop the preview
+    sec.addEventListener('pointerleave', () => fig.classList.remove('is-on'));
+    addEventListener('scroll', () => {
+      if (!fig.classList.contains('is-on')) return;
+      const under = document.elementFromPoint(x, y)?.closest('.lx-index__link');
+      if (!under || !sec.contains(under)) fig.classList.remove('is-on');
+      else if (img.getAttribute('src') !== under.dataset.image) img.src = under.dataset.image;
+    }, { passive: true });
   });
 }
 
