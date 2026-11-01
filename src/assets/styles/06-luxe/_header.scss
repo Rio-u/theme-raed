@@ -364,7 +364,7 @@
 
   body.index:has(.lx-hero--triptych) .lx-mainnav:not(.fixed-pinned) .inner {
     background: linear-gradient(to bottom, rgba(10, 9, 8, 0.38), rgba(10, 9, 8, 0));
-    border-color: transparent;
+    border-block-end: 0;   /* a transparent border still paints the gradient: shows as a line */
     color: #FFFFFF;
 
     .lx-brand, .lx-icon-btn, .lx-brand__word, .s-user-menu-trigger, .lx-cart__icon { color: #FFFFFF !important; }
@@ -372,4 +372,11 @@
     .lx-nav .main-menu > li.root-level > a { color: #FFFFFF; }
     .lx-nav .main-menu > li > a[href*="offer"] { color: #F3D9C9; }
   }
+}
+
+/* mmenu-light draws item separators (li::after) and a navbar title even on desktop */
+@media (min-width: 1025px) {
+  .lx-bar .mm-spn li::after,
+  .lx-bar .mm-spn::before,
+  .lx-bar .mm-spn::after { display: none !important; }
 }
