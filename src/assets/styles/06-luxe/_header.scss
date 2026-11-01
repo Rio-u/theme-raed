@@ -255,3 +255,16 @@
     }
   }
 }
+
+/* mmenu close buttons: Raed paints them red */
+.mobile-menu .btn--close,
+.btn--close-sm {
+  background: var(--lx-black) !important;
+  color: var(--lx-white) !important;
+  border-radius: 0 !important;
+}
+
+@media (max-width: 1024px) {
+  .mm-ocd .mm-spn a,
+  .mm-ocd .mm-spn span { font-size: var(--lx-fs-base); }
+}

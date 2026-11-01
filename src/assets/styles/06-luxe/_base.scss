@@ -229,3 +229,24 @@ body.theme-raed textarea {
     transition: none;
   }
 }
+
+/* ---------- Arabic: letter-spacing breaks cursive joining ----------
+   Tracking is a Latin device; on RTL pages reset it everywhere except Latin-only wordmarks. */
+[dir="rtl"] {
+  .lx-eyebrow,
+  .lx-link,
+  .lx-btn,
+  .lx-announce,
+  .lx-nav .main-menu a,
+  .lx-footer__title,
+  .lx-footer__bottom,
+  .mm-ocd .mm-spn a,
+  .mm-ocd .mm-spn span,
+  .lx-intro__tag { letter-spacing: 0; text-transform: none; }
+
+  .lx-eyebrow,
+  .lx-link,
+  .lx-btn,
+  .lx-nav .main-menu > li.root-level > a,
+  .lx-footer__title { font-size: var(--lx-fs-sm); }
+}

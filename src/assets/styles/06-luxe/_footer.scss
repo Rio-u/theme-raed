@@ -155,3 +155,10 @@
 .lx-footer .s-payments-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem; margin: 0; }
 .lx-footer .s-payments-list-item { background: var(--lx-ivory); border-radius: 2px; padding: 2px 4px; height: 26px; }
 .lx-footer .s-payments-list-item img { height: 100%; width: auto; }
+
+/* Hide a column whose Twilight list came back empty (e.g. no footer menu configured) */
+.lx-footer__col:has(.s-menu-footer-list:empty),
+.lx-footer__col:has(.s-contacts-list:empty) { display: none; }
+
+.lx-header .s-user-menu-trigger-avatar-only,
+.lx-header .s-user-menu-avatar-wrap { border: 0; box-shadow: none; background: none; }

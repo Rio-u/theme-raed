@@ -38,8 +38,11 @@
   letter-spacing: 0.32em;
   text-transform: uppercase;
   white-space: nowrap;
+  /* the wordmark is Latin: per-letter spans would be laid out right-to-left on RTL pages */
+  direction: ltr;
+  unicode-bidi: isolate;
   /* letter-spacing adds trailing space after the last glyph; pull it back to stay optically centred */
-  margin-inline-end: -0.32em;
+  margin-right: -0.32em;
 
   img { max-height: 64px; width: auto; }
 }
