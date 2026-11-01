@@ -349,7 +349,7 @@
     ],
     "components": [
         {
-            "key": "a1f0c001-luxe-0000-0000-hero00000001",
+            "key": "7c1e4a52-3b9d-4f0e-9a61-2d8c5f7b1e01",
             "path": "home.luxe-hero",
             "icon": "sicon-image",
             "title": {
@@ -511,7 +511,7 @@
             "is_default": true
         },
         {
-            "key": "a1f0c001-luxe-0000-0000-marquee00001",
+            "key": "7c1e4a52-3b9d-4f0e-9a61-2d8c5f7b1e02",
             "path": "home.luxe-marquee",
             "icon": "sicon-arrow-left",
             "title": {
@@ -544,7 +544,7 @@
             "is_default": true
         },
         {
-            "key": "a1f0c001-luxe-0000-0000-cats00000001",
+            "key": "7c1e4a52-3b9d-4f0e-9a61-2d8c5f7b1e03",
             "path": "home.luxe-categories",
             "icon": "sicon-layout-grid",
             "title": {
@@ -694,7 +694,7 @@
             "is_default": true
         },
         {
-            "key": "a1f0c001-luxe-0000-0000-products0001",
+            "key": "7c1e4a52-3b9d-4f0e-9a61-2d8c5f7b1e04",
             "path": "home.luxe-products",
             "icon": "sicon-shopping-bag",
             "title": {
@@ -832,7 +832,7 @@
             "is_default": true
         },
         {
-            "key": "a1f0c001-luxe-0000-0000-editorial001",
+            "key": "7c1e4a52-3b9d-4f0e-9a61-2d8c5f7b1e05",
             "path": "home.luxe-editorial",
             "icon": "sicon-image-text",
             "title": {
@@ -983,7 +983,7 @@
             "is_default": true
         },
         {
-            "key": "a1f0c001-luxe-0000-0000-story0000001",
+            "key": "7c1e4a52-3b9d-4f0e-9a61-2d8c5f7b1e06",
             "path": "home.luxe-story",
             "icon": "sicon-quote-open",
             "title": {
@@ -1047,7 +1047,7 @@
             "is_default": true
         },
         {
-            "key": "a1f0c001-luxe-0000-0000-newsletter01",
+            "key": "7c1e4a52-3b9d-4f0e-9a61-2d8c5f7b1e07",
             "path": "home.luxe-newsletter",
             "icon": "sicon-mail",
             "title": {
