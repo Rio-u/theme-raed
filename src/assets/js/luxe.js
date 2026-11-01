@@ -231,9 +231,31 @@ function initPromo() {
   }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 }
 
+// Recently viewed: product pages record their id in this browser and show the previous ones
+// through Salla's own products slider (source="selected"), so prices/stock stay live.
+function initRecentlyViewed() {
+  const box = document.querySelector('[data-lx-recent]');
+  if (!box) return;
+  const current = Number(box.dataset.lxRecent);
+  let ids = [];
+  try { ids = JSON.parse(localStorage.getItem('lx-recent') || '[]').filter(Number.isFinite); } catch (e) {}
+  const others = ids.filter(id => id !== current).slice(0, 10);
+  try { localStorage.setItem('lx-recent', JSON.stringify([current, ...others].slice(0, 12))); } catch (e) {}
+  if (others.length < 2) return; // not worth a row yet
+
+  const slider = document.createElement('salla-products-slider');
+  slider.setAttribute('source', 'selected');
+  slider.setAttribute('source-value', JSON.stringify(others));
+  slider.setAttribute('block-title', box.dataset.title || '');
+  slider.setAttribute('slider-id', 'lx-recent-slider');
+  box.appendChild(slider);
+  box.hidden = false;
+}
+
 function boot() {
   if (window.__lxBooted) return; // guard against double inclusion
   keepPreviewLinks();
+  initRecentlyViewed();
   initPromo();
   window.__lxBooted = true;
   initHeaderState();

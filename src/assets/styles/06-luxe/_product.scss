@@ -212,3 +212,223 @@ body.product-single .s-product-options-option-container {
   padding-inline: 0 !important;
 }
 body.product-single .s-product-options-option-container { border-block-end: 1px solid var(--lx-line); }
+
+/* =====================================================================
+   Purchase column v2 (order set in single.twig):
+   eyebrow · title · live price · options · quantity + buttons · payments · accordions
+   ===================================================================== */
+body.product-single .main-content {
+  display: flex;
+  flex-direction: column;
+
+  .lx-product-eyebrow { margin-block-end: 0.35rem; }
+  > h1 { margin-block-end: var(--lx-space-1) !important; }
+  > small.color-grey { order: 0; font-size: var(--lx-fs-xs); color: var(--lx-gray) !important; }
+}
+
+/* Live price (updates with the selected variant) */
+body.product-single .lx-price-block {
+  display: block;
+  margin: var(--lx-space-1) 0 var(--lx-space-3);
+  padding: 0;
+  border: 0 !important;
+  background: none !important;
+
+  .center-between { display: block; }
+  .form-label { display: none; }                    /* "السعر" label: the number speaks */
+
+  .price-wrapper { align-items: baseline; gap: 0.9rem; flex-wrap: wrap; }
+  .price_is_on_sale { display: inline-flex; align-items: baseline; gap: 0.75rem; }
+  .price_is_on_sale.hidden, .starting-or-normal-price.hidden { display: none; }
+
+  .total-price {
+    font-family: var(--lx-font-sans);
+    font-size: clamp(1.75rem, 1.35rem + 1.2vw, 2.4rem) !important;
+    font-weight: 500 !important;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--lx-black) !important;
+  }
+
+  .total-price.text-red-800 { color: var(--lx-sale) !important; }
+  .before-price { font-size: var(--lx-fs-md); color: var(--lx-gray) !important; }
+  .starting-price-title { font-size: var(--lx-fs-sm); color: var(--lx-gray); }
+
+  .out-of-stock { opacity: 1 !important; font-size: var(--lx-fs-sm); color: var(--lx-sale); }
+}
+
+
+/* Options */
+body.product-single .product-form {
+  .s-product-options-wrapper { border-block-start: 1px solid var(--lx-line); }
+
+  .s-product-options-option-container {
+    display: grid;
+    gap: 0.6rem;
+    padding-block: var(--lx-space-3) !important;
+  }
+
+  .s-product-options-option-label,
+  .form-label { display: flex; align-items: baseline; gap: 0.35rem; font-size: var(--lx-fs-sm); color: var(--lx-black); }
+
+  select, .s-form-control { width: 100%; min-height: 50px; padding-inline: 1rem; font-size: var(--lx-fs-base); }
+}
+
+/* Quantity row + buttons */
+body.product-single .sticky-product-bar {
+  padding: var(--lx-space-3) 0 0 !important;
+  border: 0 !important;
+}
+
+body.product-single .sticky-product-bar__quantity {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-block-end: var(--lx-space-2) !important;
+
+  .form-label { font-size: var(--lx-fs-sm); font-weight: 500; }
+}
+
+body.product-single salla-quantity-input .s-quantity-input-container {
+  height: 46px;
+  border: 1px solid var(--lx-line);
+  .s-quantity-input-button { width: 44px; height: 44px; color: var(--lx-black); }
+  .s-quantity-input-input { width: 48px; font-size: var(--lx-fs-base); font-weight: 500; }
+}
+
+body.product-single .sticky-product-bar__btn { margin-top: 0 !important; }
+
+/* Add to cart + quick buy: stacked, full width — the Apple Pay sheet lives in the second one */
+body.product-single .sticky-product-bar__btn .s-add-product-button-with-quick-buy,
+body.product-single .sticky-product-bar__btn > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+body.product-single .sticky-product-bar__btn salla-quick-buy,
+body.product-single .sticky-product-bar__btn .s-quick-buy-button,
+body.product-single .sticky-product-bar__btn salla-button { width: 100%; }
+
+body.product-single .sticky-product-bar__btn .s-button-element {
+  width: 100%;
+  min-height: 54px;
+  border-radius: 0 !important;
+  font-size: var(--lx-fs-sm);
+  font-weight: 500;
+}
+
+body.product-single .s-quick-buy-button .s-button-element {
+  background: transparent !important;
+  border: 1px solid var(--lx-black) !important;
+  color: var(--lx-black) !important;
+}
+
+body.product-single .s-quick-buy-apple-pay,
+body.product-single .s-quick-buy-apple-pay apple-pay-button {
+  width: 100%;
+  min-height: 54px;
+  border-radius: 0;
+  --apple-pay-button-height: 54px;
+  --apple-pay-button-border-radius: 0;
+}
+
+/* Payment reassurance */
+body.product-single .lx-pay-note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0.75rem;
+  margin-block: var(--lx-space-2) var(--lx-space-1);
+  padding-block: var(--lx-space-2);
+  border-block-end: 1px solid var(--lx-line);
+
+  .lx-pay-note__label { font-size: var(--lx-fs-xs); color: var(--lx-gray); }
+  .s-payments-list { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0; justify-content: center; }
+  .s-payments-list-item { height: 24px; padding: 3px 5px; border: 1px solid var(--lx-line); border-radius: 4px; background: #FFFFFF; img { height: 100%; width: auto; } }
+}
+
+/* Installment widget (Tabby / Tamara) sits quietly under the price */
+body.product-single salla-installment { display: block; margin-block-end: var(--lx-space-2); }
+
+/* Accordions */
+.lx-acc-group { margin-block-start: var(--lx-space-2); }
+
+.lx-acc {
+  border-block-end: 1px solid var(--lx-line);
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 1.1rem;
+    font-size: var(--lx-fs-sm);
+    font-weight: 500;
+    color: var(--lx-black);
+    cursor: pointer;
+    list-style: none;
+
+    &::-webkit-details-marker { display: none; }
+    &::after {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-inline-end: 1px solid currentColor;
+      border-block-end: 1px solid currentColor;
+      transform: rotate(45deg) translateY(-3px);
+      transition: transform var(--lx-dur) var(--lx-ease);
+    }
+  }
+
+  &[open] > &__head::after { transform: rotate(-135deg) translateY(-2px); }
+
+  &__body { padding-block-end: var(--lx-space-3); font-size: var(--lx-fs-sm); line-height: 1.9; color: var(--lx-gray); }
+}
+
+body.product-single .lx-acc .product__description {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+}
+
+/* SKU / barcode: clean two-column rows instead of a wrapped grid */
+body.product-single .lx-acc {
+  .product-sku-wrapper,
+  .product-barcode-wrapper { margin: 0 0 0.5rem !important; }
+
+  .product-sku-wrapper > div,
+  .product-barcode-wrapper > div {
+    display: flex !important;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 0 !important;
+    border: 0 !important;
+    background: none !important;
+    font-size: var(--lx-fs-sm);
+
+    i { display: none; }
+    > div:first-child { color: var(--lx-gray); }
+  }
+
+  .product-sku, .product-barcode { direction: ltr; word-break: normal; overflow-wrap: anywhere; color: var(--lx-black); text-align: end; }
+
+  a[href*="tag"] { text-decoration: none !important; }
+}
+
+.lx-share-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 1rem;
+  font-size: var(--lx-fs-sm);
+  color: var(--lx-black);
+
+  > div { margin: 0 !important; gap: 0.5rem; }
+  salla-social-share { margin: 0 !important; }
+}
+
+/* Related sliders: hide when empty (recently-viewed shows itself from JS) */
+body.product-single .lx-related:not(.lx-recent):not(:has(custom-salla-product-card, .s-product-card-entry)) { display: none; }
+body.product-single .lx-related { margin-block-start: var(--lx-section); }
+body.product-single .lx-related + .lx-related { margin-block-start: var(--lx-space-5); }

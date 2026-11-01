@@ -37,7 +37,13 @@
       "hours": "ساعة",
       "minutes": "دقيقة",
       "seconds": "ثانية",
-      "shop_now": "تسوّقي الآن"
+      "shop_now": "تسوّقي الآن",
+      "secure_payment": "دفع آمن عبر",
+      "description": "الوصف",
+      "details": "تفاصيل المنتج",
+      "share": "مشاركة",
+      "same_category": "من نفس المجموعة",
+      "recently_viewed": "شاهدتِها مؤخراً"
     }
   },
   "pages": {

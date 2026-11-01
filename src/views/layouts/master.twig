@@ -127,17 +127,23 @@
 </noscript>
 {# LUXE: signature intro. Hidden by CSS when skipped; hides itself after 4.5s if JS fails. #}
 <div class="lx-intro" id="lx-intro" aria-hidden="true">
-    <div class="lx-intro__mark">
-        {% if lx_wordmark %}
-            {% for ch in lx_wordmark|split('') %}<span style="--i: {{ loop.index0 }}">{{ ch }}</span>{% endfor %}
-        {% else %}
-            <img src="{{ store.logo }}" alt="">
-        {% endif %}
-    </div>
-    <div class="lx-intro__tag">{{ theme.settings.get('lx_intro_tagline', 'New Season') }}</div>
-    <div class="lx-intro__progress">
-        <span class="lx-intro__line"><i></i></span>
-        <span class="lx-intro__pct">0</span>
+    <div class="lx-intro__curtain"></div>
+    <div class="lx-intro__panel">
+        <div class="lx-intro__top">
+            <span>{{ theme.settings.get('lx_intro_tagline', 'New Season') }}</span>
+            <span>{{ "now"|date("Y") }}</span>
+        </div>
+        <div class="lx-intro__mark">
+            {% if lx_wordmark %}
+                {% for ch in lx_wordmark|split('') %}<span class="lx-intro__m"><span style="--i: {{ loop.index0 }}">{{ ch }}</span></span>{% endfor %}
+            {% else %}
+                <img src="{{ store.logo }}" alt="">
+            {% endif %}
+        </div>
+        <div class="lx-intro__bottom">
+            <span class="lx-intro__pct">000</span>
+            <span class="lx-intro__line"><i></i></span>
+        </div>
     </div>
 </div>
 <script data-cfasync="false">
@@ -161,12 +167,14 @@
             if (finished) return;
             finished = true;
             line.style.setProperty('--p', 1); pct.textContent = '100';
+            // 1) letters lift away  2) ivory panel wipes up  3) sand curtain follows, revealing the page
+            setTimeout(function () { el.classList.add('is-leaving'); }, 250);
             setTimeout(function () {
                 el.classList.add('is-done');
                 h.classList.add('lx-ready');
                 h.classList.remove('lx-intro-active');
-                setTimeout(function () { el.remove(); }, 1200);
-            }, 180);
+                setTimeout(function () { el.remove(); }, 1600);
+            }, reduced ? 250 : 750);
         }
 
         (function tick() {
@@ -175,7 +183,7 @@
                 target = loaded ? Math.min(1, t / MIN) : Math.min(0.9, t / MAX);
             shown += (target - shown) * 0.18;
             line.style.setProperty('--p', shown.toFixed(3));
-            pct.textContent = Math.round(shown * 100);
+            pct.textContent = ('00' + Math.round(shown * 100)).slice(-3);
             if ((loaded && t >= MIN) || t >= MAX) return finish();
             w.requestAnimationFrame(tick);
         })();

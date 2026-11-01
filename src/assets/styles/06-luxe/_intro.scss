@@ -1,116 +1,153 @@
 /**
  * LUXE — signature intro (first visit per session)
+ * Layers: sand curtain (behind) + ivory panel (front, holds the stage).
+ * Sequence: letters rise from masks → counter + hairline fill → letters lift away →
+ * panel wipes up → curtain follows 150ms later, uncovering the page.
  * Markup + driver script live in layouts/master.twig so they run before app.js.
- * Fail-safe: the overlay hides itself via CSS after 4.5s even if JS never runs.
+ * Fail-safe: hides itself via CSS after 4.5s even if JS never runs.
  */
 .lx-intro {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1.75rem;
-  background: var(--lx-ivory);
-  color: var(--lx-black);
-  clip-path: inset(0 0 0 0);
+  pointer-events: auto;
   animation: lx-intro-failsafe 0.6s ease 4.5s forwards;
-  transition: clip-path 1.1s var(--lx-ease-in-out), visibility 0s linear 1.1s;
 }
 
 .lx-intro-skip .lx-intro { display: none; }
 
-.lx-intro.is-done {
-  clip-path: inset(0 0 100% 0);
-  visibility: hidden;
-  pointer-events: none;
+.lx-intro__curtain,
+.lx-intro__panel {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 1s var(--lx-ease-in-out);
 }
 
+.lx-intro__curtain { background: var(--lx-sand); transition-delay: 0.15s; }
+
+.lx-intro__panel {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: clamp(1.25rem, 3vw, 2.5rem) var(--lx-gutter);
+  background: var(--lx-ivory);
+  color: var(--lx-black);
+}
+
+.lx-intro.is-done {
+  pointer-events: none;
+  .lx-intro__panel,
+  .lx-intro__curtain { clip-path: inset(0 0 100% 0); }
+}
+
+/* ---- top line ---- */
+.lx-intro__top {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--lx-fs-xs);
+  letter-spacing: var(--lx-tracking-wide);
+  text-transform: uppercase;
+  color: var(--lx-gray);
+  direction: ltr;
+  opacity: 0;
+  animation: lx-intro-fade 0.9s var(--lx-ease) 0.2s forwards;
+}
+
+/* ---- wordmark ---- */
 .lx-intro__mark {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 3.5rem;
+  align-self: center;
   font-family: var(--lx-font-display);
-  font-size: clamp(1.75rem, 1.2rem + 2.4vw, 3rem);
+  font-size: clamp(2.5rem, 1.2rem + 6.5vw, 7.5rem);
   font-weight: 400;
-  letter-spacing: 0.32em;
+  line-height: 1;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   white-space: nowrap;
-  /* the wordmark is Latin: per-letter spans would be laid out right-to-left on RTL pages */
-  direction: ltr;
+  direction: ltr;               /* Latin wordmark: keep letter order on RTL pages */
   unicode-bidi: isolate;
-  /* letter-spacing adds trailing space after the last glyph; pull it back to stay optically centred */
-  margin-right: -0.32em;
 
-  img { max-height: 64px; width: auto; }
+  img { max-height: 96px; width: auto; }
 }
 
-.lx-intro__mark span {
+.lx-intro__m {
   display: inline-block;
-  white-space: pre;
-  opacity: 0;
-  transform: translateY(0.4em);
-  animation: lx-intro-letter 0.9s var(--lx-ease) forwards;
-  animation-delay: calc(var(--i, 0) * 60ms + 150ms);
+  overflow: hidden;
+  padding-block: 0.06em 0.12em;
+
+  > span {
+    display: inline-block;
+    white-space: pre;
+    transform: translateY(110%);
+    animation: lx-intro-rise 1s var(--lx-ease) forwards;
+    animation-delay: calc(var(--i, 0) * 70ms + 250ms);
+  }
 }
 
-.lx-intro__tag {
-  font-size: var(--lx-fs-xs);
-  letter-spacing: var(--lx-tracking-wide);
-  text-transform: uppercase;
-  color: var(--lx-text-muted);
-  opacity: 0;
-  animation: lx-intro-fade 0.9s var(--lx-ease) 0.6s forwards;
+.lx-intro.is-leaving .lx-intro__m > span {
+  animation: none;
+  transform: translateY(-110%);
+  transition: transform 0.7s var(--lx-ease-in-out);
+  transition-delay: calc(var(--i, 0) * 30ms);
 }
 
-.lx-intro__progress {
-  display: flex;
-  align-items: center;
+/* ---- bottom: counter + hairline ---- */
+.lx-intro__bottom {
+  display: grid;
   gap: 1rem;
-  width: min(240px, 60vw);
-  font-size: 10px;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.12em;
-  color: var(--lx-text-muted);
+  direction: ltr;
   opacity: 0;
-  animation: lx-intro-fade 0.6s ease 0.3s forwards;
+  animation: lx-intro-fade 0.9s var(--lx-ease) 0.35s forwards;
+}
+
+.lx-intro__pct {
+  justify-self: start;
+  font-family: var(--lx-font-display);
+  font-size: clamp(2.5rem, 1.6rem + 3vw, 4.5rem);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  color: var(--lx-taupe);
 }
 
 .lx-intro__line {
   position: relative;
-  flex: 1;
+  display: block;
   height: 1px;
   background: var(--lx-line);
   overflow: hidden;
+
+  i {
+    position: absolute;
+    inset: 0;
+    background: var(--lx-black);
+    transform: scaleX(var(--p, 0));
+    transform-origin: left;
+    transition: transform 0.25s linear;
+  }
 }
 
-.lx-intro__line i {
-  position: absolute;
-  inset: 0;
-  background: var(--lx-black);
-  transform: scaleX(var(--p, 0));
-  transform-origin: right;
-  transition: transform 0.25s linear;
-
-  [dir="ltr"] & { transform-origin: left; }
+.lx-intro.is-leaving {
+  .lx-intro__top,
+  .lx-intro__bottom { opacity: 0; transition: opacity 0.4s ease; animation: none; }
 }
-
-.lx-intro__pct { min-width: 2.5em; text-align: end; }
 
 /* Lock scrolling only while the intro is on screen */
 html.lx-intro-active,
 html.lx-intro-active body { overflow: hidden; }
 
-@keyframes lx-intro-letter { to { opacity: 1; transform: none; } }
+@keyframes lx-intro-rise { to { transform: none; } }
 @keyframes lx-intro-fade { to { opacity: 1; } }
 @keyframes lx-intro-failsafe { to { opacity: 0; visibility: hidden; pointer-events: none; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .lx-intro { transition: opacity 0.3s ease, visibility 0s linear 0.3s; }
-  .lx-intro.is-done { clip-path: none; opacity: 0; }
-  .lx-intro__mark span,
-  .lx-intro__tag,
-  .lx-intro__progress { animation: none; opacity: 1; transform: none; }
+  .lx-intro__curtain, .lx-intro__panel { transition: opacity 0.3s ease; }
+  .lx-intro.is-done .lx-intro__curtain,
+  .lx-intro.is-done .lx-intro__panel { clip-path: none; opacity: 0; }
+  .lx-intro__m > span,
+  .lx-intro__top,
+  .lx-intro__bottom { animation: none; opacity: 1; transform: none; }
 }

@@ -37,7 +37,13 @@
       "hours": "hrs",
       "minutes": "min",
       "seconds": "sec",
-      "shop_now": "Shop now"
+      "shop_now": "Shop now",
+      "secure_payment": "Secure checkout with",
+      "description": "Description",
+      "details": "Product details",
+      "share": "Share",
+      "same_category": "From the same collection",
+      "recently_viewed": "Recently viewed"
     }
   },
   "pages": {

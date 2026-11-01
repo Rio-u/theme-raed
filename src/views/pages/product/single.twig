@@ -231,65 +231,30 @@
                 {% if product.is_taxable %}
                     <small class="color-grey">{{ trans('pages.products.tax_included') }}</small>
                 {% endif %}
-                {# Price #}
-                <div data-testid="store-product-price" class="flex whitespace-nowrap gap-4 items-center">
-                  <div class="{{ product.is_on_sale ? '' : 'hidden' }} space-x-2 rtl:space-x-reverse whitespace-nowrap">
-                      <p class="text-red-800 font-bold text-xl inline-block">{{product.sale_price|money}}</p>
-                      <span class="text-gray-500 line-through">{{product.regular_price|money}}</span>
-                  </div>
-                  <div class="gap-4 {{ product.is_on_sale ? 'hidden' : 'flex' }}">
-                      {% if product.starting_price %} 
-                          <span class="">{{ trans('pages.products.starting_price') }}</span>
-                      {% endif %} 
-                          <p class=" font-bold text-xl inline-block"> {{product.starting_price ? product.starting_price|money : product.price|money }}</p>
-                  </div>
-                </div>
+                    <section class="lx-price-block">
+                        <div class="center-between w-full">
+                            <label class="form-label">
+                                <b class="block">
+                                    {{ trans('pages.products.price') }}
+                                </b>
+                            </label>
 
-                <div data-testid="store-product-description" class="product__description p-2 px-5 sm:p-1 leading-7 mb-3">
-                    {% set product_desc = product.description|replace({"&nbsp;":"\n"}) %}
-                    {% if product.has_read_more %}
-                        <article class="article article--main relative leading-8 overflow-hidden transition-all max-h-0 duration-300 py-4"
-                            id="more-content" style="max-height:5.25rem">
-                            {{ product_desc|raw }}
-                        </article>
+                            <div class="flex whitespace-nowrap price-wrapper gap-4 items-center">
+                              <div class="{{ product.is_on_sale ? '' : 'hidden' }} price_is_on_sale space-x-2 rtl:space-x-reverse whitespace-nowrap">
+                                <h2 class="total-price text-red-800 font-bold text-xl inline-block">{{product.sale_price|money}}</h2>
+                                <span class="before-price text-gray-500 line-through">{{product.regular_price|money}}</span>
+                              </div>
+                              <div class="starting-or-normal-price gap-4 {{ product.is_on_sale ? 'hidden' : 'flex' }}">
+                                {% if product.starting_price %} 
+                                  <span class="starting-price-title">{{ trans('pages.products.starting_price') }}</span>
+                                {% endif %} 
+                                <h2 class="total-price font-bold text-xl inline-block"> {{product.starting_price ? product.starting_price|money : product.price|money }}</h2>
+                              </div>
+                            </div>
 
-                        {# Read More Button #}
-                        <a id="btn-show-more" class="link--primary inline-block mt-2 cursor-pointer">
-                            {{ trans('pages.products.read_more') }}
-                        </a>
-                    {% else %}
-                        <article class="article--main pb-1">
-                            {{ product_desc|raw }}
-                        </article>
-                    {% endif %}
-                </div>
-
-                {% if product.tags|length and theme.settings.get('show_tags', true) %}
-                    <div class="mb-3">
-                        {% for tag in product.tags %}
-                            <a href="{{ tag.url }}"
-                               class="rtl:ml-2 ltr:mr-2 inline-flex  text-gray-500 hover:text-primary underline text-sm mb-1">{{ tag.name }}
-                                ,</a>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-
-                <div class="flex rtl:space-x-reverse space-x-3">
-                    <salla-social-share data-testid="store-product-social-share" class="inline-flex mb-5" aria-label="social share"></salla-social-share>
-
-                    <salla-button
-                            data-testid="store-product-wishlist-btn"
-                            class="btn--wishlist animated hidden sm:inline-flex"
-                            data-id="{{ product.id }}"
-                            onclick="salla.wishlist.toggle('{{ product.id }}')"
-                            shape="icon"
-                            fill="outline"
-                            color="light"
-							aria-label="add to wishlist">
-                        <i class="sicon-heart"></i>
-                    </salla-button>
-                </div>
-
+                            <div data-testid="store-product-out-of-stock" class="out-of-stock min-h-7 leading-7 hidden text-base text-red-600 !opacity-50 font-bold">{{ trans('pages.products.out_of_stock')}}</div>
+                        </div>
+                    </section>
                 {% if product.sold_quantity or product.can_show_remained_quantity %}
                     <div class="bg-white py-2.5 mb-5 rounded-md inline-flex text-sm">
                         {% if product.sold_quantity %}
@@ -305,39 +270,6 @@
                                 <span>{{ product.quantity }}</span>
                             </div>
                         {% endif %}
-                    </div>
-                {% endif %}
-                {#
-                    An identifier row is rendered only when a value could ever fill it - the parent
-                    product has one, or a variant does. It starts hidden when only a variant carries
-                    the value, and product.js reveals it once that variant is selected.
-
-                    The toggled wrapper deliberately carries no display utility of its own: `hidden`
-                    and `sm:grid` are both display rules of equal specificity, and `sm:grid` sits in
-                    a media query far later in the stylesheet, so it would win above 640px and paint
-                    an empty row. Keeping the card's layout classes on the inner element leaves
-                    `hidden` unopposed.
-                #}
-                {% if product.shows_sku %}
-                    <div class="product-sku-wrapper mb-4 {% if not product.sku %}hidden{% endif %}">
-                        <div class="flex justify-between sm:grid sm:grid-cols-3 bg-white rounded-md px-4 py-2">
-                            <div class="flex items-center">
-                                <i class="sicon-barcode mx-1"></i>
-                                {{ trans('pages.products.sku') }}
-                            </div>
-                            <div class="text-unicode break-all product-sku">{{ product.sku }}</div>
-                        </div>
-                    </div>
-                {% endif %}
-                {% if product.shows_barcode %}
-                    <div class="product-barcode-wrapper mb-4 {% if not product.barcode %}hidden{% endif %}">
-                        <div class="flex justify-between sm:grid sm:grid-cols-3 bg-white rounded-md px-4 py-2">
-                            <div class="flex items-center">
-                                <i class="sicon-barcode mx-1"></i>
-                                {{ trans('pages.products.barcode') }}
-                            </div>
-                            <div class="text-unicode break-all product-barcode">{{ product.barcode }}</div>
-                        </div>
                     </div>
                 {% endif %}
                 {% hook 'product:single.description' %}
@@ -387,30 +319,7 @@
 
                     {% hook 'product:single.form.end' %}
 
-                    <section class="flex bg-white p-5 sm:pb-0 rounded-md rounded-b-none">
-                        <div class="center-between w-full">
-                            <label class="form-label">
-                                <b class="block">
-                                    {{ trans('pages.products.price') }}
-                                </b>
-                            </label>
 
-                            <div class="flex whitespace-nowrap price-wrapper gap-4 items-center">
-                              <div class="{{ product.is_on_sale ? '' : 'hidden' }} price_is_on_sale space-x-2 rtl:space-x-reverse whitespace-nowrap">
-                                <h2 class="total-price text-red-800 font-bold text-xl inline-block">{{product.sale_price|money}}</h2>
-                                <span class="before-price text-gray-500 line-through">{{product.regular_price|money}}</span>
-                              </div>
-                              <div class="starting-or-normal-price gap-4 {{ product.is_on_sale ? 'hidden' : 'flex' }}">
-                                {% if product.starting_price %} 
-                                  <span class="starting-price-title">{{ trans('pages.products.starting_price') }}</span>
-                                {% endif %} 
-                                <h2 class="total-price font-bold text-xl inline-block"> {{product.starting_price ? product.starting_price|money : product.price|money }}</h2>
-                              </div>
-                            </div>
-
-                            <div data-testid="store-product-out-of-stock" class="out-of-stock min-h-7 leading-7 hidden text-base text-red-600 !opacity-50 font-bold">{{ trans('pages.products.out_of_stock')}}</div>
-                        </div>
-                    </section>
                     {# Pre-order Campaign #}
                     {% if product.has_preorder_campaign %}
                         <section class="mt-5 p-5">
@@ -457,12 +366,112 @@
                             {{ product.add_to_cart_label }}
                         </salla-add-product-button>
                     </section>
+                    {# LUXE: Apple Pay appears inside the buttons above on supported Apple devices; this row lists accepted methods #}
+                    <div class="lx-pay-note">
+                        <span class="lx-pay-note__label">{{ trans('blocks.luxe.secure_payment') }}</span>
+                        <salla-payments></salla-payments>
+                    </div>
                     {% if product.is_giftable %}
                         <salla-gifting data-testid="store-product-gifting" class="mt-5" widget-subtitle="{{ gifting_intro }}" product-id="{{ product.id }}" {{ product.is_require_shipping ? 'physical-products' : ''  }}></salla-gifting>
                     {% endif %}
                 </form>
 
                 {% hook 'product:single.description.end' %}
+
+                {# LUXE: details as quiet accordions #}
+                <div class="lx-acc-group">
+                    <details class="lx-acc" open>
+                        <summary class="lx-acc__head">{{ trans('blocks.luxe.description') }}</summary>
+                        <div class="lx-acc__body">
+                <div data-testid="store-product-description" class="product__description p-2 px-5 sm:p-1 leading-7 mb-3">
+                    {% set product_desc = product.description|replace({"&nbsp;":"\n"}) %}
+                    {% if product.has_read_more %}
+                        <article class="article article--main relative leading-8 overflow-hidden transition-all max-h-0 duration-300 py-4"
+                            id="more-content" style="max-height:5.25rem">
+                            {{ product_desc|raw }}
+                        </article>
+
+                        {# Read More Button #}
+                        <a id="btn-show-more" class="link--primary inline-block mt-2 cursor-pointer">
+                            {{ trans('pages.products.read_more') }}
+                        </a>
+                    {% else %}
+                        <article class="article--main pb-1">
+                            {{ product_desc|raw }}
+                        </article>
+                    {% endif %}
+                </div>
+
+                        </div>
+                    </details>
+                    <details class="lx-acc">
+                        <summary class="lx-acc__head">{{ trans('blocks.luxe.details') }}</summary>
+                        <div class="lx-acc__body">
+                {#
+                    An identifier row is rendered only when a value could ever fill it - the parent
+                    product has one, or a variant does. It starts hidden when only a variant carries
+                    the value, and product.js reveals it once that variant is selected.
+
+                    The toggled wrapper deliberately carries no display utility of its own: `hidden`
+                    and `sm:grid` are both display rules of equal specificity, and `sm:grid` sits in
+                    a media query far later in the stylesheet, so it would win above 640px and paint
+                    an empty row. Keeping the card's layout classes on the inner element leaves
+                    `hidden` unopposed.
+                #}
+                {% if product.shows_sku %}
+                    <div class="product-sku-wrapper mb-4 {% if not product.sku %}hidden{% endif %}">
+                        <div class="flex justify-between sm:grid sm:grid-cols-3 bg-white rounded-md px-4 py-2">
+                            <div class="flex items-center">
+                                <i class="sicon-barcode mx-1"></i>
+                                {{ trans('pages.products.sku') }}
+                            </div>
+                            <div class="text-unicode break-all product-sku">{{ product.sku }}</div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if product.shows_barcode %}
+                    <div class="product-barcode-wrapper mb-4 {% if not product.barcode %}hidden{% endif %}">
+                        <div class="flex justify-between sm:grid sm:grid-cols-3 bg-white rounded-md px-4 py-2">
+                            <div class="flex items-center">
+                                <i class="sicon-barcode mx-1"></i>
+                                {{ trans('pages.products.barcode') }}
+                            </div>
+                            <div class="text-unicode break-all product-barcode">{{ product.barcode }}</div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if product.tags|length and theme.settings.get('show_tags', true) %}
+                    <div class="mb-3">
+                        {% for tag in product.tags %}
+                            <a href="{{ tag.url }}"
+                               class="rtl:ml-2 ltr:mr-2 inline-flex  text-gray-500 hover:text-primary underline text-sm mb-1">{{ tag.name }}
+                                ,</a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                        </div>
+                    </details>
+                    <div class="lx-share-row">
+                        <span class="lx-share-row__label">{{ trans('blocks.luxe.share') }}</span>
+                <div class="flex rtl:space-x-reverse space-x-3">
+                    <salla-social-share data-testid="store-product-social-share" class="inline-flex mb-5" aria-label="social share"></salla-social-share>
+
+                    <salla-button
+                            data-testid="store-product-wishlist-btn"
+                            class="btn--wishlist animated hidden sm:inline-flex"
+                            data-id="{{ product.id }}"
+                            onclick="salla.wishlist.toggle('{{ product.id }}')"
+                            shape="icon"
+                            fill="outline"
+                            color="light"
+							aria-label="add to wishlist">
+                        <i class="sicon-heart"></i>
+                    </salla-button>
+                </div>
+
+                    </div>
+                </div>
                 <salla-quick-order data-testid="store-product-quick-order" class="mt-5 md:-mb-2 block"></salla-quick-order>
             </div>
         </div>
@@ -489,9 +498,23 @@
     <div class="s-blocks-wrapper s-before-related">{% hook 'product.single.before_product_recommendations' %}</div>
 
     {# Similar Products Area #}
-    <div class="container mb-5 sm:mb-8">
+    <div class="container lx-related mb-5 sm:mb-8">
         <salla-products-slider data-testid="store-product-related" source="related" source-value="{{product.id}}" block-title="{{trans('pages.products.similar_products')}}" display-all-url></salla-products-slider>
     </div>
+
+    {# LUXE: "related" is often empty — always offer more from the same category #}
+    {% if product.category and product.category.id %}
+        <div class="container lx-related lx-related--category mb-5 sm:mb-8">
+            <salla-products-slider data-testid="store-product-same-category" source="categories"
+                source-value="{{ product.category.id }}" limit="10"
+                block-title="{{ trans('blocks.luxe.same_category') }}"
+                display-all-url="{{ product.category.url }}"></salla-products-slider>
+        </div>
+    {% endif %}
+
+    {# LUXE: recently viewed — filled from this browser's history by luxe.js #}
+    <div class="container lx-related lx-recent mb-5 sm:mb-8" data-lx-recent="{{ product.id }}"
+         data-title="{{ trans('blocks.luxe.recently_viewed') }}" hidden></div>
     
     {#
         Hook: product.single.after_product_recommendations
