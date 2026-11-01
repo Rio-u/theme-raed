@@ -107,7 +107,6 @@ html:not(.lx-js) .lx-hero__img img { transform: none; }
       width: 38%;
       border: 0;
       box-shadow: 0 40px 80px -40px rgba(17, 17, 17, 0.35);
-      [dir="rtl"] & { inset-inline-start: auto; inset-inline-end: 0; }
     }
 
     .lx-hero__content {
@@ -170,7 +169,8 @@ html:not(.lx-js) .lx-hero__img img { transform: none; }
   @media (min-width: 1280px) { display: block; }
 }
 
-.lx-hero--split .lx-hero__vertical { [dir="rtl"] & { inset-inline-end: auto; inset-inline-start: calc(78% + 1.5rem); } }
+/* sits in the gap between the main image and the text column */
+.lx-hero--split .lx-hero__vertical { inset-inline-end: auto; inset-inline-start: calc(22% - 2.25rem); }
 
 .lx-hero__scroll {
   display: none;
