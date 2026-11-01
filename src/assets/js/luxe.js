@@ -380,9 +380,71 @@ function initMagnetic() {
   });
 }
 
+// Our arrows + progress bar drive the swiper inside a <salla-products-slider id="...">.
+function initSliderArrows() {
+  document.querySelectorAll('[data-lx-arrows]').forEach(box => {
+    const id = box.dataset.lxArrows;
+    const bar = document.querySelector(`[data-lx-progress="${id}"] i`);
+    const prev = box.querySelector('[data-dir="prev"]');
+    const next = box.querySelector('[data-dir="next"]');
+    let tries = 0;
+
+    const attach = () => {
+      const swiper = document.getElementById(id)?.querySelector('.swiper')?.swiper;
+      if (!swiper) { if (tries++ < 40) setTimeout(attach, 250); return; }
+
+      const sync = () => {
+        prev.disabled = swiper.isBeginning;
+        next.disabled = swiper.isEnd;
+        if (bar) {
+          const visible = Math.max(1, Math.round(swiper.slidesPerViewDynamic?.() || swiper.params.slidesPerView || 1));
+          const total = Math.max(visible, swiper.slides.length);
+          const w = (visible / total) * 100;
+          bar.style.setProperty('--w', `${w}%`);
+          bar.style.setProperty('--x', `${(swiper.progress || 0) * (100 - w)}%`);
+        }
+      };
+
+      prev.addEventListener('click', () => swiper.slidePrev());
+      next.addEventListener('click', () => swiper.slideNext());
+      swiper.on('slideChange', sync);
+      swiper.on('progress', sync);
+      swiper.on('resize', sync);
+      sync();
+    };
+    attach();
+  });
+}
+
+// Customer voices: one quote at a time, arrows + counter, gentle autoplay that pauses on hover.
+function initQuotes() {
+  document.querySelectorAll('[data-lx-quotes]').forEach(box => {
+    const slides = [...box.querySelectorAll('.lx-quote__slide')];
+    if (slides.length < 2) return;
+    const counter = box.querySelector('[data-lx-q-current]');
+    let i = 0, timer = 0;
+    const show = n => {
+      i = (n + slides.length) % slides.length;
+      slides.forEach((s, k) => { s.classList.toggle('is-active', k === i); s.setAttribute('aria-hidden', k === i ? 'false' : 'true'); });
+      if (counter) counter.textContent = String(i + 1).padStart(2, '0');
+    };
+    const auto = () => {
+      clearInterval(timer);
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) timer = setInterval(() => show(i + 1), 6500);
+    };
+    box.querySelector('[data-dir="prev"]')?.addEventListener('click', () => { show(i - 1); auto(); });
+    box.querySelector('[data-dir="next"]')?.addEventListener('click', () => { show(i + 1); auto(); });
+    box.addEventListener('pointerenter', () => clearInterval(timer));
+    box.addEventListener('pointerleave', auto);
+    auto();
+  });
+}
+
 function boot() {
   if (window.__lxBooted) return; // guard against double inclusion
   keepPreviewLinks();
+  initSliderArrows();
+  initQuotes();
 
   initStoryWords();
 

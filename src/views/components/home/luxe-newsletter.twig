@@ -1,7 +1,8 @@
 {#
-Newsletter. Salla has no built-in newsletter endpoint, so the form only renders when the merchant
-connects one (Mailchimp/Klaviyo form action URL). Without it, visitors see the heading only and
-the editor preview shows a note — never a button that does nothing.
+Newsletter / community — arched image beside a large invitation.
+Salla has no built-in newsletter endpoint: the email form renders only when the merchant connects
+one (Mailchimp/Klaviyo form action URL). Without it, the store's real channels are offered instead.
+| component.image       | ?string |                                         |
 | component.eyebrow     | ?string |                                         |
 | component.title       | string  |                                         |
 | component.text        | ?string |                                         |
@@ -9,31 +10,40 @@ the editor preview shows a note — never a button that does nothing.
 | component.field_name  | ?string | Email field name the service expects    |
 #}
 {% set action = component.action_url %}
-<section component-id="{{ componentId }}" data-testid="store-home-luxe-newsletter" class="s-block lx-newsletter">
-  <div class="lx-newsletter__inner" data-lx-stagger="100">
-    {% if component.eyebrow %}<span class="lx-eyebrow" data-lx-reveal>{{ component.eyebrow }}</span>{% endif %}
-    <h2 class="lx-newsletter__title lx-display" data-lx-reveal>{{ component.title|default(trans('blocks.luxe.newsletter_title')) }}</h2>
-    <p class="lx-newsletter__text" data-lx-reveal>{{ component.text|default(trans('blocks.luxe.newsletter_text')) }}</p>
+{% set img = component.image|default('https://salla-dev.s3.eu-central-1.amazonaws.com/nWzD/D8jLeCWnenY3NXWxxNTNzCRyGZKPhtgoRXDfB3da.jpg') %}
+<section component-id="{{ componentId }}" data-testid="store-home-luxe-newsletter" class="s-block lx-newsletter lx-join">
+  <div class="lx-join__grid">
+    <figure class="lx-join__media" data-lx-reveal="image">
+      <img src="{{ img }}" alt="" loading="lazy">
+      <span class="lx-join__stamp" aria-hidden="true">{{ theme.settings.get('lx_wordmark', 'Maison') }}</span>
+    </figure>
 
-    {% if action %}
-      <form class="lx-newsletter__form" action="{{ action }}" method="post" target="_blank" data-lx-reveal>
-        <label class="lx-visually-hidden" for="lx-nl-{{ position }}">{{ trans('blocks.luxe.email') }}</label>
-        <input id="lx-nl-{{ position }}" type="email" name="{{ component.field_name|default('EMAIL') }}" required
-               autocomplete="email" placeholder="{{ trans('blocks.luxe.email') }}">
-        <button type="submit" class="lx-btn">{{ trans('blocks.luxe.subscribe') }}</button>
-      </form>
-    {% else %}
-      {# No mailing service yet: offer the store's real channels instead of a dead form #}
-      {% set wa = store.contacts.whatsapp|default('') %}
-      {% set ig = store.social.instagram|default('') %}
-      {% set tg = store.contacts.telegram|default('') %}
-      {% if wa or ig or tg %}
-        <div class="lx-newsletter__channels" data-lx-reveal>
-          {% if wa %}<a class="lx-btn" target="_blank" rel="noopener" href="https://wa.me/{{ wa|replace({' ': '', '+': ''}) }}">{{ trans('blocks.luxe.join_whatsapp') }}</a>{% endif %}
-          {% if ig %}<a class="lx-btn lx-btn--ghost" target="_blank" rel="noopener" href="{{ ig }}">{{ trans('blocks.luxe.join_instagram') }}</a>{% endif %}
-          {% if tg %}<a class="lx-btn lx-btn--ghost" target="_blank" rel="noopener" href="https://t.me/{{ tg|replace({'@': ''}) }}">{{ trans('blocks.luxe.join_telegram') }}</a>{% endif %}
-        </div>
+    <div class="lx-join__body" data-lx-stagger="110">
+      {% if component.eyebrow %}<span class="lx-eyebrow" data-lx-reveal>{{ component.eyebrow }}</span>{% endif %}
+      <h2 class="lx-join__title lx-display" data-lx-reveal>{{ component.title|default(trans('blocks.luxe.newsletter_title')) }}</h2>
+      <p class="lx-join__text" data-lx-reveal>{{ component.text|default(trans('blocks.luxe.newsletter_text')) }}</p>
+
+      {% if action %}
+        <form class="lx-join__form" action="{{ action }}" method="post" target="_blank" data-lx-reveal>
+          <label class="lx-visually-hidden" for="lx-nl-{{ position }}">{{ trans('blocks.luxe.email') }}</label>
+          <input id="lx-nl-{{ position }}" type="email" name="{{ component.field_name|default('EMAIL') }}" required
+                 autocomplete="email" placeholder="{{ trans('blocks.luxe.email') }}">
+          <button type="submit" aria-label="{{ trans('blocks.luxe.subscribe') }}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
+      {% else %}
+        {% set wa = store.contacts.whatsapp|default('') %}
+        {% set ig = store.social.instagram|default('') %}
+        {% set tg = store.contacts.telegram|default('') %}
+        {% if wa or ig or tg %}
+          <ul class="lx-join__channels" data-lx-reveal>
+            {% if wa %}<li><a target="_blank" rel="noopener" href="https://wa.me/{{ wa|replace({' ': '', '+': ''}) }}"><span>{{ trans('blocks.luxe.join_whatsapp') }}</span><i aria-hidden="true">↗</i></a></li>{% endif %}
+            {% if ig %}<li><a target="_blank" rel="noopener" href="{{ ig }}"><span>{{ trans('blocks.luxe.join_instagram') }}</span><i aria-hidden="true">↗</i></a></li>{% endif %}
+            {% if tg %}<li><a target="_blank" rel="noopener" href="https://t.me/{{ tg|replace({'@': ''}) }}"><span>{{ trans('blocks.luxe.join_telegram') }}</span><i aria-hidden="true">↗</i></a></li>{% endif %}
+          </ul>
+        {% endif %}
       {% endif %}
-    {% endif %}
+    </div>
   </div>
 </section>

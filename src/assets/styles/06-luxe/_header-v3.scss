@@ -1,0 +1,57 @@
+/**
+ * LUXE — header v3 (desktop): couture layout — navigation · centred wordmark · actions
+ */
+@media (min-width: 1025px) {
+  .lx-bar {
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-areas: "nav brand end";
+    height: 92px;
+    column-gap: var(--lx-space-4);
+  }
+
+  .lx-brand.navbar-brand { justify-content: center; }
+
+  .lx-brand__word {
+    font-size: 1.9rem;
+    letter-spacing: 0.34em;
+    margin-inline-end: -0.34em;
+  }
+
+  .lx-bar > .lx-nav { justify-content: flex-start; }
+
+  .lx-bar > .lx-nav .main-menu {
+    gap: 0 1.75rem;
+
+    > li.root-level > a {
+      padding-block: 2.2rem;
+      font-size: 0.8125rem;
+      letter-spacing: 0.03em;
+
+      &::before { bottom: 1.8rem; transform-origin: right; }
+    }
+  }
+
+  [dir="ltr"] .lx-bar > .lx-nav .main-menu > li.root-level > a::before { transform-origin: left; }
+
+  .lx-bar__end { gap: 0.15rem; }
+
+  .lx-mainnav.fixed-pinned .lx-bar { height: 68px; }
+  .lx-mainnav.fixed-pinned .lx-brand__word { font-size: 1.5rem; }
+  .lx-mainnav.fixed-pinned .lx-bar > .lx-nav .main-menu > li.root-level > a { padding-block: 1.5rem; }
+  .lx-mainnav.fixed-pinned .lx-bar > .lx-nav .main-menu > li.root-level > a::before { bottom: 1.1rem; }
+
+  /* dropdowns: a clean sheet hanging from the bar */
+  .lx-bar > .lx-nav .main-menu .sub-menu {
+    min-width: 220px;
+    padding-block: 0.75rem;
+    border: 0;
+    border-block-start: 1px solid var(--lx-line);
+    box-shadow: 0 30px 50px -30px rgba(17, 17, 17, 0.18);
+  }
+}
+
+/* user-menu trigger: drop Salla's grey disc so it matches the line icons */
+.lx-header .s-user-menu-trigger-avatar-only,
+.lx-header .s-user-menu-trigger { background: transparent !important; border: 0 !important; }
+.lx-header .s-user-menu-trigger svg,
+.lx-header .s-user-menu-trigger i { color: currentColor; }

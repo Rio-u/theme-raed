@@ -1642,6 +1642,16 @@
             "fields": [
                 {
                     "type": "string",
+                    "format": "image",
+                    "id": "image",
+                    "label": "صورة جانبية",
+                    "value": "https://salla-dev.s3.eu-central-1.amazonaws.com/nWzD/D8jLeCWnenY3NXWxxNTNzCRyGZKPhtgoRXDfB3da.jpg",
+                    "icon": "sicon-image",
+                    "required": false,
+                    "description": "صورة طولية تُعرض داخل قوس"
+                },
+                {
+                    "type": "string",
                     "format": "text",
                     "id": "eyebrow",
                     "label": "سطر علوي صغير",

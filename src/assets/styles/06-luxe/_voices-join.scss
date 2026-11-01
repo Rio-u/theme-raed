@@ -1,0 +1,235 @@
+/**
+ * LUXE — section controls (arrows, progress), customer voices carousel, join section
+ */
+
+/* ============ Arrows + progress ============ */
+.lx-section-head__tools { display: flex; align-items: center; gap: var(--lx-space-3); }
+
+.lx-arrows { display: flex; gap: 0.5rem; }
+
+.lx-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--lx-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--lx-black);
+  cursor: pointer;
+  transition: background var(--lx-dur) var(--lx-ease), color var(--lx-dur) var(--lx-ease), border-color var(--lx-dur);
+
+  svg { width: 18px; height: 18px; }
+  [dir="ltr"] & svg { transform: scaleX(-1); }
+
+  &:hover:not(:disabled) { background: var(--lx-black); border-color: var(--lx-black); color: var(--lx-white); }
+  &:disabled { opacity: 0.3; cursor: default; }
+}
+
+.lx-progress {
+  position: relative;
+  height: 1px;
+  margin-block-start: var(--lx-space-4);
+  background: var(--lx-line);
+  overflow: hidden;
+
+  i {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: var(--w, 25%);
+    background: var(--lx-black);
+    transition: inset-inline-start 0.6s var(--lx-ease), width 0.6s var(--lx-ease);
+    inset-inline-start: var(--x, 0%);
+  }
+}
+
+/* Salla's own slider arrows stay hidden — ours drive the swiper */
+.lx-products--slider .s-slider-block__title,
+.lx-products--slider .s-slider-nav-arrow { display: none !important; }
+
+/* ============ Voices — one large quote at a time ============ */
+.lx-voices { background: var(--lx-white); }
+
+.lx-quote {
+  display: grid;
+  justify-items: center;
+  max-width: 62rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.lx-quote__head { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.lx-quote__heading { margin: 0; font-family: var(--lx-font-display); font-size: var(--lx-fs-lg); font-weight: 300; color: var(--lx-black); }
+
+.lx-quote__mark {
+  display: block;
+  height: 0.5em;
+  margin-block: var(--lx-space-3) var(--lx-space-1);
+  font-family: var(--lx-font-display);
+  font-size: clamp(6rem, 4rem + 5vw, 9rem);
+  line-height: 1;
+  color: var(--lx-taupe);
+}
+
+.lx-quote__stage { display: grid; width: 100%; min-height: 15rem; }
+
+.lx-quote__slide {
+  grid-area: 1 / 1;
+  display: grid;
+  align-content: center;
+  gap: var(--lx-space-3);
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+  transition: opacity 0.7s var(--lx-ease), transform 0.9s var(--lx-ease), visibility 0s linear 0.7s;
+
+  &.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0.15s, 0.15s, 0s;
+  }
+}
+
+.lx-quote__text {
+  margin: 0;
+  font-family: var(--lx-font-display);
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.6rem);
+  font-weight: 300;
+  line-height: 1.55;
+  color: var(--lx-black);
+}
+
+.lx-quote__by { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
+.lx-quote__stars { font-size: 0.75rem; letter-spacing: 0.3em; color: var(--lx-taupe); }
+.lx-quote__name { font-size: var(--lx-fs-sm); font-weight: 500; color: var(--lx-black); }
+.lx-quote__meta { font-size: var(--lx-fs-xs); color: var(--lx-gray); }
+
+.lx-quote__nav { display: flex; align-items: center; gap: var(--lx-space-3); margin-block-start: var(--lx-space-4); }
+
+.lx-quote__count {
+  min-width: 5rem;
+  font-family: var(--lx-font-display);
+  font-style: italic;
+  font-size: var(--lx-fs-md);
+  color: var(--lx-gray);
+  direction: ltr;
+  b { font-weight: 400; color: var(--lx-black); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lx-quote__slide { transition: none; transform: none; }
+}
+
+/* ============ Join — arched image + invitation ============ */
+.lx-join {
+  padding: var(--lx-section) var(--lx-gutter);
+  background: var(--lx-sand);
+  text-align: start;
+}
+
+.lx-join__grid {
+  display: grid;
+  gap: var(--lx-space-5);
+  align-items: center;
+  max-width: var(--lx-container);
+  margin-inline: auto;
+
+  @media (min-width: 900px) { grid-template-columns: 0.8fr 1fr; gap: var(--lx-space-7); }
+}
+
+.lx-join__media {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 3 / 4;
+  max-height: 640px;
+  overflow: hidden;
+  border-radius: 999px 999px 0 0;
+  background: var(--lx-ivory);
+
+  img { width: 100%; height: 100%; object-fit: cover; }
+}
+
+.lx-join__stamp {
+  position: absolute;
+  inset-block-end: 1.25rem;
+  inset-inline: 0;
+  font-family: var(--lx-font-display);
+  font-size: var(--lx-fs-sm);
+  letter-spacing: 0.4em;
+  text-align: center;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  direction: ltr;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.25);
+}
+
+.lx-join__body { max-width: 34rem; }
+
+.lx-join__title {
+  margin: var(--lx-space-2) 0 var(--lx-space-3);
+  font-size: clamp(2.4rem, 1.4rem + 3.6vw, 5rem);
+  line-height: 1.1;
+}
+
+.lx-join__text { margin: 0 0 var(--lx-space-4); font-size: var(--lx-fs-md); line-height: 1.8; color: var(--lx-gray); }
+
+.lx-join__form {
+  display: flex;
+  align-items: center;
+  border-block-end: 1px solid var(--lx-black);
+
+  input {
+    flex: 1;
+    min-width: 0;
+    min-height: 56px;
+    border: 0 !important;
+    background: transparent !important;
+    font-size: var(--lx-fs-md);
+    color: var(--lx-black);
+    &:focus { outline: none; box-shadow: none !important; }
+  }
+
+  button {
+    display: inline-flex;
+    width: 48px;
+    height: 48px;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: none;
+    color: var(--lx-black);
+    cursor: pointer;
+    svg { width: 22px; height: 22px; transition: transform var(--lx-dur) var(--lx-ease); }
+    [dir="ltr"] & svg { transform: scaleX(-1); }
+    &:hover svg { transform: translateX(-5px); }
+  }
+}
+
+.lx-join__channels {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-block-start: 1px solid rgba(17, 17, 17, 0.14);
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 1.15rem;
+    border-block-end: 1px solid rgba(17, 17, 17, 0.14);
+    font-size: var(--lx-fs-md);
+    color: var(--lx-black);
+    transition: padding 0.5s var(--lx-ease);
+
+    i { font-style: normal; font-size: 1.1rem; transition: transform 0.5s var(--lx-ease); }
+    &:hover { padding-inline: 0.75rem; }
+    &:hover i { transform: translate(-3px, -3px); }
+  }
+}
+
+html.lx-dark .lx-join__channels,
+html.lx-dark .lx-join__channels a { border-color: var(--lx-line); }

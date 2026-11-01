@@ -31,9 +31,21 @@
         <h2 class="lx-section-head__title">{{ component.title }}</h2>
         {% if component.text %}<p class="lx-section-head__text">{{ component.text }}</p>{% endif %}
       </div>
-      {% if display_all and display_all != '#' %}
-        <a href="{{ display_all }}" class="lx-link">{{ trans('blocks.luxe.view_all') }}</a>
-      {% endif %}
+      <div class="lx-section-head__tools">
+        {% if display_all and display_all != '#' %}
+          <a href="{{ display_all }}" class="lx-link">{{ trans('blocks.luxe.view_all') }}</a>
+        {% endif %}
+        {% if component.as_slider %}
+          <div class="lx-arrows" data-lx-arrows="lx-products-{{ position }}">
+            <button type="button" class="lx-arrow" data-dir="prev" aria-label="previous">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button type="button" class="lx-arrow" data-dir="next" aria-label="next">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        {% endif %}
+      </div>
     </header>
 
     {% if component.as_slider %}
@@ -42,7 +54,9 @@
           {% if source_value %}source-value="{{ source_value }}"{% endif %}
           limit="{{ limit }}"
           slider-id="lx-products-{{ position }}"
+          id="lx-products-{{ position }}"
           block-title=" "></salla-products-slider>
+      <div class="lx-progress" data-lx-progress="lx-products-{{ position }}"><i></i></div>
     {% else %}
       <salla-products-list class="lx-products__list"
           source="{{ source }}"
