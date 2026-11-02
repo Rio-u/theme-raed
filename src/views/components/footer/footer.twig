@@ -97,6 +97,14 @@
   <div class="lx-footer__bottom">
     <span class="copyright-text">{% hook copyright %}</span>
     <salla-payments data-testid="store-footer-payments"></salla-payments>
+    {% if theme.settings.get('lx_dark_toggle', true) %}
+      {# phones: the header has no room for it, so the switch lives here #}
+      <button type="button" class="lx-footer__mode lx-theme-toggle" data-lx-theme-toggle aria-pressed="false">
+        <svg class="lx-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7Z"/></svg>
+        <svg class="lx-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>
+        <span>{{ trans('blocks.luxe.dark_mode') }}</span>
+      </button>
+    {% endif %}
     <a href="#app" class="lx-footer__top" aria-label="{{ trans('blocks.luxe.back_to_top') }}"
        onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>

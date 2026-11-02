@@ -125,40 +125,16 @@
     <a href="https://www.enable-javascript.com/" rel="noreferrer"
        target="_blank">To enable JavaScript on webpage</a>.
 </noscript>
-{# LUXE: signature intro — campaign images flip inside an arch, then the arch opens to the page.
-   Hidden by CSS when skipped; hides itself after 7s if JS fails. #}
-{% set lx_img_base = 'https://salla-dev.s3.eu-central-1.amazonaws.com/nWzD/' %}
-{% set intro_images = [
-    theme.settings.get('lx_intro_image_1', lx_img_base ~ 'bL3FLXsYnlcjdn2TbeSdXh1y6nhiXWkzg7bMV9Lf.jpg'),
-    theme.settings.get('lx_intro_image_2', lx_img_base ~ 'ACknxzEIkcTdaFr1DETbQlXo5UwupBedJ9ZGyR8v.jpg'),
-    theme.settings.get('lx_intro_image_3', lx_img_base ~ 'iBBzFqENAn2B2X6cy8ssWkuzS7PAhZ9OQqpnd5ov.jpg'),
-    theme.settings.get('lx_intro_image_4', lx_img_base ~ 'wElvrlhUPDLY6p2qm7eVXFTzMx4SQlSzdptVVNMO.jpg')
-] %}
+{# LUXE: intro — the wordmark rises letter by letter, then the sheet lifts away. Short by design.
+   Hidden by CSS when skipped; hides itself after 4s if JS fails. #}
 <div class="lx-intro" id="lx-intro" aria-hidden="true">
     <div class="lx-intro__panel">
-        <div class="lx-intro__top">
-            <span>{{ theme.settings.get('lx_intro_tagline', 'New Season') }}</span>
-            <span class="lx-intro__pct">000</span>
-            <span>{{ "now"|date("Y") }}</span>
-        </div>
-
-        <div class="lx-intro__stage">
-            <div class="lx-intro__arch">
-                {% for src in intro_images %}
-                    {% if src %}<img src="{{ src }}" alt="" {{ loop.first ? 'class="is-current" fetchpriority="high"' : '' }} decoding="async">{% endif %}
-                {% endfor %}
-            </div>
-            <div class="lx-intro__mark">
-                {% if lx_wordmark %}
-                    {% for ch in lx_wordmark|split('') %}<span class="lx-intro__m"><span style="--i: {{ loop.index0 }}">{{ ch }}</span></span>{% endfor %}
-                {% else %}
-                    <img src="{{ store.logo }}" alt="">
-                {% endif %}
-            </div>
-        </div>
-
-        <div class="lx-intro__bottom">
-            <span class="lx-intro__line"><i></i></span>
+        <div class="lx-intro__mark">
+            {% if lx_wordmark %}
+                {% for ch in lx_wordmark|split('') %}<span class="lx-intro__m"><span style="--i: {{ loop.index0 }}">{{ ch }}</span></span>{% endfor %}
+            {% else %}
+                <img src="{{ store.logo }}" alt="">
+            {% endif %}
         </div>
     </div>
 </div>
@@ -169,54 +145,21 @@
         try { sessionStorage.setItem('lx-intro-seen', '1'); } catch (e) {}
 
         var reduced = w.matchMedia && w.matchMedia('(prefers-reduced-motion: reduce)').matches,
-            MIN = reduced ? 300 : 1900,   // never shorter: lets the flipbook and wordmark play
-            MAX = reduced ? 800 : 2900,   // never longer: shopping must not wait on us
-            line = el.querySelector('.lx-intro__line'),
-            pct = el.querySelector('.lx-intro__pct'),
-            frames = el.querySelectorAll('.lx-intro__arch img'),
-            start = Date.now(), loaded = false, finished = false, shown = 0, f = 0;
+            HOLD = reduced ? 300 : 1300,   // letters finish rising
+            done = false;
 
         h.classList.add('lx-intro-active');
-        w.addEventListener('load', function () { loaded = true; });
-        setTimeout(finish, MAX + 200); // rAF pauses in background tabs
-
-        // flipbook: campaign frames change inside the arch
-        var flip = reduced || frames.length < 2 ? 0 : setInterval(function () {
-            frames[f].classList.remove('is-current');
-            f = (f + 1) % frames.length;
-            frames[f].classList.add('is-current');
-        }, 420);
 
         function finish() {
-            if (finished) return;
-            finished = true;
-            clearInterval(flip);
-            line.style.setProperty('--p', 1); pct.textContent = '100';
-            if (reduced) {
-                el.classList.add('is-done'); h.classList.add('lx-ready'); h.classList.remove('lx-intro-active');
-                return setTimeout(function () { el.remove(); }, 600);
-            }
-            // 1) type steps aside  2) the arch opens to fill the screen  3) the frame lifts away
-            setTimeout(function () { el.classList.add('is-leaving'); }, 200);
-            setTimeout(function () { el.classList.add('is-opening'); }, 450);
-            setTimeout(function () {
-                el.classList.add('is-done');
-                h.classList.add('lx-ready');
-                h.classList.remove('lx-intro-active');
-                setTimeout(function () { el.remove(); }, 1300);
-            }, 1350);
+            if (done) return;
+            done = true;
+            el.classList.add('is-done');
+            h.classList.add('lx-ready');
+            h.classList.remove('lx-intro-active');
+            setTimeout(function () { el.remove(); }, 1000);
         }
 
-        (function tick() {
-            if (finished) return;
-            var t = Date.now() - start,
-                target = loaded ? Math.min(1, t / MIN) : Math.min(0.9, t / MAX);
-            shown += (target - shown) * 0.18;
-            line.style.setProperty('--p', shown.toFixed(3));
-            pct.textContent = ('00' + Math.round(shown * 100)).slice(-3);
-            if ((loaded && t >= MIN) || t >= MAX) return finish();
-            w.requestAnimationFrame(tick);
-        })();
+        setTimeout(finish, HOLD);
     })(document, window);
 </script>
 {# LUXE: welcome / promotion dialog — every field is a theme setting (twilight.json → lx_promo_*) #}
