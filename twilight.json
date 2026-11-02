@@ -1,7 +1,7 @@
 {
     "name": {
-        "ar": "ثيم D7",
-        "en": "D7 Theme"
+        "ar": "ميزون",
+        "en": "Maison"
     },
     "repository": "https://github.com/Rio-u/theme-raed",
     "author_email": "engahmedmohammedd7@gmail.com",
@@ -39,7 +39,7 @@
             "icon": "sicon-format-text-alt",
             "label": "اسم العلامة (يظهر كشعار نصي)",
             "description": "اتركيه فارغاً لاستخدام شعار المتجر بدلاً منه",
-            "value": "MAISON D7",
+            "value": "MAISON",
             "required": false,
             "multilanguage": false
         },
