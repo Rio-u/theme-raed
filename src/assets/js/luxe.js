@@ -102,7 +102,7 @@ function initCursor() {
   const LINK = 'a, button, [role="button"], salla-button, salla-add-product-button, label, summary, .swiper-button-next, .swiper-button-prev';
   const NATIVE = 'input, textarea, select, iframe, [contenteditable="true"], .s-modal-wrapper input';
 
-  let x = -100, y = -100, rx = -100, ry = -100, started = false, running = false;
+  let x = -100, y = -100, started = false;
 
   const setState = t => {
     root.classList.toggle('lx-cursor-native', !!t?.closest(NATIVE));
@@ -111,25 +111,21 @@ function initCursor() {
     root.classList.toggle('lx-cursor-link', !view && !!t?.closest(LINK));
   };
 
-  // The ring trails the dot only slightly, and parks exactly on it once the mouse stops.
-  const loop = () => {
-    rx += (x - rx) * 0.35;
-    ry += (y - ry) * 0.35;
-    if (Math.abs(x - rx) < 0.3 && Math.abs(y - ry) < 0.3) { rx = x; ry = y; running = false; }
-    ring.style.transform = `translate3d(${rx.toFixed(1)}px, ${ry.toFixed(1)}px, 0)`;
-    if (running) requestAnimationFrame(loop);
-  };
-  const kick = () => { if (!running) { running = true; requestAnimationFrame(loop); } };
-
-  window.addEventListener('pointermove', e => {
-    if (e.pointerType !== 'mouse') return;
-    x = e.clientX; y = e.clientY;
-    if (!started) { started = true; rx = x; ry = y; root.classList.add('lx-cursor-on'); }
+  // Dot and ring are placed together on every move; the ring's short CSS transition gives the
+  // soft follow, so nothing can drift apart (drags, pointer capture, scroll, clicks).
+  const place = (cx, cy, target) => {
+    x = cx; y = cy;
+    if (!started) { started = true; root.classList.add('lx-cursor-on'); }
     root.classList.remove('lx-cursor-out');
-    dot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-    setState(e.target instanceof Element ? e.target : null);
-    kick();
-  }, { passive: true });
+    const t = `translate3d(${x}px, ${y}px, 0)`;
+    dot.style.transform = t;
+    ring.style.transform = t;
+    setState(target instanceof Element ? target : document.elementFromPoint(x, y));
+  };
+
+  // mousemove keeps firing while a slider or lightbox has captured the pointer
+  window.addEventListener('mousemove', e => place(e.clientX, e.clientY, e.target), { passive: true });
+  window.addEventListener('pointerdown', e => { if (e.pointerType === 'mouse') place(e.clientX, e.clientY, e.target); }, { passive: true });
 
   // Content scrolls under a still mouse: refresh the hover state.
   window.addEventListener('scroll', () => { if (started) setState(document.elementFromPoint(x, y)); }, { passive: true });

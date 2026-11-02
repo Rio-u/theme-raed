@@ -72,3 +72,7 @@ html.lx-cursor-view {
 }
 
 html.lx-cursor-down .lx-cursor-ring { transform-origin: center; scale: 0.85; }
+
+/* ring follows the dot through a short transition (see luxe.js initCursor) */
+.lx-cursor-ring { transition-property: opacity, width, height, margin, background-color, border-color, transform, scale; transition-duration: 0.3s, 0.45s, 0.45s, 0.45s, 0.45s, 0.45s, 0.12s, 0.2s; transition-timing-function: ease, var(--lx-ease), var(--lx-ease), var(--lx-ease), var(--lx-ease), var(--lx-ease), ease-out, ease-out; }
+.lx-cursor { transition-property: opacity, width, height, margin; }
