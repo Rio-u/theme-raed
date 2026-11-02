@@ -119,3 +119,9 @@ body.theme-raed.lx-cards-editorial .s-product-card-vertical {
 @media (hover: none), (pointer: coarse), (max-width: 767px) {
   body.theme-raed.lx-cards-editorial .s-product-card-vertical .s-product-card-content-footer { top: calc(150cqw - 3.1rem); }
 }
+
+/* arch: the chip sits low and centred, clear of the model's head */
+body.theme-raed.lx-cards-arch .s-product-card-vertical .s-product-card-discount {
+  top: auto;
+  bottom: 0.85rem;
+}
