@@ -1,76 +1,65 @@
 {#
-Campaign hero.
-Default "triptych": three portrait images edge to edge, headline set over them.
-Alternatives: split (arch + text) or full_bleed (one wide image).
-| component.layout_split     | bool    | Use the arch + text layout instead of the triptych      |
-| component.full_bleed       | bool    | One wide image with text overlay                        |
-| component.image            | string  |                                                         |
-| component.image_2          | ?string |                                                         |
-| component.image_3          | ?string |                                                         |
-| component.eyebrow          | ?string |                                                         |
-| component.title            | string  | Main headline (Arabic display)                          |
-| component.title_en         | ?string | Latin serif line                                        |
-| component.text             | ?string |                                                         |
-| component.cta_text         | ?string |                                                         |
-| component.cta_url          | ?string | variable-list link                                      |
+Campaign hero — one markup, six layouts chosen in the editor (component.layout):
+  gallery    one framed image, quiet caption underneath (default)
+  split      half image, half ivory with the headline
+  editorial  oversized headline above a wide image
+  arch       arched image with a small detail photo, text beside it
+  triptych   three portrait images, headline over them
+  full       one full-bleed image, headline over it
+| component.layout           | items   | dropdown value                                        |
+| component.image            | string  |                                                       |
+| component.image_2          | ?string | triptych frame 2 / arch detail photo                  |
+| component.image_3          | ?string | triptych frame 3                                      |
+| component.eyebrow          | ?string |                                                       |
+| component.title            | string  |                                                       |
+| component.title_en         | ?string | Latin serif line                                      |
+| component.text             | ?string |                                                       |
+| component.cta_text         | ?string |                                                       |
+| component.cta_url          | ?string | variable-list link                                    |
 #}
-{% set has_cta = component.cta_text and component.cta_url and component.cta_url != '#' %}
-{% set lx_img_base = 'https://salla-dev.s3.eu-central-1.amazonaws.com/nWzD/' %}
-{% set img3 = component.image_3|default(lx_img_base ~ 'ACknxzEIkcTdaFr1DETbQlXo5UwupBedJ9ZGyR8v.jpg') %}
-
-{% if component.full_bleed or component.layout_split %}
-  {# ---------- split / full-bleed ---------- #}
-  <section component-id="{{ componentId }}" data-testid="store-home-luxe-hero" data-lx-hero
-           class="s-block lx-hero {{ component.full_bleed ? 'lx-hero--full' : 'lx-hero--split' }}">
-    <div class="lx-hero__media">
-      <figure class="lx-hero__img lx-hero__img--main">
-        <img src="{{ component.image }}" alt="{{ component.title }}" fetchpriority="high" loading="eager">
-      </figure>
-      {% if component.image_2 and not component.full_bleed %}
-        <figure class="lx-hero__img lx-hero__img--aside"><img src="{{ component.image_2 }}" alt="" loading="eager"></figure>
-      {% endif %}
-    </div>
-    <div class="lx-hero__content">
-      <div class="lx-hero__inner">
-        {% if component.eyebrow %}<span class="lx-eyebrow lx-hero__line" style="--l:0">{{ component.eyebrow }}</span>{% endif %}
-        <h2 class="lx-hero__title lx-display"><span class="lx-hero__mask"><span class="lx-hero__line" style="--l:1">{{ component.title }}</span></span></h2>
-        {% if component.title_en %}<p class="lx-hero__en" lang="en"><span class="lx-hero__line" style="--l:2">{{ component.title_en }}</span></p>{% endif %}
-        {% if component.text %}<p class="lx-hero__text lx-hero__line" style="--l:3">{{ component.text }}</p>{% endif %}
-        {% if has_cta %}
-          <div class="lx-hero__cta lx-hero__line" style="--l:4"><a href="{{ component.cta_url }}" class="lx-btn {{ component.full_bleed ? 'lx-btn--light' : '' }}">{{ component.cta_text }}</a></div>
-        {% endif %}
-      </div>
-    </div>
-  </section>
+{% set raw = component.layout %}
+{% if raw.value is defined %}
+  {% set lay = raw.value %}
+{% elseif raw is iterable and raw|length and (raw|first).value is defined %}
+  {% set lay = (raw|first).value %}
 {% else %}
-  {# ---------- triptych ---------- #}
-  {% set frames = [component.image, component.image_2|default(component.image), img3] %}
-  <section component-id="{{ componentId }}" data-testid="store-home-luxe-hero" data-lx-hero class="s-block lx-hero lx-hero--triptych">
-    <div class="lx-tri">
-      {% for src in frames %}
-        <figure class="lx-tri__frame" style="--f: {{ loop.index0 }}">
-          <img src="{{ src }}" alt="{{ loop.first ? component.title : '' }}" {{ loop.first ? 'fetchpriority="high"' : '' }} loading="eager">
-        </figure>
-      {% endfor %}
-    </div>
-
-    <div class="lx-tri__content">
-      {% if component.eyebrow %}<span class="lx-tri__eyebrow lx-hero__line" style="--l:0">{{ component.eyebrow }}</span>{% endif %}
-      <h2 class="lx-tri__title">
-        <span class="lx-hero__mask"><span class="lx-hero__line" style="--l:1">{{ component.title }}</span></span>
-      </h2>
-      {% if component.title_en %}
-        <p class="lx-tri__en" lang="en"><span class="lx-hero__line" style="--l:2">{{ component.title_en }}</span></p>
-      {% endif %}
-      {% if has_cta %}
-        <a href="{{ component.cta_url }}" class="lx-tri__cta lx-hero__line" style="--l:3">
-          <span>{{ component.cta_text }}</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-      {% endif %}
-    </div>
-
-    <a href="#lx-after-hero" class="lx-tri__scroll" aria-label="scroll"><span></span></a>
-  </section>
+  {% set lay = raw %}
 {% endif %}
+{# sections saved before the layout field existed #}
+{% if not lay %}
+  {% set lay = component.full_bleed ? 'full' : (component.layout_split ? 'arch' : 'triptych') %}
+{% endif %}
+{% if lay not in ['gallery', 'split', 'editorial', 'arch', 'triptych', 'full'] %}{% set lay = 'gallery' %}{% endif %}
+
+{% set has_cta = component.cta_text and component.cta_url and component.cta_url != '#' %}
+{% set img2 = component.image_2|default(component.image) %}
+{% set img3 = component.image_3|default(img2) %}
+
+<section component-id="{{ componentId }}" data-testid="store-home-luxe-hero" data-lx-hero
+         class="s-block lx-hero2 lx-hero2--{{ lay }}">
+  <div class="lx-h2__media">
+    <figure class="lx-h2__img lx-h2__img--1" style="--f:0">
+      <img src="{{ component.image }}" alt="{{ component.title }}" fetchpriority="high" loading="eager">
+    </figure>
+    <figure class="lx-h2__img lx-h2__img--2" style="--f:1"><img src="{{ img2 }}" alt="" loading="eager"></figure>
+    <figure class="lx-h2__img lx-h2__img--3" style="--f:2"><img src="{{ img3 }}" alt="" loading="eager"></figure>
+  </div>
+
+  <div class="lx-h2__content">
+    {% if component.eyebrow %}<span class="lx-h2__eyebrow lx-hero__line" style="--l:0">{{ component.eyebrow }}</span>{% endif %}
+    <h2 class="lx-h2__title">
+      <span class="lx-hero__mask"><span class="lx-hero__line" style="--l:1">{{ component.title }}</span></span>
+    </h2>
+    {% if component.title_en %}
+      <p class="lx-h2__en" lang="en"><span class="lx-hero__line" style="--l:2">{{ component.title_en }}</span></p>
+    {% endif %}
+    {% if component.text %}<p class="lx-h2__text lx-hero__line" style="--l:3">{{ component.text }}</p>{% endif %}
+    {% if has_cta %}
+      <a href="{{ component.cta_url }}" class="lx-h2__cta lx-hero__line" style="--l:4">
+        <span>{{ component.cta_text }}</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    {% endif %}
+  </div>
+</section>
 <span id="lx-after-hero"></span>

@@ -531,7 +531,7 @@
                     "type": "string",
                     "format": "image",
                     "id": "image_2",
-                    "label": "صورة ثانوية (للتصميم المقسوم)",
+                    "label": "صورة ثانية (للثلاثي والقوس)",
                     "value": "https://salla-dev.s3.eu-central-1.amazonaws.com/nWzD/m1JuFPTZeyNjtDm9pNK32leRr6m7zsetmFLlSw52.jpg",
                     "icon": "sicon-image",
                     "required": false,
@@ -548,26 +548,57 @@
                     "description": null
                 },
                 {
-                    "type": "boolean",
-                    "format": "switch",
-                    "id": "layout_split",
-                    "label": "تصميم مقسوم (قوس + نص) بدلاً من الثلاث صور",
-                    "value": false,
-                    "selected": false,
-                    "icon": "sicon-toggle-off",
-                    "required": false,
-                    "description": null
-                },
-                {
-                    "type": "boolean",
-                    "format": "switch",
-                    "id": "full_bleed",
-                    "label": "صورة واحدة بعرض الشاشة مع نص فوقها",
-                    "value": false,
-                    "selected": false,
-                    "icon": "sicon-toggle-off",
-                    "required": false,
-                    "description": null
+                    "type": "items",
+                    "format": "dropdown-list",
+                    "id": "layout",
+                    "label": "شكل الواجهة",
+                    "icon": "sicon-layout-grid",
+                    "source": "Manual",
+                    "required": true,
+                    "options": [
+                        {
+                            "label": "معرض — صورة واحدة بإطار وعنوان هادئ تحتها",
+                            "value": "gallery",
+                            "key": "5b2e9c1a-7d4f-4e3b-9a10-0c6f2e8d1a01"
+                        },
+                        {
+                            "label": "مقسوم — نصف صورة ونصف نص",
+                            "value": "split",
+                            "key": "5b2e9c1a-7d4f-4e3b-9a10-0c6f2e8d1a02"
+                        },
+                        {
+                            "label": "تحريري — عنوان ضخم فوق صورة عريضة",
+                            "value": "editorial",
+                            "key": "5b2e9c1a-7d4f-4e3b-9a10-0c6f2e8d1a03"
+                        },
+                        {
+                            "label": "قوس — صورة بقوس مع صورة تفصيلية",
+                            "value": "arch",
+                            "key": "5b2e9c1a-7d4f-4e3b-9a10-0c6f2e8d1a04"
+                        },
+                        {
+                            "label": "ثلاثي — ثلاث صور بعرض الشاشة",
+                            "value": "triptych",
+                            "key": "5b2e9c1a-7d4f-4e3b-9a10-0c6f2e8d1a05"
+                        },
+                        {
+                            "label": "كامل — صورة واحدة بعرض الشاشة",
+                            "value": "full",
+                            "key": "5b2e9c1a-7d4f-4e3b-9a10-0c6f2e8d1a06"
+                        }
+                    ],
+                    "selected": [
+                        {
+                            "label": "معرض — صورة واحدة بإطار وعنوان هادئ تحتها",
+                            "value": "gallery",
+                            "key": "5b2e9c1a-7d4f-4e3b-9a10-0c6f2e8d1a01"
+                        }
+                    ],
+                    "value": {
+                        "label": "معرض — صورة واحدة بإطار وعنوان هادئ تحتها",
+                        "value": "gallery",
+                        "key": "5b2e9c1a-7d4f-4e3b-9a10-0c6f2e8d1a01"
+                    }
                 },
                 {
                     "type": "string",

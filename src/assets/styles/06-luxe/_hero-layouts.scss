@@ -1,0 +1,293 @@
+/**
+ * LUXE — hero layouts (components/home/luxe-hero.twig)
+ * Same markup for all six; the modifier class decides the composition.
+ * Motion: images uncover from the bottom and lines rise once the intro is gone (.lx-ready).
+ */
+.lx-hero2 {
+  --lx-hero-h: calc(100svh - var(--lx-announce-h) - 92px);
+  position: relative;
+  overflow: hidden;
+  background: var(--lx-bg);
+  color: var(--lx-black);
+
+  @media (max-width: 1024px) { --lx-hero-h: calc(100svh - var(--lx-announce-h) - var(--lx-header-h)); }
+}
+
+.s-block.lx-hero2 { margin-block: 0; }
+
+/* ---- images ---- */
+.lx-h2__img {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  background: var(--lx-sand);
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.3s var(--lx-ease-in-out);
+  transition-delay: calc(var(--f, 0) * 140ms);
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 22%;
+    transform: scale(1.08);
+    transition: transform 2.4s var(--lx-ease);
+    transition-delay: calc(var(--f, 0) * 140ms);
+  }
+}
+
+.lx-h2__img--2,
+.lx-h2__img--3 { display: none; }
+
+.lx-ready .lx-h2__img,
+html:not(.lx-js) .lx-h2__img { clip-path: inset(0 0 0 0); }
+.lx-ready .lx-h2__img img,
+html:not(.lx-js) .lx-h2__img img { transform: none; }
+
+/* ---- type ---- */
+.lx-h2__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.lx-h2__eyebrow {
+  font-size: var(--lx-fs-sm);
+  color: var(--lx-gray);
+}
+
+.lx-h2__title {
+  margin: 0;
+  font-family: var(--lx-font-display);
+  font-size: clamp(2.4rem, 1.6rem + 3vw, 4.8rem);
+  font-weight: 300;
+  line-height: 1.15;
+  color: inherit;
+}
+
+.lx-h2__en {
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--lx-font-display);
+  font-size: clamp(1.1rem, 0.95rem + 0.7vw, 1.6rem);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--lx-taupe);
+  direction: ltr;
+}
+
+.lx-h2__text {
+  max-width: 38ch;
+  margin: 0;
+  font-size: var(--lx-fs-md);
+  line-height: 1.8;
+  color: var(--lx-gray);
+}
+
+.lx-h2__cta {
+  display: inline-flex !important;
+  align-items: center;
+  align-self: flex-start;
+  gap: 0.75rem;
+  margin-block-start: 0.5rem;
+  padding-block-end: 0.35rem;
+  border-block-end: 1px solid currentColor;
+  font-size: var(--lx-fs-sm);
+  letter-spacing: 0.04em;
+  color: inherit;
+  transition: gap 0.5s var(--lx-ease);
+
+  svg { width: 18px; height: 18px; }
+  [dir="ltr"] & svg { transform: scaleX(-1); }
+  &:hover { gap: 1.2rem; color: inherit; }
+}
+
+/* =====================================================================
+   GALLERY — one framed image, caption underneath
+   ===================================================================== */
+.lx-hero2--gallery {
+  padding: var(--lx-space-2) var(--lx-gutter) var(--lx-space-6);
+
+  .lx-h2__media { max-width: var(--lx-container); margin-inline: auto; }
+  .lx-h2__img--1 { aspect-ratio: 16 / 7; max-height: 68svh; width: 100%; }
+
+  .lx-h2__content {
+    align-items: center;
+    max-width: 44rem;
+    margin: var(--lx-space-5) auto 0;
+    text-align: center;
+  }
+
+  .lx-h2__cta { align-self: center; }
+
+  @media (max-width: 767px) {
+    padding-inline: 0.75rem;
+    .lx-h2__img--1 { aspect-ratio: 4 / 5; max-height: none; }
+    .lx-h2__content { margin-block-start: var(--lx-space-4); padding-inline: 0.5rem; }
+  }
+}
+
+/* =====================================================================
+   SPLIT — half image, half ivory
+   ===================================================================== */
+.lx-hero2--split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: var(--lx-hero-h);
+
+  .lx-h2__img--1 { height: 100%; }
+
+  .lx-h2__content {
+    justify-content: center;
+    padding: var(--lx-space-6) clamp(2rem, 6vw, 7rem);
+  }
+
+  .lx-h2__title { font-size: clamp(2.6rem, 1.6rem + 3.6vw, 5.6rem); }
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    .lx-h2__img--1 { aspect-ratio: 4 / 5; height: auto; }
+    .lx-h2__content { padding: var(--lx-space-4) var(--lx-gutter) var(--lx-space-5); }
+  }
+}
+
+/* =====================================================================
+   EDITORIAL — oversized headline above a wide image
+   ===================================================================== */
+.lx-hero2--editorial {
+  display: flex;
+  flex-direction: column;
+  padding: var(--lx-space-4) var(--lx-gutter) var(--lx-space-5);
+
+  .lx-h2__content {
+    order: -1;
+    align-items: center;
+    margin-block-end: var(--lx-space-4);
+    text-align: center;
+  }
+
+  .lx-h2__title { font-size: clamp(3rem, 1.5rem + 7vw, 9rem); line-height: 1.05; }
+  .lx-h2__cta { align-self: center; }
+
+  .lx-h2__media { width: 100%; max-width: var(--lx-container); margin-inline: auto; }
+  .lx-h2__img--1 { aspect-ratio: 21 / 8; width: 100%; }
+
+  @media (max-width: 767px) {
+    padding-inline: 0.75rem;
+    .lx-h2__img--1 { aspect-ratio: 4 / 5; }
+  }
+}
+
+/* =====================================================================
+   ARCH — arched image with a detail photo, text beside it
+   ===================================================================== */
+.lx-hero2--arch {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  align-items: center;
+  gap: var(--lx-space-5);
+  min-height: var(--lx-hero-h);
+  padding: var(--lx-space-4) var(--lx-gutter);
+  max-width: var(--lx-container);
+  margin-inline: auto !important;
+
+  .lx-h2__media { position: relative; padding-block-end: var(--lx-space-5); }
+
+  .lx-h2__img--1 {
+    width: 76%;
+    aspect-ratio: 3 / 4;
+    max-height: calc(var(--lx-hero-h) - 6rem);
+    margin-inline-start: auto;
+    border-radius: 999px 999px 0 0;
+  }
+
+  .lx-h2__img--2 {
+    display: block;
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-start: 0;
+    width: 36%;
+    aspect-ratio: 3 / 4;
+    border: 8px solid var(--lx-bg);
+  }
+
+  .lx-h2__title { font-size: clamp(2.6rem, 1.6rem + 3.6vw, 5.4rem); }
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    gap: var(--lx-space-3);
+    .lx-h2__img--1 { width: 82%; margin-inline: auto; max-height: none; }
+    .lx-h2__img--2 { width: 34%; }
+    .lx-h2__content { padding-block-end: var(--lx-space-4); }
+  }
+}
+
+/* =====================================================================
+   TRIPTYCH + FULL — imagery fills the screen, headline over it
+   ===================================================================== */
+.lx-hero2--triptych,
+.lx-hero2--full {
+  height: calc(100svh - var(--lx-announce-h));
+  min-height: 560px;
+  max-height: 1000px;
+  background: #111111;
+  color: #FFFFFF;
+
+  .lx-h2__media {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    gap: 3px;
+    background: var(--lx-ivory);
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10, 9, 8, 0.6) 0%, rgba(10, 9, 8, 0.12) 42%, rgba(10, 9, 8, 0) 62%);
+      pointer-events: none;
+    }
+  }
+
+  .lx-h2__img { height: 100%; }
+
+  .lx-h2__content {
+    position: absolute;
+    z-index: 2;
+    inset-inline: 0;
+    inset-block-end: clamp(3rem, 2rem + 4vw, 6rem);
+    align-items: center;
+    padding-inline: var(--lx-gutter);
+    text-align: center;
+  }
+
+  .lx-h2__eyebrow { color: rgba(255, 255, 255, 0.82); }
+  .lx-h2__title { font-size: clamp(2.8rem, 1.4rem + 5.6vw, 7.5rem); color: #FFFFFF; }
+  .lx-h2__en { color: rgba(255, 255, 255, 0.86); }
+  .lx-h2__text { color: rgba(255, 255, 255, 0.82); }
+  .lx-h2__cta { align-self: center; color: #FFFFFF; border-color: rgba(255, 255, 255, 0.7); }
+}
+
+.lx-hero2--triptych {
+  .lx-h2__media { grid-template-columns: repeat(3, 1fr); }
+  .lx-h2__img--2, .lx-h2__img--3 { display: block; }
+
+  @media (max-width: 767px) {
+    height: 82svh;
+    .lx-h2__media { grid-template-columns: 1.25fr 1fr; }
+    .lx-h2__img--3 { display: none; }
+  }
+}
+
+.lx-hero2--full .lx-h2__media { grid-template-columns: 1fr; }
+
+@media (max-width: 767px) {
+  .lx-hero2--full { height: 82svh; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lx-h2__img, .lx-h2__img img { transition: none; clip-path: none; transform: none; }
+}

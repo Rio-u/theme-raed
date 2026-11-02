@@ -354,15 +354,15 @@
 
 /* ---- Homepage: transparent header over the hero ---- */
 @media (min-width: 0px) {
-  body.index:has(.lx-hero--triptych) .lx-header { position: relative; z-index: 40; }
+  body.index:has(.lx-hero--triptych, .lx-hero2--triptych, .lx-hero2--full) .lx-header { position: relative; z-index: 40; }
 
-  body.index:has(.lx-hero--triptych) .lx-mainnav:not(.fixed-pinned) {
+  body.index:has(.lx-hero--triptych, .lx-hero2--triptych, .lx-hero2--full) .lx-mainnav:not(.fixed-pinned) {
     position: absolute;
     inset-inline: 0;
     height: auto !important;   /* app.js reserves the height; the hero sits underneath instead */
   }
 
-  body.index:has(.lx-hero--triptych) .lx-mainnav:not(.fixed-pinned) .inner {
+  body.index:has(.lx-hero--triptych, .lx-hero2--triptych, .lx-hero2--full) .lx-mainnav:not(.fixed-pinned) .inner {
     background: linear-gradient(to bottom, rgba(10, 9, 8, 0.38), rgba(10, 9, 8, 0));
     border-block-end: 0;   /* a transparent border still paints the gradient: shows as a line */
     color: #FFFFFF;
