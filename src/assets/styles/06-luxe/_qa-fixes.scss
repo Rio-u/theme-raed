@@ -195,3 +195,40 @@ body.product-single .lx-acc__body { overflow-wrap: anywhere; word-break: break-w
     margin-inline: auto !important;
   }
 }
+
+/* ---- Round bag button: draw the icon ourselves (works for both card types) ---- */
+@mixin lx-bag-button {
+  font-size: 0 !important;
+
+  .s-button-text, .s-button-text * , i, span { display: none !important; }
+
+  &::before {
+    content: "";
+    width: 18px;
+    height: 18px;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5'%3E%3Cpath d='M5.5 8.5h13l-1 11.5h-11z' stroke-linejoin='round'/%3E%3Cpath d='M9 8.5V7a3 3 0 0 1 6 0v1.5'/%3E%3C/svg%3E") center / contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5'%3E%3Cpath d='M5.5 8.5h13l-1 11.5h-11z' stroke-linejoin='round'/%3E%3Cpath d='M9 8.5V7a3 3 0 0 1 6 0v1.5'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+}
+
+@media (max-width: 767px) {
+  body.theme-raed .s-product-card-vertical .s-product-card-content-footer .s-button-element { @include lx-bag-button; }
+}
+
+@media (hover: none), (pointer: coarse) {
+  body.theme-raed .s-product-card-vertical .s-product-card-content-footer .s-button-element { @include lx-bag-button; }
+}
+
+/* cart size select: leave room for the arrow */
+body.cart .cart-item select { padding-inline-end: 2.25rem !important; padding-inline-start: 0.75rem !important; }
+
+/* login sheet is position:fixed on phones — centre it by its edges */
+@media (max-width: 640px) {
+  body.theme-raed .s-login-modal .s-modal-body {
+    left: 0.75rem !important;
+    right: 0.75rem !important;
+    width: auto !important;
+    max-width: none;
+  }
+}
