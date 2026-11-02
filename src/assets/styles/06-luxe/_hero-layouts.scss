@@ -291,3 +291,7 @@ html:not(.lx-js) .lx-h2__img img { transform: none; }
 @media (prefers-reduced-motion: reduce) {
   .lx-h2__img, .lx-h2__img img { transition: none; clip-path: none; transform: none; }
 }
+
+/* wide crops of portrait photos: keep faces in frame */
+.lx-hero2--gallery .lx-h2__img img,
+.lx-hero2--editorial .lx-h2__img img { object-position: center 12%; }
