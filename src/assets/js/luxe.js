@@ -89,14 +89,12 @@ function initCursor() {
   if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  const dot = document.createElement('div');
+  // One element: the dot lives inside the ring, so the two can never separate.
   const ring = document.createElement('div');
-  dot.className = 'lx-cursor';
   ring.className = 'lx-cursor-ring';
-  ring.innerHTML = `<span>${root.lang === 'ar' ? 'عرض' : 'View'}</span>`;
-  dot.setAttribute('aria-hidden', 'true');
+  ring.innerHTML = `<i class="lx-cursor-dot"></i><span>${root.lang === 'ar' ? 'عرض' : 'View'}</span>`;
   ring.setAttribute('aria-hidden', 'true');
-  document.body.append(dot, ring);
+  document.body.append(ring);
 
   const VIEW = '.s-product-card-image, .lx-cat, .lx-hero__img, .lx-editorial__img, .details-slider .swiper-slide';
   const LINK = 'a, button, [role="button"], salla-button, salla-add-product-button, label, summary, .swiper-button-next, .swiper-button-prev';
@@ -111,21 +109,26 @@ function initCursor() {
     root.classList.toggle('lx-cursor-link', !view && !!t?.closest(LINK));
   };
 
-  // Dot and ring are placed together on every move; the ring's short CSS transition gives the
-  // soft follow, so nothing can drift apart (drags, pointer capture, scroll, clicks).
+  // Position is written once per frame, straight from the latest mouse event — no easing,
+  // so it never trails behind the real pointer.
+  let frame = 0, lastTarget = null;
+  const draw = () => {
+    frame = 0;
+    ring.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    setState(lastTarget instanceof Element ? lastTarget : document.elementFromPoint(x, y));
+  };
   const place = (cx, cy, target) => {
-    x = cx; y = cy;
+    x = cx; y = cy; lastTarget = target;
     if (!started) { started = true; root.classList.add('lx-cursor-on'); }
     root.classList.remove('lx-cursor-out');
-    const t = `translate3d(${x}px, ${y}px, 0)`;
-    dot.style.transform = t;
-    ring.style.transform = t;
-    setState(target instanceof Element ? target : document.elementFromPoint(x, y));
+    if (!frame) frame = requestAnimationFrame(draw);
   };
 
-  // mousemove keeps firing while a slider or lightbox has captured the pointer
   window.addEventListener('mousemove', e => place(e.clientX, e.clientY, e.target), { passive: true });
   window.addEventListener('pointerdown', e => { if (e.pointerType === 'mouse') place(e.clientX, e.clientY, e.target); }, { passive: true });
+  // a native drag (image/link) stops mousemove — keep tracking through drag events
+  window.addEventListener('drag', e => { if (e.clientX || e.clientY) place(e.clientX, e.clientY, null); }, { passive: true });
+  window.addEventListener('dragend', e => place(e.clientX, e.clientY, null), { passive: true });
 
   // Content scrolls under a still mouse: refresh the hover state.
   window.addEventListener('scroll', () => { if (started) setState(document.elementFromPoint(x, y)); }, { passive: true });
