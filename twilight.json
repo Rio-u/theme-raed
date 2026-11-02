@@ -119,6 +119,50 @@
             "required": false
         },
         {
+            "id": "lx_card_style",
+            "type": "items",
+            "format": "dropdown-list",
+            "label": "شكل بطاقة المنتج",
+            "description": "يطبّق على كل بطاقات المنتجات في المتجر",
+            "icon": "sicon-layout-grid",
+            "selected": [
+                {
+                    "label": "كلاسيكي — مستطيل وعنوان في المنتصف",
+                    "value": "classic",
+                    "key": "8c3d1f2e-4a5b-4c6d-9e7f-1a2b3c4d5e61"
+                }
+            ],
+            "options": [
+                {
+                    "label": "كلاسيكي — مستطيل وعنوان في المنتصف",
+                    "value": "classic",
+                    "key": "8c3d1f2e-4a5b-4c6d-9e7f-1a2b3c4d5e61"
+                },
+                {
+                    "label": "قوس — صورة بقوس مثل باقي الثيم",
+                    "value": "arch",
+                    "key": "8c3d1f2e-4a5b-4c6d-9e7f-1a2b3c4d5e62"
+                },
+                {
+                    "label": "إطار — الصورة داخل إطار أبيض كلوحة",
+                    "value": "frame",
+                    "key": "8c3d1f2e-4a5b-4c6d-9e7f-1a2b3c4d5e63"
+                },
+                {
+                    "label": "ناعم — زوايا دائرية ونص على الجانب",
+                    "value": "soft",
+                    "key": "8c3d1f2e-4a5b-4c6d-9e7f-1a2b3c4d5e64"
+                },
+                {
+                    "label": "تحريري — صورة أطول ونص هادئ بخط فاصل",
+                    "value": "editorial",
+                    "key": "8c3d1f2e-4a5b-4c6d-9e7f-1a2b3c4d5e65"
+                }
+            ],
+            "source": "Manual",
+            "required": true
+        },
+        {
             "type": "static",
             "format": "line",
             "id": "lx-static-line"

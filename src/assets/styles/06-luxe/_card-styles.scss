@@ -1,0 +1,121 @@
+/**
+ * LUXE — product card styles, chosen in theme settings (lx_card_style → body.lx-cards-*)
+ *   classic    rectangle 3:4, centred caption (base, see _card-v2.scss)
+ *   arch       arched photo, matches the rest of the theme
+ *   frame      photo set in a white mat, like a gallery print
+ *   soft       rounded corners, caption aligned to the start
+ *   editorial  taller 2:3 photo, quiet caption with a hairline
+ * Applies to every card on the site (home, categories, search, related…).
+ */
+
+/* ============ ARCH ============ */
+body.theme-raed.lx-cards-arch .s-product-card-vertical {
+  .s-product-card-image { border-radius: 999px 999px 0 0; }
+  .s-product-card-image::after { border-radius: 999px 999px 0 0; border-block-end: 0; }
+
+  /* the curve would clip the corners: chip sits under the apex, heart at the bottom */
+  .s-product-card-discount {
+    inset-inline-start: 50%;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    top: 1.1rem;
+    border-radius: 999px;
+    padding-inline: 0.7rem;
+  }
+
+  .s-product-card-wishlist-btn {
+    top: auto !important;
+    bottom: 0.6rem;
+    inset-inline-start: 0.6rem;
+    inset-inline-end: auto;
+    left: auto;
+    right: auto;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 768px) {
+  body.theme-raed.lx-cards-arch .s-product-card-vertical .s-product-card-content-footer { inset-inline-start: 3.4rem; }
+}
+
+/* ============ FRAME ============ */
+body.theme-raed.lx-cards-frame .s-product-card-vertical {
+  .s-product-card-image {
+    padding: 10px;
+    border: 1px solid var(--lx-line);
+    background: var(--lx-white);
+
+    > a { overflow: hidden; background: var(--lx-sand); }
+  }
+
+  .s-product-card-image::after { inset: 18px; }
+  .s-product-card-discount { inset-block-start: 1.25rem; inset-inline-start: 1.25rem; }
+  .s-product-card-wishlist-btn { top: 1rem !important; inset-inline-end: 1rem; }
+  .s-product-card-content { padding-block-start: 0.85rem; }
+}
+
+@media (max-width: 767px) {
+  body.theme-raed.lx-cards-frame .s-product-card-vertical .s-product-card-image { padding: 6px; }
+}
+
+/* ============ SOFT ============ */
+body.theme-raed.lx-cards-soft .s-product-card-vertical {
+  .s-product-card-image { border-radius: 18px; }
+  .s-product-card-image::after { border-radius: 12px; }
+  .s-product-card-discount { border-radius: 999px; }
+
+  .s-product-card-content {
+    align-items: flex-start;
+    text-align: start !important;
+    padding-inline: 0.25rem;
+  }
+
+  .s-product-card-content-main,
+  .s-product-card-content-title,
+  .s-product-card-content-title a { text-align: start !important; }
+
+  .s-product-card-content-title a { font-family: var(--lx-font-sans); font-size: var(--lx-fs-sm); font-weight: 500; }
+  .s-product-card-content-sub { justify-content: flex-start; }
+
+  .s-product-card-content-footer .s-button-element { border-radius: 999px !important; }
+}
+
+/* ============ EDITORIAL ============ */
+body.theme-raed.lx-cards-editorial .s-product-card-vertical {
+  .s-product-card-image { aspect-ratio: 2 / 3; }
+
+  .s-product-card-content {
+    align-items: flex-start;
+    text-align: start !important;
+    margin-block-start: 0.85rem;
+    padding: 0.75rem 0 0;
+    border-block-start: 1px solid var(--lx-line);
+  }
+
+  .s-product-card-content-main,
+  .s-product-card-content-title,
+  .s-product-card-content-title a { text-align: start !important; }
+
+  .s-product-card-content-title a {
+    font-family: var(--lx-font-sans);
+    font-size: var(--lx-fs-xs);
+    font-weight: 400;
+    color: var(--lx-gray);
+  }
+
+  .s-product-card-content-sub { justify-content: flex-start; }
+
+  .s-product-card-price,
+  .s-product-card-sale-price h4 {
+    font-family: var(--lx-font-display);
+    font-size: 1.25rem;
+    font-weight: 400;
+  }
+
+  /* add-to-cart sits on a taller photo: 2:3 → 150% of the card width */
+  .s-product-card-content-footer { top: calc(150cqw - 3.5rem); }
+}
+
+@media (hover: none), (pointer: coarse), (max-width: 767px) {
+  body.theme-raed.lx-cards-editorial .s-product-card-vertical .s-product-card-content-footer { top: calc(150cqw - 3.1rem); }
+}
